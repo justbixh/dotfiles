@@ -1,0 +1,20 @@
+# ── .gitignore ────────────────────────────────────────────────────────────────
+
+# Machine-local shell config (contains tokens, proxies, work paths)
+stow/shell/.config/shell/local
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor junk
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Test/scratch
+scratch/
+tmp/

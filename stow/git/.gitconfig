@@ -1,0 +1,45 @@
+[user]
+    # Set in ~/.config/shell/local or per-repo with: git config user.email "you@work.com"
+    name  = justbixh-xxxx
+    email = work.bishnu@gmail.com
+
+[core]
+    pager  = delta
+    editor = vim
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate     = true
+    dark         = true
+    side-by-side = true
+    line-numbers = true
+    syntax-theme = Dracula
+    hyperlinks   = true
+
+[merge]
+    conflictstyle = zdiff3
+
+[diff]
+    colorMoved = default
+
+[pull]
+    rebase = false
+
+[push]
+    autoSetupRemote = true
+
+[init]
+    defaultBranch = main
+
+[alias]
+    # Short status
+    st = status -sb
+    # Pretty log
+    lg  = log --graph --decorate --oneline -20
+    lga = log --graph --decorate --oneline --all -20
+    # Undo last commit, keep changes staged
+    undo = reset --soft HEAD~1
+    # Show stashes with dates
+    stashes = stash list --format="%gd %cd %s" --date=short

@@ -1,0 +1,26 @@
+# ~/.config/yazi/theme.toml
+
+[flavor]
+use = "catppuccin-mocha"   # or remove this block and use the manual section below
+
+# ── manual palette (uncomment if not using a flavor) ─────────────────────────
+# [manager]
+# cwd = { fg = "#89b4fa" }
+#
+# hovered         = { fg = "#1e1e2e", bg = "#89b4fa" }
+# preview_hovered = { underline = true }
+#
+# find_keyword  = { fg = "#f9e2af", bold = true, italic = true, underline = true }
+# find_position = { fg = "#f38ba8", bold = true, italic = true }
+#
+# marker_selected = { fg = "#a6e3a1", bg = "#a6e3a1" }
+# marker_copied   = { fg = "#f9e2af", bg = "#f9e2af" }
+# marker_cut      = { fg = "#f38ba8", bg = "#f38ba8" }
+#
+# tab_active   = { fg = "#1e1e2e", bg = "#89b4fa" }
+# tab_inactive = { fg = "#cdd6f4", bg = "#313244" }
+# tab_width    = 1
+#
+# [status]
+# separator_open  = ""
+# separator_close = ""
