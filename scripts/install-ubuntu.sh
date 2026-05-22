@@ -14,13 +14,14 @@ sudo apt-get install -y -q \
     bat fd-find \
     ripgrep jq ncdu tmux vim \
     dnsutils xclip
+# which git curl wget unzip stow bat fd-find ripgrep jq ncdu tmux vim dnsutils xclip
 
 # Ubuntu naming quirks → fix with symlinks
 ln -sf "$(which batcat)" "$BIN/bat"
 ln -sf "$(which fdfind)" "$BIN/fd"
 
 # ── GitHub: tools where latest version matters ────────────────────────────────
-
+# which starship zoxide fzf fzf-git eza git-delta lazygit btop fastfetch yazi yq
 # starship
 echo "Installing starship..."
 curl -fsSL https://starship.rs/install.sh | sh -s -- --yes

@@ -1,5 +1,0 @@
-# ~/dotfiles/.stowrc
---ignore=\.aws
---ignore=\.azure
---ignore=\.wsl
---target=/home/bixh

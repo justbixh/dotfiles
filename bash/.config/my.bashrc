@@ -1,0 +1,122 @@
+# ~/.config/my.bashrc
+# ── sourced from ~/.bashrc via: source ~/.config/my.bashrc ───────────────
+
+# ── PATH — local bin first (our symlinks live here) ───────────────────────────
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# ── editor ────────────────────────────────────────────────────────────────────
+export EDITOR=vim
+export VISUAL=vim
+set -o vi # vi mode
+
+# ── history ───────────────────────────────────────────────────────────────────
+export HISTFILESIZE=10000
+export HISTSIZE=10000
+export HISTCONTROL=erasedups:ignoredups:ignorespace
+export HISTTIMEFORMAT="%F %T "   # timestamp in history
+PROMPT_COMMAND='history -a'      # save history after every command
+
+# ── options ───────────────────────────────────────────────────────────────────
+shopt -s checkwinsize     # recheck terminal width after each command
+shopt -s histappend       # append to history, don't overwrite
+shopt -s autocd           # type a directory name to cd into it
+shopt -s cdspell          # minor typo correction for cd
+shopt -s dirspell         # typo correction during completion
+
+bind "set completion-ignore-case on"   # case-insensitive tab completion
+bind "set show-all-if-ambiguous On"    # single Tab shows all matches
+
+# ── keybinds ──────────────────────────────────────────────────────────────────
+bind '"\C-f":"zi\n"'                    # Ctrl+F → zoxide interactive jump
+# bind "set enable-bracketed-paste On"  # uncomment if paste issues arise
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# ── safety nets ───────────────────────────────────────────────────────────────
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias mkdir='mkdir -pv'
+
+# ── disk ──────────────────────────────────────────────────────────────────────
+alias df='df -h'
+alias du='du -h'
+alias ducks='du -h --max-depth=1 | sort -rh | head -15'
+
+# ── network ───────────────────────────────────────────────────────────────────
+alias myip='curl -s ifconfig.me'
+alias ports='ss -tulanp'
+alias listening='ss -tulanp | grep LISTEN'
+
+# ── navigation ────────────────────────────────────────────────────────────────
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias countfiles='for t in files links directories; do echo $(find . -type ${t:0:1} | wc -l) $t; done'
+
+# ── misc ──────────────────────────────────────────────────────────────────────
+alias mybashrc='vim ~/.config/my.bashrc'
+alias bashrc='vim ~/.bashrc'
+alias reload='source ~/.bashrc'
+
+# ── git ───────────────────────────────────────────────────────────────────────
+alias gs='git status'
+alias ga='git add .'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git log --graph --decorate -20'
+alias gl1='git log --oneline --graph --decorate -20'
+alias gd='git diff'
+alias gundo='git reset HEAD~1'
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# ── eza ───────────────────────────────────────────────────────────────────────
+alias l='eza -lhg --icons --sort=modified'
+alias ll='eza -lhg --icons --sort=modified --color=always | tail -n 30'
+alias la='eza -lhga --icons --sort=modified'
+alias lp='eza -lhg --icons --sort=modified --absolute=on'
+alias lS='eza -lhga --icons --sort=size --reverse'
+alias ltree='eza --tree --icons'
+alias ltree2='eza --tree --icons --level=2'
+alias ldate='eza -lhg --icons --time-style="+%d %b %Y %H:%M" --sort=modified'
+alias lf='eza -lhg --icons --sort=modified --only-files'
+alias ld='eza -lhgD --icons --sort=modified'
+
+# ── bat ───────────────────────────────────────────────────────────────────────
+alias cat='bat --style=grid'
+alias catn='bat --style=numbers'
+alias batp='bat --plain'         # plain, no decorations (good for copy-paste)
+export BAT_THEME="Dracula"  # bat theme (used by bat, delta, fzf previews)
+
+# ── ripgrep ───────────────────────────────────────────────────────────────────
+# NOTE: not aliasing grep=rg — too many scripts rely on grep's specific flags
+alias rgi='rg -i'
+alias rgl='rg -l'
+alias rgc='rg --count'
+# rgf (interactive rg+fzf) see .config/fzf.sh
+
+# ── lazygit ───────────────────────────────────────────────────────────────────
+alias lg='lazygit'
+
+# ── yazi: cd on quit ──────────────────────────────────────────────────────────
+ya() {
+    local tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+    yazi "$@" --cwd-file="$tmp"
+    cd "$(cat "$tmp")" 2>/dev/null
+    rm -f "$tmp"
+}
+
+# ── fzf ───────────────────────────────────────────────────────────────────────
+[ -f ~/.config/fzf.sh ] && source ~/.config/fzf.sh
+
+# ── zoxide ────────────────────────────────────────────────────────────────────
+command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
+
+# ── starship ──────────────────────────────────────────────────────────────────
+command -v starship &>/dev/null && eval "$(starship init bash)"
+
+# ── local overrides (not in git: tokens, proxy, JAVA_HOME, work email) ────────
+[ -f ~/.config/shell/local ] && source ~/.config/shell/local

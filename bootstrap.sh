@@ -14,7 +14,7 @@
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
-source "$DOTFILES/install/detect-os.sh"
+source "$DOTFILES/scripts/detect-os.sh"
 detect_os
 
 DO_PKGS=true ; DO_STOW=true
@@ -25,10 +25,10 @@ DO_PKGS=true ; DO_STOW=true
 if $DO_PKGS; then
     echo "==> Installing packages for $DISTRO..."
     case "$DISTRO" in
-        ubuntu) bash "$DOTFILES/install/linux-ubuntu.sh" ;;
-        rhel)   bash "$DOTFILES/install/linux-rhel.sh"   ;;
-        macos)  bash "$DOTFILES/install/darwin.sh"       ;;
-        *)      echo "No install script for '$DISTRO'. Add install/${DISTRO}.sh" && exit 1 ;;
+        ubuntu) bash "$DOTFILES/scripts/install-ubuntu.sh" ;;
+        rhel)   bash "$DOTFILES/scripts/install-rhel.sh"   ;;
+        macos)  bash "$DOTFILES/scripts/install-macos.sh"  ;;
+        *)      echo "No install script for '$DISTRO'. Add scripts/${DISTRO}.sh" && exit 1 ;;
     esac
 fi
 
@@ -40,15 +40,23 @@ if $DO_STOW; then
         exit 1
     fi
 
-    # Back up any existing bashrc that isn't already our symlink
-    if [ -f ~/.bashrc ] && [ ! -L ~/.bashrc ]; then
-        cp ~/.bashrc ~/.bashrc.bak."$(date +%s)"
-        echo "==> Backed up existing ~/.bashrc"
+    cd "$DOTFILES"
+    echo "==> Stowing dotfiles from $DOTFILES → $HOME..."
+    stow --target="$HOME" --ignore="^\.bashrc$" --ignore="^\.zshrc$" --restow bash fzf git tmux starship yazi zsh
+    
+    # Idempotently append to existing bashrc / zshrc instead of replacing them
+    if [ -f ~/.bashrc ]; then
+        if ! grep -q "source ~/.config/my.bashrc" ~/.bashrc; then
+            echo -e "\n# source dotfiles\nsource ~/.config/my.bashrc" >> ~/.bashrc
+            echo "==> Appended source ~/.config/my.bashrc to ~/.bashrc"
+        fi
     fi
-
-    cd "$DOTFILES/stow"
-    echo "==> Stowing dotfiles from $DOTFILES/stow → $HOME..."
-    stow --target="$HOME" --restow bash fzf git tmux starship yazi
+    if [ -f ~/.zshrc ]; then
+        if ! grep -q "source ~/.config/my.zshrc" ~/.zshrc; then
+            echo -e "\n# source dotfiles\nsource ~/.config/my.zshrc" >> ~/.zshrc
+            echo "==> Appended source ~/.config/my.zshrc to ~/.zshrc"
+        fi
+    fi
     
     # Optional packages
     # stow nvim yazi btop fastfetch
@@ -64,5 +72,11 @@ EOF
     fi
 fi
 
-# echo "==> Done. Run: source ~/.bashrc"
-echo "==> Bootstrap complete. Open a new shell or: source ~/.bashrc"
+echo "─────────────────────────────────────────"
+echo "==> Installation Summary:"
+echo "    - Packages: $DO_PKGS"
+echo "    - Stow:     $DO_STOW"
+echo "    - Distro:   $DISTRO"
+echo "==> Done. Restart your shell or run:"
+echo "    source ~/.bashrc (or source ~/.zshrc)"
+echo "─────────────────────────────────────────"

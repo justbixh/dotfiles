@@ -1,27 +1,22 @@
 # ── ~/.config/shell/fzf.bash ─────────────────────────────────────────────────
-# Stow package: fzf/
 # Sourced from .bashrc as: source ~/.config/shell/fzf.bash
+# Stow package: fzf/
+# Requires fd, rg, bat, and eza to be installed for the previews to work.
+
 
 # ── shell integration ─────────────────────────────────────────────────────────
 eval "$(fzf --bash)"
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash # needed for git install, not apt
 
-# ── fd as the default finder ──────────────────────────────────────────────────
-export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
-export FZF_CTRL_T_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
-export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+# ── base styling (change once, applies everywhere) ──
+_JUST_FZF_STYLE="--info=inline --no-separator --preview-border=dashed --margin=1 --padding=1"
 
-# ── base style (one place to change) ─────────────────────────────────────────
-_FZF_STYLE="--info=inline --no-separator --preview-border=dashed --margin=1 --padding=1"
-
-# ── ctrl-t: preview files with bat, dirs with eza ────────────────────────────
-export FZF_CTRL_T_OPTS="
-    --preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi'
-    $_FZF_STYLE"
+# ── ctrl-t: preview files with bat, dirs with eza ──
+export FZF_CTRL_T_OPTS="--preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200;
+else bat -n --color=always --line-range :500 {}; fi' $_FZF_STYLE"
 
 # ── alt-c: preview dirs with eza ─────────────────────────────────────────────
-export FZF_ALT_C_OPTS="
-    --preview 'eza --tree --color=always {} | head -200'
-    $_FZF_STYLE"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200' $_FZF_STYLE"
 
 # ── ctrl-r: history preview, ctrl-y to yank ──────────────────────────────────
 export FZF_CTRL_R_OPTS="
@@ -42,15 +37,33 @@ _fzf_comprun() {
     esac
 }
 
-# ── fd as path/dir generator for ** completion ────────────────────────────────
+
+
+# ── fzf-fd faster finder during fzf, ctrl-t, alt-c ────────────────────────────
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+# ── fzf-fd faster finder during **<TAB> completion ────────────────────────────
 _fzf_compgen_path() { fd --hidden --exclude .git . "$1"; }
 _fzf_compgen_dir()  { fd --type=d --hidden --exclude .git . "$1"; }
 
 
-# ── fzf-git ───────────────────────────────────────────────────────────────────
-[ -f ~/.config/fzf-git/fzf-git.sh ] && source ~/.config/fzf-git/fzf-git.sh
 
-export FZF_GIT_FZF_OPTS="$_FZF_STYLE --ansi"
+# ── fzf-rg → open in vim ──────────────────────────────────────────────────────
+rgf() {
+    rg --color=always --line-number --no-heading --smart-case "${*:-}" |
+        fzf --ansi \
+            --color "hl:-1:underline,hl+:-1:underline:reverse" \
+            --delimiter : \
+            --preview 'bat --color=always {1} --highlight-line {2}' \
+            --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+            --bind 'enter:become(vim {1} +{2})'
+}
+
+# ── fzf-git ───────────────────────────────────────────────────────────────────
+[ -f ~/.config/fzf-git/fzf-git.sh ] && source ~/.config/fzf-git/fzf-git.sh  # setup
+export FZF_GIT_FZF_OPTS="$_FZF_STYLE --ansi"  # use default style
 
 _fzf_git_fzf() {
     fzf --height 50% --tmux 90%,70% \
