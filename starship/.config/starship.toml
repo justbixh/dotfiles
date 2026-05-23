@@ -2,7 +2,7 @@
 
 # ── Prompt layout ────────────────────────────────────────────────
 format = """
-$username$directory$git_branch$git_status$cmd_duration$package$battery$memory_usage$cmd_duration$status
+$username$directory$git_branch$git_status$package$battery$memory_usage$cmd_duration$status
 $character
 """
 
@@ -65,7 +65,7 @@ disabled = false
 format = "[$symbol$status]($style) "
 symbol = "✖ "
 success_symbol = ""
-not_executable_meaning = "🚫 "
+not_executable_symbol = "🚫 "
 not_found_symbol = "⚡"
 sigint_symbol = "⚡"
 signal_symbol = "⚡"
@@ -103,7 +103,7 @@ style = "bold dimmed green"
 [cmd_duration]
 min_time = 50
 format = "took [$duration](bold yellow) "
-show_milliseconds = true 
+#show_milliseconds = true 
 
 # ── Disable all other language modules ───────────────────────────
 [buf]

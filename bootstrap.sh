@@ -1,67 +1,46 @@
 #!/usr/bin/env bash
-
 # dotfiles/bootstrap.sh
-# One-shot setup: installs packages then stows dotfiles.
-
-# git clone git@github.com:justbixh/dotfiles.git ~/.dotfiles
-# bash ~/.dotfiles/bootstrap.sh [--stow-only | --pkgs-only]
-# Options:
-#   --stow-only    skip package install, only run stow
-#   --pkgs-only    skip stow, only install packages
+# Stow-only bootstrap — assumes packages are already installed manually.
+#
+# Usage:
+#   bash ~/dotfiles/bootstrap.sh          # stow all packages
+#   bash ~/dotfiles/bootstrap.sh --dry    # dry run, no changes
 
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
-[[ -f "$DOTFILES/scripts/detect-os.sh" ]] || { echo "detect-os.sh not found"; exit 1; }
-source "$DOTFILES/scripts/detect-os.sh"
-detect_os
+DRY=false
+[ "${1:-}" = "--dry" ] && DRY=true
 
-DO_PKGS=true ; DO_STOW=true
-[ "${1:-}" = "--stow-only" ] && DO_PKGS=false
-[ "${1:-}" = "--pkgs-only" ] && DO_STOW=false
+STOW_FLAGS="--restow"
+$DRY && STOW_FLAGS="--simulate"
 
-# ── package installation ──────────────────────────────────────────────────────
-if $DO_PKGS; then
-    echo "==> Installing packages for $DISTRO..."
-    case "$DISTRO" in
-        ubuntu) bash "$DOTFILES/scripts/install-ubuntu.sh" ;;
-        rhel)   bash "$DOTFILES/scripts/install-rhel.sh"   ;;
-        macos)  bash "$DOTFILES/scripts/install-macos.sh"  ;;
-        *)      echo "No install script for '$DISTRO'. Add scripts/install-${DISTRO}.sh" && exit 1 ;;
-    esac
+# ── guard ─────────────────────────────────────────────────────────────────────
+if ! command -v stow &>/dev/null; then
+    echo "stow not found. Install it first: sudo apt install stow"
+    exit 1
 fi
 
-# ── stow ──────────────────────────────────────────────────────────────────────
-if $DO_STOW; then
-    # Guard: stow must be present when running --stow-only (--stow-only skips the package install section entirely)
-    if ! command -v stow &>/dev/null; then
-        echo "==> stow not found. Run bootstrap.sh without --stow-only first, or: sudo apt install stow"
-        exit 1
+# ── stow packages ─────────────────────────────────────────────────────────────
+cd "$DOTFILES"
+echo "==> Stowing dotfiles → $HOME..."
+stow $STOW_FLAGS bash fzf git tmux starship zsh yazi
+
+# ── rc source-line append (idempotent) ────────────────────────────────────────
+if ! $DRY; then
+    if [ -f "$HOME/.bashrc" ]; then
+        if ! grep -qF "source ~/.config/my.bashrc" "$HOME/.bashrc"; then
+            printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/my.bashrc ]] && source ~/.config/my.bashrc\n' >> "$HOME/.bashrc"
+            echo "==> Appended source line to ~/.bashrc"
+        fi
     fi
 
-    cd "$DOTFILES"
-    echo "==> Stowing dotfiles from $DOTFILES → $HOME..."
-    # .bashrc and .zshrc live outside the stow tree (see bash/ and zsh/ packages).
-    # Bootstrap appends a source line to the existing rc files below instead.
-    stow --target="$HOME" --restow bash fzf git tmux starship zsh # stow nvim yazi btop fastfetch
-fi
-
-# ── rc file source-line append (idempotent) ───────────────────────────────────
-# .bashrc and .zshrc are NOT stowed — the existing files stay untouched.
-# We just append a single source line once so the dotfile config is picked up.
-
-if [ -f "$HOME/.bashrc" ]; then
-    if ! grep -qF "source ~/.config/my.bashrc" "$HOME/.bashrc"; then
-        printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/my.bashrc ]] && source ~/.config/my.bashrc\n' >> "$HOME/.bashrc"
-        echo "==> Appended 'source ~/.config/my.bashrc' to ~/.bashrc"
+    if [ -f "$HOME/.zshrc" ]; then
+        if ! grep -qF "source ~/.config/my.zshrc" "$HOME/.zshrc"; then
+            printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/my.zshrc ]] && source ~/.config/my.zshrc\n' >> "$HOME/.zshrc"
+            echo "==> Appended source line to ~/.zshrc"
+        fi
     fi
 fi
 
-if [ -f "$HOME/.zshrc" ]; then
-    if ! grep -qF "source ~/.config/my.zshrc" "$HOME/.zshrc"; then
-        printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/my.zshrc ]] && source ~/.config/my.zshrc\n' >> "$HOME/.zshrc"
-        echo "==> Appended 'source ~/.config/my.zshrc' to ~/.zshrc"
-    fi
-fi
-
-echo "==> Done. Restart your shell or run: source ~/.bashrc or source ~/.zshrc"
+echo "==> Done. Run: source ~/.zshrc"

@@ -30,16 +30,22 @@ setopt CORRECT_ALL            # argument typo correction
 setopt NO_BEEP
 
 # ── completion ────────────────────────────────────────────────────────────────
-[ -f ~/.config/zsh/plugins/zsh-autosuggestions.zsh ] && source ~/.config/zsh/plugins/zsh-autosuggestions.zsh
-[ -f ~/.config/zsh/plugins/zsh-syntax-highlighting.zsh ] && source ~/.config/zsh/plugins/zsh-syntax-highlighting.zsh
+source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # ── vi mode ───────────────────────────────────────────────────────────────────
 bindkey -v
-export KEYTIMEOUT=1
+
+function zle-keymap-select {
+    zle reset-prompt
+}
+zle -N zle-keymap-select
+
+export KEYTIMEOUT=15
 
 # ── keybinds ──────────────────────────────────────────────────────────────────
-bindkey '^A' beginning-of-line
-bindkey '^E' end-of-line
+# bindkey '^A' beginning-of-line
+# bindkey '^E' end-of-line
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
