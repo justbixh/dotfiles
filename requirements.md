@@ -13,20 +13,6 @@ On work laptops, can't stow .bashrc or .zshrc directly — existing content must
 local aliases will be stored in .bashrc or .zshrc
 Prefer symlinking or aliasing to handle package name differences across distros.
 
-# to be implemented now
-- .bashrc
-    - see wheather to separate into 3 parts (shell, tools, aliases)
-    - see how to make the my.bashrc that get sourced in bashrc
-    - so in work-dev setup, it doesn't stow onto bashrc but append source my.bashrc there
-
-## Recommendation given (by claude) good to have but gradually implement
-Ask: Review critically — point out gaps, bad practices, and better approaches from all angles.
-
-- create a new mythen append a single source line to the existing .bashrc. the existing bashrc stays untouched. Automate the append in bootstrap with an idempotency guard so it doesn't duplicate on re-runs.
-- Installing CLI tools without pinning versions means the repo breaks silently over time. document expected versions. Better: a .tool-versions file (asdf) or a versions manifest.
-- No idempotency guarantee — Bootstrap should be safe to re-run. Every install step needs a "already installed?" check before acting.
-
-
 # todo
 - download and install a nerd font
 - 

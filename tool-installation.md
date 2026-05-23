@@ -2,7 +2,6 @@
 
 > Run `check.sh` first to see what's missing, then use the commands below.
 
----
 
 ## PATH — do this first
 
@@ -10,8 +9,6 @@
 mkdir -p ~/.local/bin
 export PATH="$HOME/.local/bin:$PATH"   # also add this to ~/.zshrc
 ```
-
----
 
 ## APT packages (Ubuntu / Debian)
 
@@ -41,8 +38,6 @@ sudo apt-get install -y \
 > ln -sf "$(which fdfind)" ~/.local/bin/fd
 > ```
 
----
-
 ## DNF packages (Fedora / RHEL / Rocky)
 
 ```bash
@@ -64,7 +59,7 @@ sudo dnf install -y \
 
 > No naming quirks on Fedora — `bat` and `fd` work as-is.
 
----
+--- 
 
 ## Script-based installs (curl / git)
 
@@ -109,8 +104,6 @@ git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting \
 
 Each block is self-contained — paste the whole block at once.
 
----
-
 ### eza — modern `ls` replacement
 - **Releases:** https://github.com/eza-community/eza/releases
 
@@ -126,8 +119,6 @@ tar -xzf "$tmp/eza.tar.gz" -C "$tmp"
 cp "$tmp/eza" ~/.local/bin/eza
 rm -rf "$tmp"
 ```
-
----
 
 ### delta — better `git diff`
 - **Releases:** https://github.com/dandavison/delta/releases
@@ -145,7 +136,6 @@ find "$tmp" -name delta -type f -exec cp {} ~/.local/bin/delta \;
 rm -rf "$tmp"
 ```
 
----
 
 ### lazygit — terminal UI for git
 - **Releases:** https://github.com/jesseduffield/lazygit/releases
@@ -163,8 +153,6 @@ cp "$tmp/lazygit" ~/.local/bin/lazygit
 rm -rf "$tmp"
 ```
 
----
-
 ### yazi — terminal file manager
 - **Releases:** https://github.com/sxyazi/yazi/releases
 
@@ -181,9 +169,6 @@ find "$tmp" -name yazi -type f -exec cp {} ~/.local/bin/yazi \;
 rm -rf "$tmp"
 ```
 
-
----
-
 ### yq — YAML processor
 - **Releases:** https://github.com/mikefarah/yq/releases
 
@@ -196,8 +181,6 @@ URL=$(curl -fsSL "https://api.github.com/repos/mikefarah/yq/releases/latest" \
 curl -fsSL "$URL" -o ~/.local/bin/yq
 chmod +x ~/.local/bin/yq
 ```
-
----
 
 ### fastfetch — system info
 - **Releases:** https://github.com/fastfetch-cli/fastfetch/releases
@@ -216,7 +199,6 @@ curl -fsSL "$URL" -o /tmp/fastfetch.deb
 sudo dpkg -i /tmp/fastfetch.deb
 ```
 
----
 
 ## Not available via apt / dnf — summary
 
@@ -229,5 +211,5 @@ sudo dpkg -i /tmp/fastfetch.deb
 | yq         | ✘        | ✘        | GitHub release         |
 | starship   | ✘        | ✘        | install script         |
 | zoxide     | ✘        | ✘        | install script         |
-| fastfetch  | PPA only | ✔        | PPA / GitHub release   |
-| fzf        | old ver  | old ver  | git clone recommended  |
+| fastfetch  | ✘        | ✔        | PPA / GitHub release   |
+| fzf        | old ver   | old ver  | git clone recommended  |
