@@ -5,18 +5,18 @@
 
 
 # ── shell integration ─────────────────────────────────────────────────────────
-eval "$(fzf --bash)"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash # needed for git install, not apt
+eval "$(fzf --bash)" # needed for package manager install
 
 # ── base styling (change once, applies everywhere) ──
 _JUST_FZF_STYLE="--info=inline --no-separator --preview-border=dashed --margin=1 --padding=1"
 
 # ── ctrl-t: preview files with bat, dirs with eza ──
 export FZF_CTRL_T_OPTS="--preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200;
-else bat -n --color=always --line-range :500 {}; fi' $_FZF_STYLE"
+else bat -n --color=always --line-range :500 {}; fi' $_JUST_FZF_STYLE"
 
 # ── alt-c: preview dirs with eza ─────────────────────────────────────────────
-export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200' $_FZF_STYLE"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200' $_JUST_FZF_STYLE"
 
 # ── ctrl-r: history preview, ctrl-y to yank ──────────────────────────────────
 export FZF_CTRL_R_OPTS="
@@ -30,10 +30,10 @@ _fzf_comprun() {
     local command=$1
     shift
     case "$command" in
-        cd)           fzf --preview 'eza --tree --color=always {} | head -200' $_FZF_STYLE "$@" ;;
-        export|unset) fzf --preview 'bash -c "echo \${!1}" _ {}'              $_FZF_STYLE "$@" ;;
-        ssh)          fzf --preview 'dig {}'                                   $_FZF_STYLE "$@" ;;
-        *)            fzf --preview "if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi" $_FZF_STYLE "$@" ;;
+        cd)           fzf --preview 'eza --tree --color=always {} | head -200' $_JUST_FZF_STYLE "$@" ;;
+        export|unset) fzf --preview 'bash -c "echo \${!1}" _ {}'              $_JUST_FZF_STYLE "$@" ;;
+        ssh)          fzf --preview 'dig {}'                                   $_JUST_FZF_STYLE "$@" ;;
+        *)            fzf --preview "if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi" $_JUST_FZF_STYLE "$@" ;;
     esac
 }
 
@@ -62,8 +62,8 @@ rgf() {
 }
 
 # ── fzf-git ───────────────────────────────────────────────────────────────────
-[ -f ~/.config/fzf-git/fzf-git.sh ] && source ~/.config/fzf-git/fzf-git.sh  # setup
-export FZF_GIT_FZF_OPTS="$_FZF_STYLE --ansi"  # use default style
+[ -f ~/.config/fzf-git/fzf-git.sh ] && source ~/.config/fzf-git/fzf-git.sh  # setup via github download
+export FZF_GIT_FZF_OPTS="$_JUST_FZF_STYLE --ansi"  # use default style
 
 _fzf_git_fzf() {
     fzf --height 50% --tmux 90%,70% \

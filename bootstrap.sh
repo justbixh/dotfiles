@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-# ── bootstrap.sh ──────────────────────────────────────────────────────────────
+# dotfiles/bootstrap.sh
 # One-shot setup: installs packages then stows dotfiles.
 
-# Usage:
-#   git clone git@github.com:YOU/dotfiles.git ~/.dotfiles
-#   bash ~/.dotfiles/bootstrap.sh [--stow-only | --pkgs-only]
-
+# git clone git@github.com:justbixh/dotfiles.git ~/.dotfiles
+# bash ~/.dotfiles/bootstrap.sh [--stow-only | --pkgs-only]
 # Options:
 #   --stow-only    skip package install, only run stow
 #   --pkgs-only    skip stow, only install packages
@@ -14,6 +12,7 @@
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "$0")" && pwd)"
+[[ -f "$DOTFILES/scripts/detect-os.sh" ]] || { echo "detect-os.sh not found"; exit 1; }
 source "$DOTFILES/scripts/detect-os.sh"
 detect_os
 
@@ -28,7 +27,7 @@ if $DO_PKGS; then
         ubuntu) bash "$DOTFILES/scripts/install-ubuntu.sh" ;;
         rhel)   bash "$DOTFILES/scripts/install-rhel.sh"   ;;
         macos)  bash "$DOTFILES/scripts/install-macos.sh"  ;;
-        *)      echo "No install script for '$DISTRO'. Add scripts/${DISTRO}.sh" && exit 1 ;;
+        *)      echo "No install script for '$DISTRO'. Add scripts/install-${DISTRO}.sh" && exit 1 ;;
     esac
 fi
 
@@ -42,41 +41,27 @@ if $DO_STOW; then
 
     cd "$DOTFILES"
     echo "==> Stowing dotfiles from $DOTFILES → $HOME..."
-    stow --target="$HOME" --ignore="^\.bashrc$" --ignore="^\.zshrc$" --restow bash fzf git tmux starship yazi zsh
-    
-    # Idempotently append to existing bashrc / zshrc instead of replacing them
-    if [ -f ~/.bashrc ]; then
-        if ! grep -q "source ~/.config/my.bashrc" ~/.bashrc; then
-            echo -e "\n# source dotfiles\nsource ~/.config/my.bashrc" >> ~/.bashrc
-            echo "==> Appended source ~/.config/my.bashrc to ~/.bashrc"
-        fi
-    fi
-    if [ -f ~/.zshrc ]; then
-        if ! grep -q "source ~/.config/my.zshrc" ~/.zshrc; then
-            echo -e "\n# source dotfiles\nsource ~/.config/my.zshrc" >> ~/.zshrc
-            echo "==> Appended source ~/.config/my.zshrc to ~/.zshrc"
-        fi
-    fi
-    
-    # Optional packages
-    # stow nvim yazi btop fastfetch
+    # .bashrc and .zshrc live outside the stow tree (see bash/ and zsh/ packages).
+    # Bootstrap appends a source line to the existing rc files below instead.
+    stow --target="$HOME" --restow bash fzf git tmux starship zsh # stow nvim yazi btop fastfetch
+fi
 
-    # Create local overrides file (not tracked)
-    if [ ! -f ~/.config/shell/local ]; then
-        mkdir -p ~/.config/shell
-        cat > ~/.config/shell/local <<'EOF'
-# Machine-local config — not in git.
-# Put here: proxy settings, work tokens, JAVA_HOME, GIT_AUTHOR_EMAIL, etc.
-EOF
-        echo "==> Created ~/.config/shell/local"
+# ── rc file source-line append (idempotent) ───────────────────────────────────
+# .bashrc and .zshrc are NOT stowed — the existing files stay untouched.
+# We just append a single source line once so the dotfile config is picked up.
+
+if [ -f "$HOME/.bashrc" ]; then
+    if ! grep -qF "source ~/.config/my.bashrc" "$HOME/.bashrc"; then
+        printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/my.bashrc ]] && source ~/.config/my.bashrc\n' >> "$HOME/.bashrc"
+        echo "==> Appended 'source ~/.config/my.bashrc' to ~/.bashrc"
     fi
 fi
 
-echo "─────────────────────────────────────────"
-echo "==> Installation Summary:"
-echo "    - Packages: $DO_PKGS"
-echo "    - Stow:     $DO_STOW"
-echo "    - Distro:   $DISTRO"
-echo "==> Done. Restart your shell or run:"
-echo "    source ~/.bashrc (or source ~/.zshrc)"
-echo "─────────────────────────────────────────"
+if [ -f "$HOME/.zshrc" ]; then
+    if ! grep -qF "source ~/.config/my.zshrc" "$HOME/.zshrc"; then
+        printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/my.zshrc ]] && source ~/.config/my.zshrc\n' >> "$HOME/.zshrc"
+        echo "==> Appended 'source ~/.config/my.zshrc' to ~/.zshrc"
+    fi
+fi
+
+echo "==> Done. Restart your shell or run: source ~/.bashrc or source ~/.zshrc"

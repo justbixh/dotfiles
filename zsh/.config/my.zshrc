@@ -17,21 +17,11 @@ export VISUAL=vim
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-SAVEHIST=$HISTSIZE
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt SHARE_HISTORY          # share history across sessions
 setopt APPEND_HISTORY
 setopt HIST_VERIFY            # don't execute expanded history immediately
-
-# ── coloured man pages ────────────────────────────────────────────────────────
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
 
 # ── shell options ─────────────────────────────────────────────────────────────
 setopt AUTO_CD                # bare directory → cd
@@ -40,24 +30,23 @@ setopt CORRECT_ALL            # argument typo correction
 setopt NO_BEEP
 
 # ── completion ────────────────────────────────────────────────────────────────
-autoload -Uz compinit && compinit
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'  # case-insensitive
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+[ -f ~/.config/zsh/plugins/zsh-autosuggestions.zsh ] && source ~/.config/zsh/plugins/zsh-autosuggestions.zsh
+[ -f ~/.config/zsh/plugins/zsh-syntax-highlighting.zsh ] && source ~/.config/zsh/plugins/zsh-syntax-highlighting.zsh
 
 # ── vi mode ───────────────────────────────────────────────────────────────────
 bindkey -v
 export KEYTIMEOUT=1
 
 # ── keybinds ──────────────────────────────────────────────────────────────────
-bindkey '^F' autosuggest-accept 2>/dev/null || true   # Ctrl+F → zoxide jump (same as bash)
-# bindkey '^F' 'zi\n'          # Ctrl+F → zoxide interactive jump (like bash)
-zle -N zi-widget() { zi; zle reset-prompt; } 2>/dev/null
-bindkey '^F' zi-widget 2>/dev/null || true
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+
+# Ctrl+F → zoxide interactive jump
+zi-widget() { zi; zle reset-prompt; }
+zle -N zi-widget
+bindkey '^F' zi-widget
 
 # ── misc ──────────────────────────────────────────────────────────────────────
 alias myzshrc='vim ~/.config/my.zshrc'
@@ -93,6 +82,9 @@ alias gl='git log --graph --decorate -20'
 alias gl1='git log --oneline --graph --decorate -20'
 alias gd='git diff'
 alias gundo='git reset HEAD~1'
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # ── eza ───────────────────────────────────────────────────────────────────────
 alias l='eza -lhg --icons --sort=modified'
@@ -139,4 +131,4 @@ command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # ── local overrides (not in git: tokens, proxy, JAVA_HOME, work email) ────────
-[ -f ~/.config/shell/local ] && source ~/.config/shell/local
+# [ -f ~/.config/shell/local ] && source ~/.config/shell/local

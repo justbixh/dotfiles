@@ -8,7 +8,7 @@ Supports **Ubuntu**, **RHEL/CentOS/Rocky**, and **macOS**.
 Clone the repository and run the bootstrap script:
 
 ```bash
-git clone git@github.com:YOU/dotfiles.git ~/.dotfiles
+git clone git@github.com:justbixh/dotfiles.git ~/.dotfiles
 bash ~/.dotfiles/bootstrap.sh
 ```
 

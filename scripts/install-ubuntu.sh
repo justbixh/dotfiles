@@ -5,137 +5,113 @@ ARCH="$(uname -m)"
 BIN="$HOME/.local/bin"
 mkdir -p "$BIN"
 
-# ── apt: stable tools where version doesn't matter much ──────────────────────
+# ── apt ───────────────────────────────────────────────────────────────────────
 sudo apt-get update -y -q
 
-echo "Installing apt packages..."
+echo "==> Installing apt packages..."
 sudo apt-get install -y -q \
-    git curl wget unzip stow \
-    bat fd-find \
-    ripgrep jq ncdu tmux vim \
-    dnsutils xclip
-# which git curl wget unzip stow bat fd-find ripgrep jq ncdu tmux vim dnsutils xclip
+    git \
+    curl \
+    wget \
+    unzip \
+    stow \
+    btop \
+    bat \
+    fd-find \
+    ripgrep \
+    jq \
+    yq \
+    ncdu \
+    tmux \
+    vim \
+    dnsutils \
+    fastfetch \
+    xclip
 
 # Ubuntu naming quirks → fix with symlinks
 ln -sf "$(which batcat)" "$BIN/bat"
 ln -sf "$(which fdfind)" "$BIN/fd"
 
-# ── GitHub: tools where latest version matters ────────────────────────────────
-# which starship zoxide fzf fzf-git eza git-delta lazygit btop fastfetch yazi yq
-# starship
-echo "Installing starship..."
+# ── gh cli (needed for all GitHub installs below) ────────────────────────────
+if ! command -v gh &>/dev/null; then
+    echo "==> Installing gh..."
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+        | sudo tee /etc/apt/sources.list.d/github-cli.list
+    sudo apt-get update -q && sudo apt-get install -y -q gh
+fi
+
+# ── zsh plugins (curl, not on gh releases) ────────────────────────────────────
+echo "==> Installing zsh plugins..."
+mkdir -p "$HOME/.config/zsh/plugins"
+curl -fsSL https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh \
+    -o "$HOME/.config/zsh/plugins/zsh-autosuggestions.zsh"
+curl -fsSL https://raw.githubusercontent.com/zsh-users/zsh-syntax-highlighting/master/zsh-syntax-highlighting.zsh \
+    -o "$HOME/.config/zsh/plugins/zsh-syntax-highlighting.zsh"
+
+# ── starship (uses its own install script) ────────────────────────────────────
+echo "==> Installing starship..."
 curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
 
-# zoxide
-echo "Installing zoxide..."
+# ── zoxide (uses its own install script) ─────────────────────────────────────
+echo "==> Installing zoxide..."
 curl -fsSL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
 
-# fzf
-echo "Installing fzf (latest)..."
+# ── fzf (git-based, its install script sets up shell integration) ─────────────
+echo "==> Installing fzf..."
 git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf" 2>/dev/null \
     || git -C "$HOME/.fzf" pull --rebase
 "$HOME/.fzf/install" --bin
 ln -sf "$HOME/.fzf/bin/fzf" "$BIN/fzf"
 
-# fzf-git
-echo "Installing fzf-git..."
+# ── fzf-git (single script, no release) ──────────────────────────────────────
+echo "==> Installing fzf-git..."
 mkdir -p "$HOME/.config/fzf-git"
 curl -fsSL https://raw.githubusercontent.com/junegunn/fzf-git.sh/main/fzf-git.sh \
     -o "$HOME/.config/fzf-git/fzf-git.sh"
 
-# eza
-echo "Installing eza..."
+# ── gh release installs ───────────────────────────────────────────────────────
 case "$ARCH" in
-    x86_64)  EZA_GLOB="eza_x86_64-unknown-linux-musl.tar.gz" ;;
-    aarch64) EZA_GLOB="eza_aarch64-unknown-linux-musl.tar.gz" ;;
+    x86_64)  TRIPLE_MUSL="x86_64-unknown-linux-musl"
+              TRIPLE_GNU="x86_64-unknown-linux-gnu" ;;
+    aarch64) TRIPLE_MUSL="aarch64-unknown-linux-musl"
+              TRIPLE_GNU="aarch64-unknown-linux-gnu" ;;
 esac
-EZA_URL=$(curl -fsSL https://api.github.com/repos/eza-community/eza/releases/latest \
-    | grep browser_download_url | grep "$EZA_GLOB" | head -1 | cut -d'"' -f4)
+
 tmp=$(mktemp -d)
-curl -fsSL "$EZA_URL" -o "$tmp/eza.tar.gz"
-tar -xzf "$tmp/eza.tar.gz" -C "$tmp"
+trap 'rm -rf "$tmp"' EXIT
+
+# eza
+echo "==> Installing eza..."
+gh release download --repo eza-community/eza \
+    --pattern "eza_${TRIPLE_MUSL}.tar.gz" --dir "$tmp"
+tar -xzf "$tmp/eza_${TRIPLE_MUSL}.tar.gz" -C "$tmp"
 cp "$tmp/eza" "$BIN/eza"
-rm -rf "$tmp"
 
 # git-delta
-echo "Installing git-delta..."
-case "$ARCH" in
-    x86_64)  DELTA_GLOB="delta-.*-x86_64-unknown-linux-gnu.tar.gz" ;;
-    aarch64) DELTA_GLOB="delta-.*-aarch64-unknown-linux-gnu.tar.gz" ;;
-esac
-DELTA_URL=$(curl -fsSL https://api.github.com/repos/dandavison/delta/releases/latest \
-    | grep browser_download_url | grep -E "$DELTA_GLOB" | head -1 | cut -d'"' -f4)
-tmp=$(mktemp -d)
-curl -fsSL "$DELTA_URL" -o "$tmp/delta.tar.gz"
-tar -xzf "$tmp/delta.tar.gz" -C "$tmp"
+echo "==> Installing git-delta..."
+gh release download --repo dandavison/delta \
+    --pattern "delta-*-${TRIPLE_GNU}.tar.gz" --dir "$tmp"
+tar -xzf "$tmp"/delta-*-"${TRIPLE_GNU}".tar.gz -C "$tmp"
 find "$tmp" -name delta -type f -exec cp {} "$BIN/delta" \;
-rm -rf "$tmp"
 
 # lazygit
-echo "Installing lazygit..."
+echo "==> Installing lazygit..."
 case "$ARCH" in
-    x86_64)  LG_GLOB="lazygit_.*_Linux_x86_64.tar.gz" ;;
-    aarch64) LG_GLOB="lazygit_.*_Linux_arm64.tar.gz" ;;
+    x86_64)  LG_PATTERN="lazygit_*_Linux_x86_64.tar.gz" ;;
+    aarch64) LG_PATTERN="lazygit_*_Linux_arm64.tar.gz" ;;
 esac
-LG_URL=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest \
-    | grep browser_download_url | grep -E "$LG_GLOB" | head -1 | cut -d'"' -f4)
-tmp=$(mktemp -d)
-curl -fsSL "$LG_URL" -o "$tmp/lazygit.tar.gz"
-tar -xzf "$tmp/lazygit.tar.gz" -C "$tmp"
+gh release download --repo jesseduffield/lazygit \
+    --pattern "$LG_PATTERN" --dir "$tmp"
+tar -xzf "$tmp"/$LG_PATTERN -C "$tmp"
 cp "$tmp/lazygit" "$BIN/lazygit"
-rm -rf "$tmp"
-
-# btop
-echo "Installing btop..."
-case "$ARCH" in
-    x86_64)  BTOP_GLOB="btop-x86_64-linux-musl.tbz" ;;
-    aarch64) BTOP_GLOB="btop-aarch64-linux-musl.tbz" ;;
-esac
-BTOP_URL=$(curl -fsSL https://api.github.com/repos/aristocratos/btop/releases/latest \
-    | grep browser_download_url | grep "$BTOP_GLOB" | head -1 | cut -d'"' -f4)
-tmp=$(mktemp -d)
-curl -fsSL "$BTOP_URL" -o "$tmp/btop.tbz"
-tar -xjf "$tmp/btop.tbz" -C "$tmp"
-cp "$tmp/btop/bin/btop" "$BIN/btop"
-rm -rf "$tmp"
-
-# fastfetch
-echo "Installing fastfetch..."
-case "$ARCH" in
-    x86_64)  FF_GLOB="fastfetch-linux-amd64.tar.gz" ;;
-    aarch64) FF_GLOB="fastfetch-linux-aarch64.tar.gz" ;;
-esac
-FF_URL=$(curl -fsSL https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest \
-    | grep browser_download_url | grep "$FF_GLOB" | head -1 | cut -d'"' -f4)
-tmp=$(mktemp -d)
-curl -fsSL "$FF_URL" -o "$tmp/ff.tar.gz"
-tar -xzf "$tmp/ff.tar.gz" -C "$tmp"
-find "$tmp" -name fastfetch -type f -exec cp {} "$BIN/fastfetch" \;
-rm -rf "$tmp"
 
 # yazi
-echo "Installing yazi..."
-case "$ARCH" in
-    x86_64)  YZ_GLOB="yazi-x86_64-unknown-linux-gnu.tar.gz" ;;
-    aarch64) YZ_GLOB="yazi-aarch64-unknown-linux-gnu.tar.gz" ;;
-esac
-YZ_URL=$(curl -fsSL https://api.github.com/repos/sxyazi/yazi/releases/latest \
-    | grep browser_download_url | grep "$YZ_GLOB" | grep -v sha | head -1 | cut -d'"' -f4)
-tmp=$(mktemp -d)
-curl -fsSL "$YZ_URL" -o "$tmp/yazi.tar.gz"
-tar -xzf "$tmp/yazi.tar.gz" -C "$tmp"
+echo "==> Installing yazi..."
+gh release download --repo sxyazi/yazi \
+    --pattern "yazi-${TRIPLE_GNU}.tar.gz" --dir "$tmp"
+tar -xzf "$tmp/yazi-${TRIPLE_GNU}.tar.gz" -C "$tmp"
 find "$tmp" -name yazi -type f -exec cp {} "$BIN/yazi" \;
-rm -rf "$tmp"
 
-# yq
-echo "Installing yq..."
-case "$ARCH" in
-    x86_64)  YQ_BIN="yq_linux_amd64" ;;
-    aarch64) YQ_BIN="yq_linux_arm64" ;;
-esac
-YQ_URL=$(curl -fsSL https://api.github.com/repos/mikefarah/yq/releases/latest \
-    | grep browser_download_url | grep "/${YQ_BIN}\"" | head -1 | cut -d'"' -f4)
-curl -fsSL "$YQ_URL" -o "$BIN/yq"
-chmod +x "$BIN/yq"
-
-echo "Ubuntu install complete."
+echo "==> Ubuntu install complete."

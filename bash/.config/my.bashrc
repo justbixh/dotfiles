@@ -119,4 +119,4 @@ command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
 command -v starship &>/dev/null && eval "$(starship init bash)"
 
 # ── local overrides (not in git: tokens, proxy, JAVA_HOME, work email) ────────
-[ -f ~/.config/shell/local ] && source ~/.config/shell/local
+# [ -f ~/.config/shell/local ] && source ~/.config/shell/local
