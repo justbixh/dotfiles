@@ -234,3 +234,8 @@ rm -rf ~/.config/nvim/.git
 ```bash
 nvim
 ```
+
+required by *nvim-treesitter*
+```bash
+:checkhealth nvim-treesitter
+```
