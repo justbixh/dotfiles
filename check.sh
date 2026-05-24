@@ -22,7 +22,7 @@ has_cmd() { command -v "$1" &>/dev/null; }
 # ── APT packages ──────────────────────────────────────────────────────────────
 section "APT packages"
 
-for cmd in git curl stow tmux btop jq ncdu vim xclip; do
+for cmd in git curl stow tmux btop jq ncdu vim xclip nvim; do
     if has_cmd "$cmd"; then ok "$cmd"; else missing "$cmd"; fi
 done
 

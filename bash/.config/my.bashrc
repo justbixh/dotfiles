@@ -74,7 +74,7 @@ alias gundo='git reset HEAD~1'
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # ── eza ───────────────────────────────────────────────────────────────────────
-alias l='eza -lhg --icons --sort=modified'
+alias l='eza -lg --icons --sort=modified'
 alias ll='eza -lhg --icons --sort=modified --color=always | tail -n 30'
 alias la='eza -lhga --icons --sort=modified'
 alias lp='eza -lhg --icons --sort=modified --absolute=on'
