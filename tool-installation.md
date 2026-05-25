@@ -239,3 +239,21 @@ required by *nvim-treesitter*
 ```bash
 :checkhealth nvim-treesitter
 ```
+
+### Atuin Setup
+```bash
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+```
+
+```bash
+echo 'eval "$(atuin init bash)"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+```bash
+# atuin (full config auto generates and looks like this)
+. "$HOME/.atuin/bin/env"
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
+```
+

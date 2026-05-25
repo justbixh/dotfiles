@@ -82,3 +82,6 @@ _fzf_git_fzf() {
         --preview-window 'right,50%' --preview-border line \
         --bind 'ctrl-/:change-preview-window(down,50%|hidden|)' "$@"
 }
+
+# unbinds C-r keybinding and let atuin be the history searcher
+bind -r '"\C-r"'
