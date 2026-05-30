@@ -85,12 +85,24 @@ _fzf_git_fzf() {
 
 # ── key bindings ──────────────────────────────────────────────────────────────
 # Ctrl+O — fzf file picker (hidden files excluded)
-_fzf_file_no_hidden() {
-  local result
-  result=$(fd --type f --strip-cwd-prefix --exclude .git 2>/dev/null | fzf)
-  [[ -n "$result" ]] && LBUFFER+="$result"
-  zle reset-prompt
-}
+if [ -n "$ZSH_VERSION" ]; then
+  _fzf_file_no_hidden() {
+    local result
+    result=$(fd --type f --strip-cwd-prefix --exclude .git 2>/dev/null | fzf)
+    [[ -n "$result" ]] && LBUFFER+="$result"
+    zle reset-prompt
+  }
+  
+elif [ -n "$BASH_VERSION" ]; then
+  _fzf_file_no_hidden() {
+    local result
+    result=$(fd --type f --strip-cwd-prefix --exclude .git 2>/dev/null | fzf)
+    if [[ -n "$result" ]]; then
+      READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}${result}${READLINE_LINE:$READLINE_POINT}"
+      READLINE_POINT=$(( READLINE_POINT + ${#result} ))
+    fi
+  }
+fi
 
 
 if [ -n "$ZSH_VERSION" ]; then
