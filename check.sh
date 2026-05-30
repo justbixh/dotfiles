@@ -36,7 +36,7 @@ if has_cmd dig;                   then ok "dnsutils (dig)"; else missing "dnsuti
 # ── GitHub / script installs ──────────────────────────────────────────────────
 section "GitHub / script installs"
 
-for cmd in fzf eza delta lazygit yazi starship zoxide gh fastfetch; do
+for cmd in fzf eza delta lazygit yazi starship zoxide gh fastfetch atuin; do
     if has_cmd "$cmd"; then ok "$cmd"; else missing "$cmd"; fi
 done
 

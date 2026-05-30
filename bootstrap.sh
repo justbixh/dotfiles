@@ -17,14 +17,14 @@ $DRY && STOW_FLAGS="--simulate"
 
 # ── guard ─────────────────────────────────────────────────────────────────────
 if ! command -v stow &>/dev/null; then
-    echo "stow not found. Install it first: sudo apt install stow"
+    echo "stow not found. Install it first: sudo apt[dnf][brew] install stow"
     exit 1
 fi
 
 # ── stow packages ─────────────────────────────────────────────────────────────
 cd "$DOTFILES"
 echo "==> Stowing dotfiles → $HOME..."
-stow $STOW_FLAGS bash fzf git tmux starship zsh yazi
+stow $STOW_FLAGS bash zsh nvim tmux git fzf starship wezterm yazi
 
 # ── rc source-line append (idempotent) ────────────────────────────────────────
 if ! $DRY; then
@@ -43,4 +43,4 @@ if ! $DRY; then
     fi
 fi
 
-echo "==> Done. Run: source ~/.zshrc"
+echo "==> Done. Run: source ~/.bashrc or ~/.zshrc"
