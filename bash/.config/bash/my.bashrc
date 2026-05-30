@@ -1,5 +1,5 @@
-# ~/.config/my.bashrc
-# ── sourced from ~/.bashrc via: source ~/.config/my.bashrc ───────────────
+# ~/.config/bash/my.bashrc
+# ── sourced from ~/.bashrc via: source ~/.config/bash/my.bashrc ───────────────
 
 # ── PATH — local bin first (our symlinks live here) ───────────────────────────
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
@@ -14,7 +14,9 @@ export HISTFILESIZE=10000
 export HISTSIZE=10000
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 export HISTTIMEFORMAT="%F %T "   # timestamp in history
-PROMPT_COMMAND='history -a'      # save history after every command
+# every command is flushed to disk right away, so other shells (or a crash recovery) can see it.
+# atuin writes to its own SQLite db via bash-preexec on every command so this is not strictly necessary
+[[ "$PROMPT_COMMAND" != *"history -a"* ]] && PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
 # ── options ───────────────────────────────────────────────────────────────────
 shopt -s checkwinsize     # recheck terminal width after each command
@@ -29,9 +31,6 @@ bind "set show-all-if-ambiguous On"    # single Tab shows all matches
 # ── keybinds ──────────────────────────────────────────────────────────────────
 bind '"\C-f":"zi\n"'                    # Ctrl+F → zoxide interactive jump
 # bind "set enable-bracketed-paste On"  # uncomment if paste issues arise
-
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # ── safety nets ───────────────────────────────────────────────────────────────
 alias rm='rm -i'
@@ -56,8 +55,8 @@ alias ....='cd ../../..'
 alias countfiles='for t in files links directories; do echo $(find . -type ${t:0:1} | wc -l) $t; done'
 
 # ── misc ──────────────────────────────────────────────────────────────────────
-alias mybashrc='vim ~/.config/my.bashrc'
 alias bashrc='vim ~/.bashrc'
+alias mybash='vim ~/.config/bash/my.bashrc'
 alias reload='source ~/.bashrc'
 
 # ── git ───────────────────────────────────────────────────────────────────────
@@ -70,16 +69,15 @@ alias gl1='git log --oneline --graph --decorate -20'
 alias gd='git diff'
 alias gundo='git reset HEAD~1'
 
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 # ── eza ───────────────────────────────────────────────────────────────────────
-alias l='eza -lg --icons --sort=modified'
-alias ll='eza -lhg --icons --sort=modified --color=always | tail -n 30'
-alias la='eza -lhga --icons --sort=modified'
+alias l='eza -lh --icons --sort=modified'
+alias sl='eza -lh --icons --sort=modified --color=always | tail -n 30'
+alias la='eza -lha --icons --sort=modified'
+alias lag='eza -lhag --icons --sort=modified'
 alias lp='eza -lhg --icons --sort=modified --absolute=on'
-alias lS='eza -lhga --icons --sort=size --reverse'
+alias lS='eza -lha --icons --sort=size --reverse'
 alias ltree='eza --tree --icons'
+alias ltree1='eza --tree --icons --level=1'
 alias ltree2='eza --tree --icons --level=2'
 alias ldate='eza -lhg --icons --time-style="+%d %b %Y %H:%M" --sort=modified'
 alias lf='eza -lhg --icons --sort=modified --only-files'
@@ -103,19 +101,32 @@ alias lg='lazygit'
 
 # ── yazi: cd on quit ──────────────────────────────────────────────────────────
 ya() {
-    local tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+    local tmp
+    tmp="$(mktemp -t yazi-cwd.XXXXXX)"
     yazi "$@" --cwd-file="$tmp"
-    cd "$(cat "$tmp")" 2>/dev/null
+    if [ -s "$tmp" ]; then cd "$(cat "$tmp")" || true; fi
     rm -f "$tmp"
 }
-
-# ── fzf ───────────────────────────────────────────────────────────────────────
-[ -f ~/.config/fzf.sh ] && source ~/.config/fzf.sh
 
 # ── zoxide ────────────────────────────────────────────────────────────────────
 command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
 
-# ── starship ──────────────────────────────────────────────────────────────────
+# ── zoxide interactive jump (zi) ─────────────────────────────────
+_zi_widget() {
+    zi
+    PS1="$PS1"   # force prompt redraw
+}
+bind -x '"\C-f": _zi_widget'
+
+# ── sub configs ───────────────────────────────────────────────────────────────
+[ -f ~/.config/fzf/fzf.sh ] && source ~/.config/fzf/fzf.sh
+
+# ── atuin ─────────────────────────────────────────────────────────────────────
+. "$HOME/.atuin/bin/env"
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
+
+# ── starship - Starship needs to be the last thing touching the prompt ────────
 command -v starship &>/dev/null && eval "$(starship init bash)"
 
 # ── local overrides (not in git: tokens, proxy, JAVA_HOME, work email) ────────

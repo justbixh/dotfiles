@@ -1,4 +1,4 @@
-# ── ~/.config/fzf.sh ─────────────────────────────────────────────────
+# ── ~/.config/fzf/fzf.sh ─────────────────────────────────────────────────
 # Sourced from both .bashrc and .zshrc
 # Stow package: fzf/
 # Requires fd, rg, bat, and eza to be installed for the previews to work.

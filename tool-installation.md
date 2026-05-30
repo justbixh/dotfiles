@@ -87,17 +87,6 @@ curl -fsSL https://raw.githubusercontent.com/junegunn/fzf-git.sh/main/fzf-git.sh
     -o ~/.config/fzf-git/fzf-git.sh
 ```
 
-### zsh-autosuggestions + zsh-syntax-highlighting
-```bash
-mkdir -p ~/.config/zsh/plugins
-
-git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions \
-    ~/.config/zsh/plugins/zsh-autosuggestions
-
-git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting \
-    ~/.config/zsh/plugins/zsh-syntax-highlighting
-```
-
 ---
 
 ## GitHub Release installs

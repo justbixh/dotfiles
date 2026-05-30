@@ -1,6 +1,6 @@
 [user]
     # Set in ~/.config/shell/local or per-repo with: git config user.email "you@work.com"
-    name  = bish.personal
+    name  = bish-personal
     email = work.bishnu@gmail.com
 
 [core]

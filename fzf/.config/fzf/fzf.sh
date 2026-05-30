@@ -1,6 +1,6 @@
-# ── ~/.config/fzf.sh ─────────────────────────────────────────────────────────
-# Sourced from both .bashrc and .zshrc
-# Stow package: fzf/
+# ── Fuzzy Finder integration - Sourced from both .bashrc and .zshrc ─────────────────────────────────────────────────────────
+# ~/.config/fzf/fzf.sh
+# Stow package: fzf
 # Requires fd, rg, bat, and eza to be installed for the previews to work.
 
 # ── shell integration ─────────────────────────────────────────────────────────
@@ -83,5 +83,22 @@ _fzf_git_fzf() {
         --bind 'ctrl-/:change-preview-window(down,50%|hidden|)' "$@"
 }
 
-# unbinds C-r keybinding and let atuin be the history searcher
-bind -r '"\C-r"'
+# ── key bindings ──────────────────────────────────────────────────────────────
+# Ctrl+O — fzf file picker (hidden files excluded)
+_fzf_file_no_hidden() {
+  local result
+  result=$(fd --type f --strip-cwd-prefix --exclude .git 2>/dev/null | fzf)
+  [[ -n "$result" ]] && LBUFFER+="$result"
+  zle reset-prompt
+}
+
+
+if [ -n "$ZSH_VERSION" ]; then
+  zle -N _fzf_file_no_hidden
+  bindkey '^O' _fzf_file_no_hidden # Ctrl+O for fzf file picker (hidden files excluded)
+elif [ -n "$BASH_VERSION" ]; then 
+  bind -r '"\C-r"' # unbind Ctrl+R so atuin can take over history search
+  bind -x '"\C-o": _fzf_file_no_hidden' # Ctrl+O for fzf file picker (hidden files excluded)
+fi
+
+

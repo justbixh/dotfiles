@@ -29,15 +29,15 @@ stow $STOW_FLAGS bash fzf git tmux starship zsh yazi
 # ── rc source-line append (idempotent) ────────────────────────────────────────
 if ! $DRY; then
     if [ -f "$HOME/.bashrc" ]; then
-        if ! grep -qF "source ~/.config/my.bashrc" "$HOME/.bashrc"; then
-            printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/my.bashrc ]] && source ~/.config/my.bashrc\n' >> "$HOME/.bashrc"
+        if ! grep -qF "source ~/.config/bash/my.bashrc" "$HOME/.bashrc"; then
+            printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/bash/my.bashrc ]] && source ~/.config/bash/my.bashrc\n' >> "$HOME/.bashrc"
             echo "==> Appended source line to ~/.bashrc"
         fi
     fi
 
     if [ -f "$HOME/.zshrc" ]; then
-        if ! grep -qF "source ~/.config/my.zshrc" "$HOME/.zshrc"; then
-            printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/my.zshrc ]] && source ~/.config/my.zshrc\n' >> "$HOME/.zshrc"
+        if ! grep -qF "source ~/.config/zsh/my.zshrc" "$HOME/.zshrc"; then
+            printf '\n# dotfiles\n[[ $- == *i* && -f ~/.config/zsh/my.zshrc ]] && source ~/.config/zsh/my.zshrc\n' >> "$HOME/.zshrc"
             echo "==> Appended source line to ~/.zshrc"
         fi
     fi
