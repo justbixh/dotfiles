@@ -9,7 +9,7 @@
     ╚═════╝  ╚═════╝    ╚═╝   ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝
 ```
 
-**Clone. Stow. Ship.**
+**Clone. Stow. Work.**
 
 *Your terminal. Every machine. Zero compromise.*
 
