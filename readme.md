@@ -122,16 +122,29 @@ Full reference: [`stowing.md`](./stowing.md)
 
 ---
 
-## What Gets Installed
+## CLI tools pick
 
 | Tool | Purpose |
 |---|---|
-| **Neovim** (LazyVim) | Editor |
-| **tmux** | Terminal multiplexer |
+| **zsh** | modern bash |
 | **starship** | Prompt |
 | **fzf** | Fuzzy finder |
-| **wezterm** | Terminal emulator |
+| **fzf-git** | Git Fuzzy finder |
+| **lazygit** | git tui |
+| **atuin** | History manager |
 | **yazi** | File manager |
+| **Neovim** (LazyVim) | Editor |
+| **tmux** | Terminal multiplexer |
+| **wezterm** | Terminal emulator |
+| **bat** | better cat |
+| **eza** | better ls |
+| **btop** | better top |
+| **fd** | better find |
+| **rg** | better grep |
+| **zoxide** | a smarter cd |
+| **procs** | tabular ps |
+| **ncdu** | disk usage analyzer |
+| **duf** | nicer du df |
 | **Nerd Font** | Glyph support for everything above |
 
 ---
