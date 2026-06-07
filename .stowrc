@@ -1,12 +1,11 @@
 # ~/.dotfiles/.stowrc
 
---target=/home/bixh
+#--target=/home/bixh
 --verbose=1
 --ignore=scripts
 --ignore=bootstrap.sh
---ignore=INSTALL.md
---ignore=STOW.md
+--ignore=stowing.md
 --ignore=requirements.md
---ignore=README.md
+--ignore=readme.md
 --ignore=\.aws
 --ignore=\.azure
