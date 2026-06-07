@@ -12,19 +12,20 @@ export VISUAL=nvim
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY          # share history across sessions
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
+setopt APPEND_HISTORY         # Append new history lines to the history file immediately, rather than waiting for the shell to exit
+setopt SHARE_HISTORY          # Share history across all open terminal sessions in real-time
+setopt HIST_IGNORE_ALL_DUPS   # If a new command duplicates an older one, remove the older one from history completely
+setopt HIST_IGNORE_DUPS       # Don't save a command to the history file if it matches the previous one
+setopt HIST_IGNORE_SPACE      # Do not record lines in the history that begin with a space character
 setopt HIST_VERIFY            # don't execute expanded history immediately
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_FIND_NO_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST # If the history file fills up, oldest duplicate commands are deleted first
+setopt HIST_FIND_NO_DUPS      # Do not display a line in history searches if it has already been encountered
 
 # ── shell options ─────────────────────────────────────────────────────────────
-setopt AUTO_CD                # bare directory → cd
-setopt NO_BEEP
-setopt CORRECT                # command typo correction
-setopt CORRECT_ALL            # argument typo correction
+setopt AUTO_CD                # Automatically 'cd' into a directory if you type just the directory name
+setopt NO_BEEP                # Disable annoying audio beeps/bell sounds on errors or tab-completion failures
+setopt CORRECT                # command name typo correction
+setopt CORRECT_ALL            # arguments/filenames in a command
 setopt NUMERIC_GLOB_SORT      # sort file10 after file9, not after file1
 
 # ── completion ────────────────────────────────────────────────────────────────
@@ -45,6 +46,7 @@ alias reload='exec zsh -l'
 
 # ── safety nets ───────────────────────────────────────────────────────────────
 alias rm='rm -i'
+# alias rm=trash
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -pv'
@@ -54,6 +56,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias countfiles='for t in files links directories; do echo $(find . -type ${t:0:1} | wc -l) $t; done'
+function take { mkdir -p $1 cd $1 }
 
 # ── disk / network ────────────────────────────────────────────────────────────
 alias df='df -h'
@@ -65,11 +68,12 @@ alias listening='ss -tulanp | grep LISTEN'
 
 # ── git ───────────────────────────────────────────────────────────────────────
 alias gs='git status'
-alias ga='git add .'
-alias gc='git commit -m'
+alias ga='git add'
+alias gcm='git commit -m'
 alias gp='git push'
 alias gl='git log --graph --decorate -20'
 alias gl1='git log --oneline --graph --decorate -20'
+alias gld="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
 alias gd='git diff'
 alias gundo='git reset HEAD~1'
 

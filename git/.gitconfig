@@ -44,3 +44,5 @@
     undo = reset --soft HEAD~1
     # Show stashes with dates
     stashes = stash list --format="%gd %cd %s" --date=short
+[credential]
+	helper = store
