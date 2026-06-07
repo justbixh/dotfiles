@@ -33,7 +33,8 @@ bind '"\C-f":"zi\n"'                    # Ctrl+F → zoxide interactive jump
 # bind "set enable-bracketed-paste On"  # uncomment if paste issues arise
 
 # ── safety nets ───────────────────────────────────────────────────────────────
-alias rm='rm -i'
+# alias rm='rm -i'
+# alias rm=trash
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -pv'
@@ -53,6 +54,9 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias countfiles='for t in files links directories; do echo $(find . -type ${t:0:1} | wc -l) $t; done'
+take() {
+    mkdir -p "$1" && cd "$1"
+}
 
 # ── misc ──────────────────────────────────────────────────────────────────────
 alias bashrc='vim ~/.bashrc'
@@ -64,9 +68,10 @@ alias gs='git status'
 alias ga='git add .'
 alias gc='git commit -m'
 alias gp='git push'
-alias gl='git log --graph --decorate -20'
-alias gl1='git log --oneline --graph --decorate -20'
 alias gd='git diff'
+alias gl='git log --graph --decorate -20'
+alias glo='git log --oneline --graph --decorate -20'
+alias gld="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
 alias gundo='git reset HEAD~1'
 
 # ── eza ───────────────────────────────────────────────────────────────────────
