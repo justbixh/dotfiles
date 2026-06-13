@@ -69,14 +69,17 @@ alias listening='ss -tulanp | grep LISTEN'
 # ── git ───────────────────────────────────────────────────────────────────────
 alias gs='git status'
 alias ga='git add'
+alias gaa='git add .'
 alias gcm='git commit -m'
+alias gcam='git commit --amend -m'      # --amend always targets HEAD
 alias gp='git push'
 alias gl='git log --graph --decorate -20'
 alias glo='git log --oneline --graph --decorate -20'
-alias gld="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
+alias gss='git show --stat --graph --decorate -20'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gundo='git reset HEAD~1'
+# git restore --staged FILENAME
 
 # ── eza ───────────────────────────────────────────────────────────────────────
 alias l='eza -l --icons --sort=modified'
