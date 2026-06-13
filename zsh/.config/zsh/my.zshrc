@@ -75,6 +75,7 @@ alias gl='git log --graph --decorate -20'
 alias glo='git log --oneline --graph --decorate -20'
 alias gld="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
 alias gd='git diff'
+alias gds='git diff --staged'
 alias gundo='git reset HEAD~1'
 
 # ── eza ───────────────────────────────────────────────────────────────────────
@@ -85,11 +86,9 @@ alias lag='eza -lhag --icons --sort=modified'
 alias lp='eza -lhg --icons --sort=modified --absolute=on'
 alias lS='eza -lha --icons --sort=size --reverse'
 alias ldate='eza -lhg --icons --time-style="+%d %b %Y %H:%M" --sort=modified'
-alias ltreep='eza --tree --git-ignore --ignore-glob=".git"'
 alias ltree='eza --tree --icons --git-ignore --ignore-glob=".git"'
-alias ltree1='eza --tree --icons --git-ignore --ignore-glob=".git" --level=1'
-alias ltree2='eza --tree --icons --git-ignore --ignore-glob=".git" --level=2'
-alias ltree3='eza --tree --icons --git-ignore --ignore-glob=".git" --level=3'
+ltreel() { eza --tree --icons --git-ignore --ignore-glob=".git" --level="$1"; }
+ltreep() { eza --tree --git-ignore --ignore-glob=".git" --level="$1"; }
 alias lf='eza -lhg --icons --sort=modified --only-files'
 alias ld='eza -lhgD --icons --sort=modified'
 
