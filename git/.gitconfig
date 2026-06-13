@@ -1,9 +1,5 @@
-[user]
-    # Set via: git config user.email "you@example.com"
-    # Or in ~/.config/shell/local
-    name  = YOUR_NAME
-    email = YOUR_EMAIL
-
+# ~/dotfiles/git/.gitconfig — stowed to ~/.gitconfig
+# per-machine identity lives in ~/.gitconfig.local (not tracked)
 [core]
     pager  = delta
     editor = vim
@@ -44,5 +40,6 @@
     undo = reset --soft HEAD~1
     # Show stashes with dates
     stashes = stash list --format="%gd %cd %s" --date=short
-[credential]
-	helper = store
+
+[include]
+path = ~/.gitconfig.local
