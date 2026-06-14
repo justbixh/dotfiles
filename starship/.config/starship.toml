@@ -1,7 +1,7 @@
 # ~/.config/starship.toml
 
 add_newline = false
-
+scan_timeout = 5000
 # ── Prompt layout ────────────────────────────────────────────────
 format = """
 $username$directory$git_branch$git_status$package$battery$memory_usage$cmd_duration$status
