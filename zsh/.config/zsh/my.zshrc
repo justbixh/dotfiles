@@ -29,15 +29,13 @@ setopt CORRECT_ALL            # Suggest corrections for arguments and filenames 
 setopt NUMERIC_GLOB_SORT      # Sort file10 after file9, not after file1
 
 # ── completion ────────────────────────────────────────────────────
-# source ~/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source ~/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# plugins.zsh already handles plugin sourcing --- IGNORE ---
+# zstyle settings are read when compinit runs (inside plugins.zsh below)
+# Set them here first so they're ready when compinit scans $fpath
 
-# navigable menu where while completions you can move through options with arrow keys and select with Enter.
-# zstyle ':completion:*' menu select
-
-# Example: "doc" can complete to "Documents"
-# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'  # lowercase input matches upper and lower
+zstyle ':completion:*' menu select                        # Arrow-key navigable menu — Tab opens, arrows move, Enter selects
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"   # Color files and dirs in the menu using $LS_COLORS (same as ls)
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'    # Case-insensitive: "doc" matches "Documents"
+zstyle ':completion:*' descriptions format '[%d]'         # Group label above each section e.g. [commands] [options]
 
 # ── misc ──────────────────────────────────────────────────────────
 alias zshrc='nvim ~/.zshrc'
@@ -130,8 +128,15 @@ eval "$(atuin init zsh)"
 
 # ── sub configs ───────────────────────────────────────────────────
 source ~/.config/fzf/fzf.sh
-source ~/.config/zsh/plugins.zsh
+source ~/.config/zsh/plugins.zsh  
 source ~/.config/zsh/bindings.zsh
 
-# ── local overrides (not in git: tokens, proxy, JAVA_HOME, work email) ────────
+# ── tool completions ──────────────────────────────────────────────
+# Not from zsh-completions — each tool generates its own script from its binary at runtime
+# source <(...) calls compdef internally — needs compinit already run (inside plugins.zsh) - must come after plugins.zsh
+command -v kubectl       &>/dev/null && source <(kubectl completion zsh)   # kubectl get <Tab>, kubectl --<Tab>
+command -v docker        &>/dev/null && source <(docker completion zsh)    # docker run <Tab>, docker ps <Tab>
+command -v aws_completer &>/dev/null && complete -C aws_completer aws      # aws s3 <Tab>, aws ec2 <Tab>
+
+# ── local overrides (not in git: tokens, proxy, JAVA_HOME, work email) ───
 # [ -f ~/.config/shell/local ] && source ~/.config/shell/local

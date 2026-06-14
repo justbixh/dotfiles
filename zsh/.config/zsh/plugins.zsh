@@ -22,7 +22,7 @@ zplugin-update() {
   done
 }
 
-# ── zsh-autosuggestions key features ─────────────────────────────
+# ── zsh-autosuggestions ───────────────────────────────────────────
 #
 # Ghost text         — shows suggestion from history as you type (grayed out)
 # Accept full        — Right arrow or Ctrl+E to accept full suggestion
@@ -32,7 +32,7 @@ zplugin-update() {
 # Async              — suggestions fetched without blocking input
 _zplugin_load zsh-users zsh-autosuggestions
 
-# ── zsh-history-substring-search key features ────────────────────
+# ── zsh-history-substring-search ─────────────────────────────────
 #
 # Prefix search      — Up/Down searches history by what you've already typed
 # Fuzzy-ish          — finds the substring anywhere in the command
@@ -41,21 +41,37 @@ _zplugin_load zsh-users zsh-autosuggestions
 # Works with vi mode — bind to ^[[A/^[[B inside zvm_after_init
 _zplugin_load zsh-users zsh-history-substring-search
 
-# ── zsh-vi-mode key features ─────────────────────────────────────
+# ── zsh-completions ───────────────────────────────────────────────
 #
-# Cursor shape       — beam in insert, block in normal/visual (configurable)
-# Mode switching     — Esc to normal, i/a/I/A to insert, v visual
-# Text objects       — ciw, di", ca(, ya{ etc. work properly
-# Surround           — ys, cs, ds to add/change/delete surrounding chars
-# Better undo        — per-line undo history (bash-like behavior)
-# zvm_after_init     — hook to re-register bindings after plugin init wipes them
-# vi operators       — d, c, y, p, >, < all work with motions
+# Extra scripts      — ~150 community _command scripts not bundled with Zsh
+# Covers             — docker, kubectl, aws, cargo, git-extras, and more
+# fpath only         — just adds its folder to $fpath; compinit below activates them
+# Must come before   — compinit (so its scripts are in $fpath when compinit scans)
+_zplugin_load zsh-users zsh-completions
+
+# ── compinit ──────────────────────────────────────────────────────
+#
+# Scans $fpath       — finds all _command completion scripts registered above
+# Wires them up      — makes docker/kubectl/aws <Tab> actually work
+# Must come after    — zsh-completions (needs its folder in $fpath first)
+# Must come before   — zsh-vi-mode and zsh-syntax-highlighting
+autoload -Uz compinit && compinit
+
+# ── zsh-vi-mode ───────────────────────────────────────────────────
+#
+# Cursor shape        — beam in insert, block in normal/visual (configurable)
+# Mode switching      — Esc to normal, i/a/I/A to insert, v for visual
+# Text objects        — ciw, di", ca(, ya{ etc. work properly
+# Surround            — ys, cs, ds to add/change/delete surrounding chars
+# Better undo         — per-line undo history (bash-like behavior)
+# zvm_after_init      — hook to re-register bindings after plugin init wipes them
+# vi operators        — d, c, y, p, >, < all work with motions
 # Increment/decrement — Ctrl+a / Ctrl+x on numbers in normal mode
-# String motions     — W, B, E for WORD (whitespace-delimited) movement
-# Insert mode paste  — Ctrl+r in insert mode to paste from register
+# String motions      — W, B, E for WORD (whitespace-delimited) movement
+# Insert mode paste   — Ctrl+r in insert mode to paste from register
 _zplugin_load jeffreytse zsh-vi-mode
 
-# ── zsh-syntax-highlighting key features ─────────────────────────
+# ── zsh-syntax-highlighting ───────────────────────────────────────
 #
 # Command highlight  — valid commands green, unknown/typos red
 # Path highlight     — existing paths underlined, missing paths not
@@ -65,7 +81,7 @@ _zplugin_load jeffreytse zsh-vi-mode
 # Must load last     — wraps ZLE widgets; loading before others breaks them
 _zplugin_load zsh-users zsh-syntax-highlighting # always last
 
-# ── fast-syntax-highlighting key features ────────────────────────
+# ── fast-syntax-highlighting ──────────────────────────────────────
 #
 # Everything in zsh-syntax-highlighting, plus:
 # Themes             — built-in themes via `fast-theme`, unlike zsh-syntax-highlighting
