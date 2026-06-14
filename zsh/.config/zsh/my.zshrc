@@ -71,8 +71,9 @@ alias gaa='git add .'
 alias gcm='git commit -m'
 alias gcam='git commit --amend -m'      # --amend always targets HEAD
 alias gp='git push'
-alias gl='git log --graph --decorate -20'
-alias glo='git log --oneline --graph --decorate -20'
+alias gl='git log --graph --decorate'
+alias glo='git log --oneline --graph --decorate'
+alias glot="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
 alias gss='git show --stat --graph --decorate -20'
 alias gd='git diff -w'
 alias gds='git diff --staged -w'
