@@ -3,7 +3,7 @@ local wezterm = require("wezterm")
 return {
 
 	-- ── startup ────────────────────────────────────────────────────────────
-	default_prog = { "wsl.exe", "--distribution", "Ubuntu" },
+	default_prog = { "wsl.exe", "--distribution", "Ubuntu-24.04" },
 	initial_cols = 105,
 	initial_rows = 30,
 
@@ -20,16 +20,16 @@ return {
 			source = { Color = "#191d1f" },
 			width = "100%",
 			height = "100%",
-			opacity = 0.3, -- 0.55
+			opacity = 1.0, -- 0.55
 		},
 	},
 
 	-- window_padding = { left = 3, right = 3, top = 0, bottom = 0 },
 
 	-- ── appearance ─────────────────────────────────────────────────────────
-	color_scheme = "Catppuccin Frape", -- "Batman" "Nord (Gogh)"
-	-- font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" }),
-	font_size = 12.5,
+	color_scheme = "Catppuccin Frappe", -- "Batman" "Nord (Gogh)"
+	-- font = wezterm.font("Meslo Nerd Font Mono", { weight = "Regular" }),
+	font_size = 11.5,
 	enable_tab_bar = false,
 	default_cursor_style = "BlinkingBar",
 
