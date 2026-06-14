@@ -1,10 +1,4 @@
 local wezterm = require("wezterm")
-local mux = wezterm.mux
-
-wezterm.on("gui-startup", function()
-	local tab, pane, window = mux.spawn_window({})
-	window:gui_window():center()
-end)
 
 return {
 
@@ -34,7 +28,7 @@ return {
 
 	-- ── appearance ─────────────────────────────────────────────────────────
 	color_scheme = "Catppuccin Frape", -- "Batman" "Nord (Gogh)"
-	font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" }),
+	-- font = wezterm.font("FiraCode Nerd Font Mono", { weight = "Regular" }),
 	font_size = 12.5,
 	enable_tab_bar = false,
 	default_cursor_style = "BlinkingBar",
