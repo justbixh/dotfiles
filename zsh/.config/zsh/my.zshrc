@@ -25,7 +25,7 @@ setopt HIST_FIND_NO_DUPS      # Don't show duplicates when searching history
 setopt AUTO_CD                # Type a directory name alone to cd into it
 setopt NO_BEEP                # Disable audio beeps on errors or tab-completion failures
 setopt CORRECT                # Suggest corrections for mistyped command names
-setopt CORRECT_ALL            # Suggest corrections for arguments and filenames too
+# setopt CORRECT_ALL            # Suggest corrections for arguments and filenames too
 setopt NUMERIC_GLOB_SORT      # Sort file10 after file9, not after file1
 
 # ── completion ────────────────────────────────────────────────────
