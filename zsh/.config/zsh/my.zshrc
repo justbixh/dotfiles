@@ -74,8 +74,8 @@ alias gp='git push'
 alias gl='git log --graph --decorate -20'
 alias glo='git log --oneline --graph --decorate -20'
 alias gss='git show --stat --graph --decorate -20'
-alias gd='git diff'
-alias gds='git diff --staged'
+alias gd='git diff -w'
+alias gds='git diff --staged -w'
 alias gundo='git reset HEAD~1'
 # git restore --staged FILENAME
 
