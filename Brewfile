@@ -1,0 +1,77 @@
+# Brewfile
+# commented tools are not to be installed 
+
+# --- terminal ---
+cask "wezterm"
+cask "termius"
+
+# --- notes ---
+cask "obsidian"
+cask "notion"
+cask "todoist"
+cask "sublime-text"
+tap "zennotes/tap"
+cask "zennotes/tap/zennotes"
+
+# --- editors ---
+cask "intellij-idea-ce"
+cask "antigravity-ide"
+cask "visual-studio-code"
+cask "zed"
+cask "sublime-merge"
+
+# --- databases ---
+cask "dbeaver-community"
+# cask "datagrip"
+
+# --- utils ---
+# cask "raycast" # https://www.raycast.com/
+cask "maccy" # https://github.com/p0deje/Maccy/blob/master/README.md#usage
+
+# --- web ---
+cask "claude"
+cask "chatgpt"
+cask "google-chrome"
+cask "arc"
+
+# --- containers ---
+cask "docker"
+brew "lazydocker"
+
+# --- Shell / dotfiles / core CLI ---
+brew "starship"
+brew "stow"
+brew "git"
+brew "eza"
+brew "fzf"
+brew "tmux"
+brew "bat"
+brew "fd"
+brew "ripgrep"
+brew "zoxide"
+brew "yazi"
+brew "btop"
+brew "ctop"
+brew "ncdu"
+brew "jq"
+brew "yq"
+brew "fastfetch"
+brew "pfetch"
+brew "git-delta"
+brew "lazygit"
+# fzf-git requires manual install
+# brew "atuin"
+
+# --- Kubernetes / GitOps ---
+# brew "kubectl"
+# brew "helm"
+# brew "k9s"
+# brew "kubectx"
+# brew "argocd"
+
+# --- Kafka ---
+# brew "kafka"
+# brew "awscli"
+
+# --- java ---
+# sdkman: curl -s "https://get.sdkman.io" | bash
