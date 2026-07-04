@@ -55,7 +55,7 @@ _zplugin_load zsh-users zsh-completions
 # Wires them up      — makes docker/kubectl/aws <Tab> actually work
 # Must come after    — zsh-completions (needs its folder in $fpath first)
 # Must come before   — zsh-vi-mode and zsh-syntax-highlighting
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -C   # -C disables security checks on dump file
 
 # ── zsh-vi-mode ───────────────────────────────────────────────────
 #
