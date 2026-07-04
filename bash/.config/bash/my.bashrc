@@ -19,6 +19,7 @@ export HISTTIMEFORMAT="%F %T "   # timestamp in history
 [[ "$PROMPT_COMMAND" != *"history -a"* ]] && PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
 # ── options ───────────────────────────────────────────────────────────────────
+set -o noclobber # refuces accidental file overwriting with `>`
 shopt -s checkwinsize     # recheck terminal width after each command
 shopt -s histappend       # append to history, don't overwrite
 shopt -s autocd           # type a directory name to cd into it
