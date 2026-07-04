@@ -47,7 +47,7 @@ dotfiles/
 ├── bootstrap.sh        # Stow orchestrator — run this
 ├── check.sh            # Verify what's installed
 ├── stowing.md          # Stow cheatsheet
-├── tool-installation.md
+├── tool-installation.md # manual tool installation blocks
 └── readme.md           # you are here 
 ```
 
