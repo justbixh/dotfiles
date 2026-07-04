@@ -5,3 +5,5 @@ show_hidden = true
 sort_by = "natural"
 sort_dir_first = true
 show_symlink = true
+
+# Shift + click/drag → selects terminal text for copying (WezTerm handles this)
