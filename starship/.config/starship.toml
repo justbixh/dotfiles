@@ -1,44 +1,58 @@
 # ~/.config/starship.toml
 
-add_newline = false
-scan_timeout = 5000
-# ── Prompt layout ────────────────────────────────────────────────
 format = """
-$username$directory$git_branch$git_status$package$battery$memory_usage$cmd_duration$status
+$username$hostname$directory$git_branch$git_status$cmd_duration$package$memory_usage$status$kubernetes$battery
 $character
 """
 
-[character] # prompt symbol
+scan_timeout = 5000
+command_timeout = 5000
+add_newline = true
+
+[character]
+disabled = false
 success_symbol = "[❯](bold green)"
 error_symbol = "[❯](bold red)"
-# vimcmd_symbol  = "[❮](yellow)"   # vi mode indicator
-vimcmd_symbol  = "[❮](bold green)"
+#vimcmd_symbol  = "[❮](bold yellow)"
+vimcmd_symbol = '[V](bold green) '
 
 [username]
+disabled = false
 show_always = false
 format = "[$user]($style) "
 #style_user = "bold cyan"
+style_root = "bold red"
+#style_root = "bold white bg:red"
 
 [hostname]
+disabled = true
 ssh_only = false
-format = "[🌐 $hostname]($style) in "
+format = "[$hostname ]($style)"
 style = "bold yellow"
-trim_at = "-"
+#trim_at = "-"
 
 [directory]
+disabled = false
 format = "[$path]($style)[$read_only]($read_only_style) "
-style = "bold cyan"
 #style = "bold blue"
+style = "bold cyan"
 truncation_length = 4
 truncate_to_repo = true
 read_only = " 🔒"
 
+[package]
+disabled = true
+format = "[📦 $version]($style) "
+style = "white"
+
 [git_branch]
-format = "on [$symbol $branch]($style) "
+disabled = false
+format = "on [$symbol$branch]($style) "
+symbol = " "
 style = "bold purple"
-symbol = ""
 
 [git_status]
+disabled = false
 format     = "($ahead_behind$staged$modified$untracked$deleted$conflicted)"
 ahead      = "[⇡$count ](bold cyan)"
 behind     = "[⇣$count ](bold cyan)"
@@ -49,33 +63,40 @@ untracked  = "[?$count ](bold white)"
 deleted    = "[✘$count ](bold red)"
 conflicted = "[⚡$count ](bold red)"
 
-[package]
+[kubernetes]
 disabled = false
-format = "[📦 $version]($style) "
-style = "bold magenta"
+detect_files = ['k8s']
 
-[java] # Java (only language shown)
-disabled = false
+[java]
+disabled = true
 format = "[☕ $version]($style) "
 style = "bold red"
 
-# ── Exit / Status ────────────────────────────────────────────────
+[perl]
+disabled = true
+
+[cmd_duration]
+disabled = false
+min_time = 50
+format = "took [$duration]($style) "
+style = "bold yellow"
+#show_milliseconds = true
+
 [status]
 disabled = false
 format = "[$symbol$status]($style) "
 symbol = "✖ "
 success_symbol = ""
-not_executable_symbol = "🚫 "
+not_executable_symbol = "⚡"
 not_found_symbol = "⚡"
 sigint_symbol = "⚡"
 signal_symbol = "⚡"
 style = "bold red"
 map_symbol = true
 
-# ── Battery ──────────────────────────────────────────────────────
 [battery]
-full_symbol = "🔋"
 charging_symbol = "⚡"
+disabled = false
 discharging_symbol = "🪫"
 empty_symbol = "🪫"
 
@@ -87,113 +108,10 @@ style = "bold red"
 threshold = 50
 style = "bold yellow"
 
-[[battery.display]]
-threshold = 100
-style = "bold green"
-
-# ── Memory ───────────────────────────────────────────────────────
 [memory_usage]
 disabled = false
 threshold = 50
 format = "[🧮 ${ram_pct}]($style) "
 style = "bold dimmed green"
 
-# ── cmd duration ─────────────────────────────────────────────────
-[cmd_duration]
-min_time = 50
-format = "took [$duration](bold yellow) "
-#show_milliseconds = true 
 
-# ── Disable all other language modules ───────────────────────────
-[buf]
-disabled = true
-[c]
-disabled = true
-[cmake]
-disabled = true
-[cobol]
-disabled = true
-[crystal]
-disabled = true
-[daml]
-disabled = true
-[dart]
-disabled = true
-[deno]
-disabled = true
-[dotnet]
-disabled = true
-[elixir]
-disabled = true
-[elm]
-disabled = true
-[erlang]
-disabled = true
-[fennel]
-disabled = true
-[gleam]
-disabled = true
-[golang]
-disabled = true
-[gradle]
-disabled = false
-[haskell]
-disabled = true
-[haxe]
-disabled = true
-[helm]
-disabled = true
-[julia]
-disabled = true
-[kotlin]
-disabled = true
-[lua]
-disabled = false
-[meson]
-disabled = true
-[nim]
-disabled = true
-[nodejs]
-disabled = true
-[ocaml]
-disabled = true
-[odin]
-disabled = true
-[opa]
-disabled = true
-[perl]
-disabled = true
-[php]
-disabled = true
-[pulumi]
-disabled = true
-[purescript]
-disabled = true
-[python]
-disabled = true
-[quarto]
-disabled = true
-[raku]
-disabled = true
-[red]
-disabled = true
-[rlang]
-disabled = true
-[ruby]
-disabled = true
-[rust]
-disabled = false
-[scala]
-disabled = true
-[solidity]
-disabled = true
-[swift]
-disabled = true
-[terraform]
-disabled = true
-[typst]
-disabled = true
-[vlang]
-disabled = true
-[zig]
-disabled = true
