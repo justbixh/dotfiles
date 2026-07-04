@@ -9,7 +9,8 @@ export EDITOR=nvim
 export VISUAL="${EDITOR}"
 export SUDO_EDITOR=nvim
 alias v='$EDITOR'
-alias cl='clear'
+alias c='clear'
+alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim' # tmux popup nvim https://youtube.com/shorts/K1FxGIG_lcA?si=TpBDYrRDQ6BE2lrR
 
 # ── pager ────────────────────────────────────────────────────────
 export PAGER=less
@@ -82,7 +83,6 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
 alias countfiles='for t in files links directories; do echo $(find . -type ${t:0:1} | wc -l) $t; done'
-function take { mkdir -p "$1"; cd "$1"; }
 
 # ── disk / network ────────────────────────────────────────────────
 alias df='df -h'
@@ -171,18 +171,18 @@ alias ke="kubectl exec -it"
 alias kcns='kubectl config set-context --current --namespace'
 
 # ── eza ───────────────────────────────────────────────────────────
-alias l='eza -lh --icons --sort=modified'
-alias sl='eza -lh --icons --sort=modified --color=always | tail -n 30'
-alias la='eza -lah --icons --sort=modified --git'
-alias lag='eza -lhag --icons --sort=modified'
-alias lp='eza -lhg --icons --sort=modified --absolute=on'
+alias l='eza -l --icons --sort=modified --git'
+alias tree='l --tree'
+alias sl='eza -l --icons --sort=modified --git --color=always | tail -n 30'
+alias la='eza -la --icons --sort=modified --git'
+alias lag='eza -lhag --icons --sort=modified --git'
+alias lp='eza -lhg --icons --sort=modified --git --absolute=on'
 alias lS='eza -lha --icons --sort=size --reverse'
 alias lt='eza -lh --icons --sort=type'
 alias ldate='eza -lhg --icons --time-style="+%d %b %Y %H:%M" --sort=modified'
 alias lf='eza -lhg --icons --sort=modified --only-files'
 alias ld='eza -lhgD --icons --sort=modified'
 
-alias tree='l --tree'
 alias ltree='eza --tree --group-directories-first --icons --git-ignore --ignore-glob=".git"'
 alias ltreea='ltree -a'
 ltreel()  { ltree --level="$1" }
@@ -227,9 +227,10 @@ if [[ -f "$HOME/.atuin/bin/env" ]]; then
 fi
 
 # ── sub configs ───────────────────────────────────────────────────
-[[ -f ~/.config/fzf/fzf.sh ]]       && source ~/.config/fzf/fzf.sh
-[[ -f ~/.config/zsh/plugins.zsh  ]] && source ~/.config/zsh/plugins.zsh  
-[[ -f ~/.config/zsh/bindings.zsh ]] && source ~/.config/zsh/bindings.zsh
+[[ -f ~/.config/fzf/fzf.sh ]]        && source ~/.config/fzf/fzf.sh
+[[ -f ~/.config/zsh/plugins.zsh  ]]  && source ~/.config/zsh/plugins.zsh  
+[[ -f ~/.config/zsh/bindings.zsh ]]  && source ~/.config/zsh/bindings.zsh
+[[ -f ~/.config/zsh/functions.zsh ]] && source ~/.config/zsh/functions.zsh
 
 # ── tool completions ──────────────────────────────────────────────
 # Not from zsh-completions — each tool generates its own script from its binary at runtime
