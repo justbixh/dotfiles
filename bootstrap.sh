@@ -24,7 +24,7 @@ fi
 # stow packages
 cd "$DOTFILES"
 echo "==> Stowing dotfiles → $HOME..."
-stow $STOW_FLAGS zsh nvim tmux git fzf starship wezterm yazi
+stow $STOW_FLAGS zsh nvim tmux git fzf starship yazi wezterm install
 
 # rc source-line append (idempotent)
 if ! $DRY; then

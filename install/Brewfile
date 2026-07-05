@@ -8,7 +8,7 @@ cask "termius"
 # --- notes ---
 cask "obsidian"
 cask "notion"
-cask "todoist"
+cask "todoist-app"
 cask "sublime-text"
 tap "zennotes/tap"
 cask "zennotes/tap/zennotes"
@@ -35,7 +35,7 @@ cask "google-chrome"
 cask "arc"
 
 # --- containers ---
-cask "docker"
+cask "docker-desktop"
 brew "lazydocker"
 
 # --- Shell / dotfiles / core CLI ---
@@ -45,6 +45,7 @@ brew "git"
 brew "eza"
 brew "fzf"
 brew "tmux"
+brew "nvim"
 brew "bat"
 brew "fd"
 brew "ripgrep"
@@ -56,11 +57,11 @@ brew "ncdu"
 brew "jq"
 brew "yq"
 brew "fastfetch"
-brew "pfetch"
+brew "nerdfetch"
 brew "git-delta"
 brew "lazygit"
 # fzf-git requires manual install
-# brew "atuin"
+brew "atuin"
 
 # --- Kubernetes / GitOps ---
 # brew "kubectl"
@@ -75,3 +76,6 @@ brew "lazygit"
 
 # --- java ---
 # sdkman: curl -s "https://get.sdkman.io" | bash
+
+# --- fonts ---
+cask "font-meslo-lg-nerd-font"
