@@ -3,36 +3,33 @@ local wezterm = require("wezterm")
 return {
 
 	-- ── startup ────────────────────────────────────────────────────────────
-	-- default_prog = { "wsl.exe", "--distribution", "Ubuntu-24.04" },
-	initial_cols = 120,
-	initial_rows = 32,
+	default_prog = { "wsl.exe", "--distribution", "Ubuntu-24.04" },
+	initial_cols = 105,
+	initial_rows = 30,
 
 	-- ── window ─────────────────────────────────────────────────────────────
 	window_decorations = "RESIZE",
 	window_close_confirmation = "NeverPrompt",
+	-- win32_system_backdrop         = "Acrylic",
+
 	adjust_window_size_when_changing_font_size = false,
 	automatically_reload_config = true,
-	-- win32_system_backdrop         = "Acrylic",
-	
-	macos_window_background_blur = 20, -- macOS-native blur
-	native_macos_fullscreen_mode = true, -- use macOS's own fullscreen, not WezTerm's
-
 
 	background = {
 		{
 			source = { Color = "#191d1f" },
 			width = "100%",
 			height = "100%",
-			opacity = 0.55, -- 0.55
+			opacity = 1.0, -- 0.55
 		},
 	},
 
 	-- window_padding = { left = 3, right = 3, top = 0, bottom = 0 },
 
 	-- ── appearance ─────────────────────────────────────────────────────────
-	color_scheme = "Catppuccin Frape", -- "Batman" "Nord (Gogh)"
-	-- font = wezterm.font("MesloLGS Nerd Font Mono", { weight = "Regular" }),
-	font_size = 13.0,
+	color_scheme = "Catppuccin Frappe", -- "Batman" "Nord (Gogh)"
+	-- font = wezterm.font("Meslo Nerd Font Mono", { weight = "Regular" }),
+	font_size = 11.5,
 	enable_tab_bar = false,
 	default_cursor_style = "BlinkingBar",
 
@@ -72,11 +69,7 @@ return {
 	-- ── keys ───────────────────────────────────────────────────────────────
 	keys = {
 		{ key = "x", mods = "ALT", action = wezterm.action.PasteFrom("Clipboard") },
-		{ key = "f", mods = "CMD", action = wezterm.action.ToggleFullScreen }, -- CTRL→CMD, matches Mac conventions
-		{ key = "w", mods = "CMD", action = wezterm.action.CloseCurrentPane({ confirm = false }) }, -- CTRL→CMD
-		{ key = "v", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") }, -- standard Mac paste
-		{ key = "c", mods = "CMD", action = wezterm.action.CopyTo("Clipboard") }, -- standard Mac copy
-		{ key = "t", mods = "CMD", action = wezterm.action.SpawnTab("CurrentPaneDomain") }, -- Mac users expect Cmd+T
-		{ key = "n", mods = "CMD", action = wezterm.action.SpawnWindow }, -- Mac users expect Cmd+N
+		{ key = "q", mods = "CTRL", action = wezterm.action.ToggleFullScreen },
+		{ key = "w", mods = "CTRL", action = wezterm.action.CloseCurrentPane({ confirm = false }) },
 	},
 }
