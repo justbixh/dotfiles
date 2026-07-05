@@ -1,5 +1,9 @@
 # ~/dotfiles/git/.gitconfig — stowed to ~/.gitconfig
 # per-machine identity lives in ~/.gitconfig.local (not tracked)
+#[user]
+#    name = Bish
+#    email = helloatbish@gmail.
+
 [core]
     pager  = delta
     editor = vim
@@ -42,4 +46,4 @@
     stashes = stash list --format="%gd %cd %s" --date=short
 
 [include]
-path = ~/.gitconfig.local
+    path = ~/.gitconfig.local

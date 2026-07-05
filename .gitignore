@@ -2,6 +2,7 @@
 
 # Machine-local shell config (contains tokens, proxies, work paths)
 stow/shell/.config/shell/local
+zsh/.config/zsh/plugins/
 
 # macOS
 .DS_Store
