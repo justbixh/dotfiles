@@ -1,5 +1,4 @@
-# Brewfile
-# commented tools are not to be installed 
+# Brewfile - commented tools are not to be installed 
 
 # --- terminal ---
 cask "wezterm"
@@ -14,7 +13,7 @@ tap "zennotes/tap"
 cask "zennotes/tap/zennotes"
 
 # --- editors ---
-cask "intellij-idea-ce"
+cask "intellij-idea"
 cask "antigravity-ide"
 cask "visual-studio-code"
 cask "zed"
@@ -31,19 +30,16 @@ cask "maccy" # https://github.com/p0deje/Maccy/blob/master/README.md#usage
 # --- web ---
 cask "claude"
 cask "chatgpt"
-cask "google-chrome"
+# cask "google-chrome"
 cask "arc"
-
-# --- containers ---
-cask "docker-desktop"
-brew "lazydocker"
+cask "zen"
 
 # --- Shell / dotfiles / core CLI ---
 brew "starship"
 brew "stow"
 brew "git"
 brew "eza"
-brew "fzf"
+brew "fzf" # fzf-git requires manual install
 brew "tmux"
 brew "nvim"
 brew "bat"
@@ -60,10 +56,19 @@ brew "fastfetch"
 brew "nerdfetch"
 brew "git-delta"
 brew "lazygit"
-# fzf-git requires manual install
 brew "atuin"
 
-# --- Kubernetes / GitOps ---
+# --- java ---
+# sdkman: curl -s "https://get.sdkman.io" | bash
+
+# --- fonts ---
+cask "font-meslo-lg-nerd-font"
+
+# --- containers ---
+cask "docker-desktop"
+brew "lazydocker"
+
+# --- Kubernetes ---
 # brew "kubectl"
 # brew "helm"
 # brew "k9s"
@@ -72,10 +77,19 @@ brew "atuin"
 
 # --- Kafka ---
 # brew "kafka"
+
+# --- cloud ---
 # brew "awscli"
 
-# --- java ---
-# sdkman: curl -s "https://get.sdkman.io" | bash
+# --- video editing ---
+# davinci resolve
 
-# --- fonts ---
-cask "font-meslo-lg-nerd-font"
+# --- mac utils ---
+# cask "fliqlo"
+cask "alt-tab"
+# cask "dropzone"
+cask "monitorcontrol" # control ext display
+cask "appcleaner"
+# cask "iina" # better vlc
+# cask "skim" # pdf reader
+

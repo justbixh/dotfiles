@@ -9,6 +9,7 @@ export EDITOR=nvim
 export VISUAL="${EDITOR}"
 export SUDO_EDITOR=nvim
 alias v='$EDITOR'
+alias vi='$EDITOR'
 alias c='clear'
 alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim' # tmux popup nvim https://youtube.com/shorts/K1FxGIG_lcA?si=TpBDYrRDQ6BE2lrR
 
