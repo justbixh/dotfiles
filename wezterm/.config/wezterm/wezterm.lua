@@ -1,29 +1,33 @@
 local wezterm = require("wezterm")
 
+-- ── startup ────────────────────────────────────────────────────────────
+wezterm.on("gui-startup", function(cmd)
+	local screen = wezterm.gui.screens().active
+	local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+	local gui_window = window:gui_window()
+
+	-- exact size and position measured from your reference screenshot
+	gui_window:set_inner_size(1029 * 2, 674 * 2)
+	gui_window:set_position(screen.x + 1000, screen.y + 520)
+end)
+
 return {
-
-	-- ── startup ────────────────────────────────────────────────────────────
-	-- default_prog = { "wsl.exe", "--distribution", "Ubuntu-24.04" },
-	initial_cols = 120,
-	initial_rows = 32,
-
 	-- ── window ─────────────────────────────────────────────────────────────
 	window_decorations = "RESIZE",
 	window_close_confirmation = "NeverPrompt",
 	adjust_window_size_when_changing_font_size = false,
 	automatically_reload_config = true,
 	-- win32_system_backdrop         = "Acrylic",
-	
+
 	macos_window_background_blur = 20, -- macOS-native blur
 	native_macos_fullscreen_mode = true, -- use macOS's own fullscreen, not WezTerm's
-
 
 	background = {
 		{
 			source = { Color = "#191d1f" },
 			width = "100%",
 			height = "100%",
-			opacity = 0.55, -- 0.55
+			opacity = 0.35, -- 0.55
 		},
 	},
 
