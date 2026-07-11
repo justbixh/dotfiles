@@ -75,7 +75,7 @@ return {
 
 	-- ── keys ───────────────────────────────────────────────────────────────
 	keys = {
-		{ key = "x", mods = "ALT", action = wezterm.action.PasteFrom("Clipboard") },
+		{ key = "x", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") },
 		{ key = "f", mods = "CMD", action = wezterm.action.ToggleFullScreen }, -- CTRL→CMD, matches Mac conventions
 		{ key = "w", mods = "CMD", action = wezterm.action.CloseCurrentPane({ confirm = false }) }, -- CTRL→CMD
 		{ key = "v", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") }, -- standard Mac paste
