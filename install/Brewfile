@@ -1,40 +1,45 @@
 # Brewfile - commented tools are not to be installed 
-
-# --- terminal ---
-cask "wezterm"
-cask "termius"
+# brew bundle --file=Brewfile
 
 # --- notes ---
 cask "obsidian"
-cask "notion"
 cask "todoist-app"
 cask "sublime-text"
-tap "zennotes/tap"
-cask "zennotes/tap/zennotes"
+cask "sublime-merge"
+tap "zennotes/tap"; cask "zennotes/tap/zennotes"
+cask "notion"
 
-# --- editors ---
+# --- development ---
+cask "wezterm"
+cask "termius"
 cask "intellij-idea"
+cask "docker-desktop"
 cask "antigravity-ide"
 cask "visual-studio-code"
 cask "zed"
 cask "sublime-merge"
-
-# --- databases ---
 cask "dbeaver-community"
 # cask "datagrip"
 
-# --- utils ---
-# cask "raycast" # https://www.raycast.com/
+# --- mac utils ---
 cask "maccy" # https://github.com/p0deje/Maccy/blob/master/README.md#usage
+cask "raycast"
+tap "nikitabobko/tap"; cask "nikitabobko/tap/aerospace"
+cask "monitorcontrol" # control ext display
+cask "appcleaner"
+# cask "fliqlo" # broken, install manually
+# cask "iina" # better vlc
+# cask "skim" # pdf reader
+# cask "dropzone"
+# cask "caffine"
 
 # --- web ---
 cask "claude"
 cask "chatgpt"
-# cask "google-chrome"
 cask "arc"
 cask "zen"
 
-# --- Shell / dotfiles / core CLI ---
+# --- cli-tools ---
 brew "starship"
 brew "stow"
 brew "git"
@@ -56,40 +61,22 @@ brew "fastfetch"
 brew "nerdfetch"
 brew "git-delta"
 brew "lazygit"
+brew "lazydocker"
 brew "atuin"
-
-# --- java ---
-# sdkman: curl -s "https://get.sdkman.io" | bash
+# brew "awscli"
 
 # --- fonts ---
 cask "font-meslo-lg-nerd-font"
 
-# --- containers ---
-cask "docker-desktop"
-brew "lazydocker"
-
-# --- Kubernetes ---
+# --- kubernetes ---
 # brew "kubectl"
 # brew "helm"
 # brew "k9s"
 # brew "kubectx"
 # brew "argocd"
 
-# --- Kafka ---
-# brew "kafka"
-
-# --- cloud ---
-# brew "awscli"
-
-# --- video editing ---
+# --- manual installation ---
+# logitech logi-options+
+# sdkman: curl -s "https://get.sdkman.io" | bash
 # davinci resolve
-
-# --- mac utils ---
-# cask "fliqlo"
-cask "alt-tab"
-# cask "dropzone"
-cask "monitorcontrol" # control ext display
-cask "appcleaner"
-# cask "iina" # better vlc
-# cask "skim" # pdf reader
-
+#
