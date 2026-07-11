@@ -26,4 +26,8 @@ zvm_after_init() {
   bindkey '^G' zi-widget                         # Ctrl+G      — zoxide interactive directory jump
 
   eval "$(atuin init zsh --disable-up-arrow)"    # Re-register atuin after zsh-vi-mode wipes everything
+
+
+  # rebind after all plugins load, in case any plugin resets ^I
+  bindkey '^I' fzf-completion
 }
