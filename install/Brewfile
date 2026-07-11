@@ -63,7 +63,9 @@ brew "git-delta"
 brew "lazygit"
 brew "lazydocker"
 brew "atuin"
+brew "glow"
 # brew "awscli"
+# grafana-k6 testing tool
 
 # --- fonts ---
 cask "font-meslo-lg-nerd-font"
