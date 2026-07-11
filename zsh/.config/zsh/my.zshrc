@@ -73,8 +73,8 @@ alias reload='exec zsh -l'
 setopt noclobber # refuces accidental file overwriting with `>`
 # alias rm='rm -i'
 # alias rm=trash
-alias cp='cp --interactive'
-alias mv='mv --interactive'
+alias cp='cp -i'
+alias mv='mv -i'
 alias mkdir='mkdir -pv'
 
 # ── navigation ────────────────────────────────────────────────────
