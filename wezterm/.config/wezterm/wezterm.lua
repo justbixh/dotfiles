@@ -27,7 +27,7 @@ return {
 			source = { Color = "#191d1f" },
 			width = "100%",
 			height = "100%",
-			opacity = 0.35, -- 0.55
+			opacity = 1.35, -- 0.55
 		},
 	},
 
@@ -36,7 +36,7 @@ return {
 	-- ── appearance ─────────────────────────────────────────────────────────
 	color_scheme = "Catppuccin Frape", -- "Batman" "Nord (Gogh)"
 	-- font = wezterm.font("MesloLGS Nerd Font Mono", { weight = "Regular" }),
-	font_size = 13.0,
+	font_size = 14.0,
 	enable_tab_bar = false,
 	default_cursor_style = "BlinkingBar",
 
