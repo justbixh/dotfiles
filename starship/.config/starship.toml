@@ -110,7 +110,7 @@ style = "bold yellow"
 
 [memory_usage]
 disabled = false
-threshold = 50
+threshold = 80
 format = "[🧮 ${ram_pct}]($style) "
 style = "bold dimmed green"
 
