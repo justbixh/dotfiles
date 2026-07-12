@@ -61,8 +61,7 @@ zstyle ':completion:*' ignored-patterns '.git'
 zstyle ':completion:*' rehash false  # improves performance
 zstyle ':completion:*' use-cache true
 
-bindkey '^e' autosuggest-accept
-bindkey '^w' autosuggest-execute
+bindkey '^e' autosuggest-accept 
 
 # ── misc ──────────────────────────────────────────────────────────
 alias zshrc='$EDITOR ~/.zshrc'
