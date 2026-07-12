@@ -11,7 +11,7 @@ export SUDO_EDITOR=nvim
 alias v='$EDITOR'
 alias vi='$EDITOR'
 alias c='clear'
-alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim' # tmux popup nvim https://youtube.com/shorts/K1FxGIG_lcA?si=TpBDYrRDQ6BE2lrR
+alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs $EDITOR' # tmux popup nvim https://youtube.com/shorts/K1FxGIG_lcA?si=TpBDYrRDQ6BE2lrR
 
 # ── pager ────────────────────────────────────────────────────────
 export PAGER=less
@@ -117,6 +117,12 @@ alias tl="tmux ls"
 alias ta="tmux attach -t"
 alias tk="tmux kill-session -t"
 alias tka="tmux kill-server"
+
+# session switcher from outside tmux
+ts() {
+  local session
+  session=$(tmux ls -F '#S' 2>/dev/null | fzf-tmux -p 30%,30% --reverse) && tmux new -As "$session"
+}
 
 # ── system ─────────────────────────────────────────────────────────
 alias sys='sudo systemctl'
