@@ -112,9 +112,11 @@ alias gundo='git reset HEAD~1'
 # git restore --staged FILENAME
 
 # ── tmux ───────────────────────────────────────────────────────────
-alias ta='tmux attach'
-alias tl='tmux list-sessions'
-alias tn='tmux new-session -s'
+alias tm="tmux"
+alias tl="tmux ls"
+alias ta="tmux attach -t"
+alias tk="tmux kill-session -t"
+alias tka="tmux kill-server"
 
 # ── system ─────────────────────────────────────────────────────────
 alias sys='sudo systemctl'
