@@ -40,7 +40,7 @@ HISTORY_IGNORE='(rm *|rf *)'
 # ── shell options ─────────────────────────────────────────────────
 setopt auto_cd                # Type a directory name alone to cd into it
 setopt no_beep                # Disable audio beeps on errors or tab-completion failures
-setopt correct                # Suggest corrections for mistyped command names
+# setopt correct                # Suggest corrections for mistyped command names
 # setopt correct_all            # Suggest corrections for arguments and filenames too
 setopt numeric_glob_sort      # Sort file10 after file9, not after file1
 setopt glob_dots  # include dotfiles into completion by default
