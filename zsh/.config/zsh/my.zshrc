@@ -111,16 +111,29 @@ alias gundo='git reset HEAD~1'
 # git restore --staged FILENAME
 
 # ── tmux ───────────────────────────────────────────────────────────
-alias tm="tmux"
+alias t="tmux"
 alias tl="tmux ls"
 alias ta="tmux attach -t"
 alias tk="tmux kill-session -t"
-alias tka="tmux kill-server"
+alias tks="tmux kill-server"
 
 # session switcher from outside tmux
-ts() {
+tt() {
   local session
-  session=$(tmux ls -F '#S' 2>/dev/null | fzf-tmux -p 30%,30% --reverse) && tmux new -As "$session"
+  session=$(tmux ls -F '#S' 2>/dev/null | fzf-tmux -w 40 -h 12% --reverse) && tmux new -As "$session"
+}
+
+tt() {
+  if [ -n "$TMUX" ]; then
+    echo "Already inside tmux — use your session switcher/prefix binding instead."
+    return 1
+  fi
+
+  local session
+  session=$(tmux ls -F '#S' 2>/dev/null | COLUMNS=40 fzf --height=~40% --reverse)
+  [ -z "$session" ] && return
+
+  tmux new -As "$session"
 }
 
 # ── system ─────────────────────────────────────────────────────────
