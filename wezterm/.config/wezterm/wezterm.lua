@@ -1,3 +1,5 @@
+-- ~/.config/wezterm/wezterm.lua
+
 local wezterm = require("wezterm")
 
 -- ── startup ────────────────────────────────────────────────────────────
@@ -34,9 +36,10 @@ return {
 	-- window_padding = { left = 3, right = 3, top = 0, bottom = 0 },
 
 	-- ── appearance ─────────────────────────────────────────────────────────
-	color_scheme = "Catppuccin Frape", -- "Batman" "Nord (Gogh)"
+	color_scheme = "Catppuccin Frappe", -- "Batman" "Nord (Gogh)"
 	-- font = wezterm.font("MesloLGS Nerd Font Mono", { weight = "Regular" }),
 	font_size = 14.0,
+	send_composed_key_when_left_alt_is_pressed = false, -- option works like alt
 	enable_tab_bar = false,
 	default_cursor_style = "BlinkingBar",
 
@@ -51,13 +54,6 @@ return {
 		ansi = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#0FC5ED", "#a277ff", "#24EAF7", "#24EAF7" },
 		brights = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#A277FF", "#a277ff", "#24EAF7", "#24EAF7" },
 	},
-
-	-- window_padding = {
-	--   left = 3,
-	--   right = 3,
-	--   top = 0,
-	--   bottom = 0,
-	-- },
 
 	-- ── mouse ──────────────────────────────────────────────────────────────
 	mouse_bindings = {
@@ -75,12 +71,12 @@ return {
 
 	-- ── keys ───────────────────────────────────────────────────────────────
 	keys = {
+		{ key = "f", mods = "CMD", action = wezterm.action.ToggleFullScreen },
+		{ key = "w", mods = "CMD", action = wezterm.action.CloseCurrentPane({ confirm = false }) },
+		{ key = "v", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") },
 		{ key = "x", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") },
-		{ key = "f", mods = "CMD", action = wezterm.action.ToggleFullScreen }, -- CTRL→CMD, matches Mac conventions
-		{ key = "w", mods = "CMD", action = wezterm.action.CloseCurrentPane({ confirm = false }) }, -- CTRL→CMD
-		{ key = "v", mods = "CMD", action = wezterm.action.PasteFrom("Clipboard") }, -- standard Mac paste
-		{ key = "c", mods = "CMD", action = wezterm.action.CopyTo("Clipboard") }, -- standard Mac copy
-		{ key = "t", mods = "CMD", action = wezterm.action.SpawnTab("CurrentPaneDomain") }, -- Mac users expect Cmd+T
-		{ key = "n", mods = "CMD", action = wezterm.action.SpawnWindow }, -- Mac users expect Cmd+N
-	},
+		{ key = "c", mods = "CMD", action = wezterm.action.CopyTo("Clipboard") },
+		{ key = "t", mods = "CMD", action = wezterm.action.SpawnTab("CurrentPaneDomain") },
+		{ key = "n", mods = "CMD", action = wezterm.action.SpawnWindow },
+	}
 }

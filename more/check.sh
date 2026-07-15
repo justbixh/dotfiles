@@ -46,7 +46,7 @@ section "zsh plugins"
 ZSH_PLUGIN_DIR="$HOME/.config/zsh/plugins"
 
 for plugin in zsh-autosuggestions zsh-syntax-highlighting; do
-    if [ -f "$ZSH_PLUGIN_DIR/${plugin}.zsh" ]; then
+    if [ -f "$ZSH_PLUGIN_DIR/${plugin}/${plugin}.plugin.zsh" ]; then
         ok "$plugin"
     else
         missing "$plugin"

@@ -14,7 +14,7 @@ defaults write com.apple.finder FXPreferredViewStyle -string "clmv" # Finder: de
 
 # Screenshot save location (default: ~/Desktop). Ensure the custom folder exists first!
 mkdir -p ~/Pictures/screenshots
-defaults write com.apple.screencapture location -string "~/Pictures/screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Pictures/screenshots"
 
 # --- Terminal Performance & Keyboard Repeat Speeds ---
 # KeyRepeat: The speed at which a character repeats after you hold it down. (default: 6)

@@ -1,5 +1,5 @@
-# ~/.config/bash/my.bashrc
-# ── sourced from ~/.bashrc via: source ~/.config/bash/my.bashrc ───────────────
+# ~/.bashrc - bash configuration
+# Symlinked directly via GNU Stow (stow bash)
 
 # ── PATH — local bin first (our symlinks live here) ───────────────────────────
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
@@ -130,9 +130,11 @@ bind -x '"\C-f": _zi_widget'
 [ -f ~/.config/fzf/fzf.sh ] && source ~/.config/fzf/fzf.sh
 
 # ── atuin ─────────────────────────────────────────────────────────────────────
-. "$HOME/.atuin/bin/env"
+if [[ -f "$HOME/.atuin/bin/env" ]]; then
+  . "$HOME/.atuin/bin/env"
+fi
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
-eval "$(atuin init bash)"
+command -v atuin &>/dev/null && eval "$(atuin init bash)"
 
 # ── starship - Starship needs to be the last thing touching the prompt ────────
 command -v starship &>/dev/null && eval "$(starship init bash)"

@@ -1,5 +1,6 @@
-# ~/dotfiles/git/.gitconfig — stowed to ~/.gitconfig
-# per-machine identity lives in ~/.gitconfig.local (not tracked)
+# ~/dotfiles/git/.config/git/config — stowed to ~/.config/git/config
+# NOTE: Pre-existing ~/.gitconfig takes precedence and will override this configuration.
+# Per-machine identity should live in ~/.gitconfig.local (included below)
 #[user]
 #    name = Bish
 #    email = helloatbish@gmail.

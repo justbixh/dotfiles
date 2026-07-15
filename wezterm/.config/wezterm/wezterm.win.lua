@@ -45,13 +45,6 @@ return {
 		brights = { "#214969", "#E52E2E", "#44FFB1", "#FFE073", "#A277FF", "#a277ff", "#24EAF7", "#24EAF7" },
 	},
 
-	-- window_padding = {
-	--   left = 3,
-	--   right = 3,
-	--   top = 0,
-	--   bottom = 0,
-	-- },
-
 	-- ── mouse ──────────────────────────────────────────────────────────────
 	mouse_bindings = {
 		{

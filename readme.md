@@ -31,62 +31,50 @@ A plug-and-play dotfiles setup that works the same on your Ubuntu workstation, y
 
 ---
 
-## Project Layout
-
-```
-dotfiles/
-├── bash/               # .config/bash/my.bashrc
-├── zsh/                # .config/zsh/{my.zshrc,bindings,plugins}
-├── nvim/               # Full LazyVim setup
-├── tmux/               # .tmux.conf
-├── git/                # .gitconfig + aliases
-├── fzf/                # .config/fzf/fzf.sh
-├── starship/           # .config/starship.toml
-├── wezterm/            # .wezterm.lua
-├── yazi/               # .config/yazi/yazi.toml
-├── bootstrap.sh        # Stow orchestrator — run this
-├── check.sh            # Verify what's installed
-├── stowing.md          # Stow cheatsheet
-├── tool-installation.md # manual tool installation blocks
-└── readme.md           # you are here 
-```
-
-> Each top-level directory is a stow package. The internal structure mirrors `$HOME`, so stow knows exactly where to place every symlink.
-
----
-
 ## Quick Start
 
 ### 1. Clone
 
-```bash
+```shell
 git clone https://github.com/justbixh/dotfiles.git ~/dotfiles
 ```
 
-### 2. Check what's installed
+### 2. Check tools installed
 
 ```bash
-bash ~/dotfiles/check.sh
+bash ~/dotfiles/more/check.sh
 ```
 
-### 3. Install missing tools
+### 3. Install tools (mac only)
+
+```shell
+# install [homebrew](https://brew.sh/) if not installed 
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# running this command installs everything (comment not required tools in Brewfile)
+brew bundle --file=~/dotfiles/macos/Brewfile
+```
+
+## Stow/Apply dotfiles
 
 ```bash
-# The md file has per-OS install commands
-cat ~/dotfiles/tool-installation.md
+# stow a single package
+cd ~/dotfiles && stow zsh
+
+# stow all
+cd ~/dotfiles && stow fzf nvim starship tmux yazi wezterm git zsh
+
+# restow (re-links everything, safe to re-run)
+cd ~/dotfiles && stow --restow fzf nvim starship tmux yazi wezterm git zsh
+
+# unstow (removes symlinks)
+cd ~/dotfiles && stow --delete zsh
+
+# dry run — see what would happen without doing it
+cd ~/dotfiles && stow --simulate zsh
 ```
 
-### 4. Stow everything
-
-```bash
-# Dry run first — always a good idea
-bash ~/dotfiles/bootstrap.sh --dry
-
-# Apply
-bash ~/dotfiles/bootstrap.sh
-```
-
-### 5. (Optional) Switch to zsh
+### 5. Switch to zsh
 
 ```bash
 chsh -s $(which zsh)
@@ -95,32 +83,80 @@ chsh -s $(which zsh)
 
 ---
 
-## Features
-
-| | |
-|---|---|
-| **Append-safe** | Sources new configs from `my.bashrc` and `my.zshrc` while keeping your  existing `.bashrc`/`.zshrc` configs safe — nothing gets overwritten |
-| **Idempotent** | Run bootstrap as many times as you want |
-| **Modular** | Stow one package or all of them |
-| **OS detection** | Handles Ubuntu, RHEL/CentOS, macOS automatically |
-| **Dry-run mode** | `--dry` flag previews all symlink operations before touching anything |
-
----
-
-## Stow in 30 Seconds
-
-```bash
-cd ~/dotfiles
-
-stow bash               # symlink just bash config
-stow tmux nvim git      # multiple packages at once
-stow --delete tmux      # remove tmux symlinks
-stow --restow nvim      # refresh (useful after adding files)
+## dot files tree
+```
+dotfiles/
+├── fzf/.config/fzf
+│   └── .config
+│       └── fzf
+│           └── fzf.sh
+├── git
+│   └── .config
+│       └── git
+│           └── config
+├── macos
+│   ├── Brewfile
+│   └── macos-defaults.sh
+├── nvim
+│   └── .config
+│       └── nvim
+│           ├── lua/
+│           ├── .neoconf.json
+│           ├── init.lua
+│           ├── lazy-lock.json
+│           ├── lazyvim.json
+│           └── stylua.toml
+├── starship
+│   └── .config
+│       └── starship
+│           └── starship.toml
+├── tmux
+│   └── .config
+│       └── tmux
+│           └── tmux.conf
+├── wezterm
+│   └── .config
+│       └── wezterm
+│           ├── wezterm.lua
+│           └── wezterm.win.lua
+├── yazi
+│   └── .config
+│       └── yazi
+│           └── yazi.toml
+├── zsh
+│   ├── .zshrc
+│   └── .config
+│       └── zsh
+│           ├── functions.zsh
+│           └── plugins.zsh
+├── .gitignore
+├── .stowrc
+└── readme.md
 ```
 
-Full reference: [`stowing.md`](./stowing.md)
+> Each top-level directory is a stow package. The internal structure mirrors `$HOME`, so stow knows exactly where to place every symlink.
+
+## post stow
+
+```
+$HOME/
+  .zshrc
+  .local.zshrc  # .gitignore'd
+  .config/
+    git/config
+    nvim/
+    fzf/fzf.sh
+    starship/starship.toml
+    tmux/tmux.conf
+    wezterm/wezterm.lua
+    yazi/yazi.toml
+    zsh/
+      functions.zsh
+      plugins.zsh
+```
 
 ---
+
 
 ## CLI tools pick
 
@@ -147,22 +183,12 @@ Full reference: [`stowing.md`](./stowing.md)
 | **duf** | nicer du df |
 | **Nerd Font** | Glyph support for everything above |
 
----
-
-## Multi-Machine Strategy (Under work)
-
-```
-~/dotfiles/
-└── backup/
-    └── detect-os.sh   ← knows if you're on apt, dnf, or brew
-```
-
-`bootstrap.sh` calls OS detection before stowing, so the same repo behaves correctly across distros. Work laptop on RHEL 9? Home box on Ubuntu? Same commands, same result.
+and more. See Brewfile
 
 ---
 
 <div align="center">
 
-*One repo to rule the `~`. Stow it once. Find it everywhere.*
+*Never lose your dotfiles. even if your laptop is nuked*
 
 </div>

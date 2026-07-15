@@ -1,29 +1,20 @@
 ## Stow commands
 
 ```bash
-cd ~/dotfiles
-
 # stow a single package
-stow zsh
+cd ~/dotfiles && stow zsh
 
-# stow multiple packages
-stow zsh git tmux starship
+# stow all
+cd ~/dotfiles && stow fzf nvim starship tmux yazi wezterm git zsh
 
 # restow (re-links everything, safe to re-run)
-stow --restow zsh git tmux starship fzf bash
+cd ~/dotfiles && stow --restow fzf nvim starship tmux yazi wezterm git zsh
 
 # unstow (removes symlinks)
-stow --delete zsh
+cd ~/dotfiles && stow --delete zsh
 
 # dry run — see what would happen without doing it
-stow --simulate zsh
-```
-
-## Stow only (skip package install)
-
-```bash
-bash ~/dotfiles/bootstrap.sh
-bash ~/dotfiles/bootstrap.sh --dry # dryrun
+cd ~/dotfiles && stow --simulate zsh
 ```
 
 ## Common issues

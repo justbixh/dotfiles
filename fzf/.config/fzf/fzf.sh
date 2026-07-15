@@ -1,4 +1,4 @@
-# ── Fuzzy Finder integration - Sourced from both .bashrc and .zshrc ─────────────────────────────────────────────────────────
+# ── Fuzzy Finder integration - Sourced from both .bashrc and .zshrc ───────────
 # ~/.config/fzf/fzf.sh
 # Stow package: fzf
 # Requires fd, rg, bat, and eza to be installed for the previews to work.
@@ -19,7 +19,7 @@ export FZF_DEFAULT_OPTS="--no-separator --preview-border=dashed --margin=1 --pad
 export FZF_CTRL_T_OPTS="--preview 'if [ -d {} ]; then eza --tree --color=always {} | head -200;
 else bat -n --color=always --line-range :500 {}; fi'"
 
-# ── alt-c: preview dirs with eza ─────────────────────────────────────────────
+# ── alt-c / opt-c preview dirs with eza (alt->opt mapping in wezterm.lua) ────
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
 
 # ── ctrl-r: history preview, ctrl-y to yank ──────────────────────────────────
@@ -32,7 +32,7 @@ export FZF_CTRL_R_OPTS="
     --padding 0
     --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip)+abort'"
 
-# ── ** completion: per-command previews ───────────────────────────────────────
+# ── ** completion: per-command previews ──────────────────────────────────────
 # FZF_DEFAULT_OPTS already applied — no need to pass style flags here
 _fzf_comprun() {
     local command=$1

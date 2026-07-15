@@ -17,7 +17,6 @@ cask "docker-desktop"
 cask "antigravity-ide"
 cask "visual-studio-code"
 cask "zed"
-cask "sublime-merge"
 cask "dbeaver-community"
 # cask "datagrip"
 

@@ -1,3 +1,5 @@
+# ~/.config/zsh/functions.zsh
+
 cl() { cd "${1:-$HOME}" && l } # cd + ls
 mkcd() { mkdir -p "$1" && cd "$1" } 
 
@@ -16,11 +18,15 @@ backup() {
     mkdir -p "$dir"
 
     for file in "$@"; do
-        if [[ ! -f "$file" ]]; then
+        if [[ ! -e "$file" ]]; then
             echo "Skipping (not found): $file"
             continue
         fi
-        cp -p -- "$file" "$dir/$(basename "$file").${timestamp}.bak"
+        if [[ -d "$file" ]]; then
+            cp -rp -- "$file" "$dir/$(basename "$file").${timestamp}.bak"
+        else
+            cp -p -- "$file" "$dir/$(basename "$file").${timestamp}.bak"
+        fi
         echo "Backed up: $file -> $dir/$(basename "$file").${timestamp}.bak"
     done
 }

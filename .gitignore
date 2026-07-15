@@ -1,6 +1,6 @@
 # ── .gitignore ────────────────────────────────────────────────────────────────
 
-# Machine-local shell config (contains tokens, proxies, work paths)
+# Machine-local shell config
 stow/shell/.config/shell/local
 zsh/.config/zsh/plugins/
 
@@ -19,6 +19,3 @@ zsh/.config/zsh/plugins/
 # Test/scratch
 scratch/
 tmp/
-
-# ignoring gitconfig till there is a solution to a device wise gitconfig
-.gitconfig.local

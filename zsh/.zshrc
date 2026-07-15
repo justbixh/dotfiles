@@ -1,8 +1,9 @@
-# ── Zsh dotfile — sourced from ~/.zshrc ──────────────────────────
-# ~/.config/zsh/my.zshrc
+# ~/.zshrc
 
 # ── PATH ─────────────────────────────────────────────────────────
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
+command -v nerdfetch &> /dev/null && nerdfetch
 
 # ── editor ───────────────────────────────────────────────────────
 export EDITOR=nvim
@@ -27,6 +28,7 @@ export MANROFFOPT='-c'   # prevents col from getting raw troff codes
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
+setopt noclobber              # guards against accidental file overwriting from `>`
 setopt append_history         # Append new history lines immediately, not on shell exit
 setopt share_history          # Share history across all open terminal sessions in real-time
 setopt hist_ignore_all_dups   # If a new command duplicates an older one, remove the older one
@@ -61,6 +63,34 @@ zstyle ':completion:*' ignored-patterns '.git'
 zstyle ':completion:*' rehash false  # improves performance
 zstyle ':completion:*' use-cache true
 
+# ── keybindings ────────────────────────────────────────────────────
+# Cursor shape per vi mode: Insert mode: beam (|) cursor; normal/visual: block cursor
+ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
+ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+
+# zsh-vi-mode wipes all bindkeys on init — re-register everything here.
+# This is a hook function: must be *defined* before plugins.zsh sources
+# zsh-vi-mode below, but zsh-vi-mode itself calls it after its own init finishes —
+# so placement here (before sourcing) is required, exact position otherwise doesn't matter.
+zvm_after_init() {
+  bindkey '^[[1;5C' forward-word                 # Ctrl+Right  — jump forward one word
+  bindkey '^[[1;5D' backward-word                # Ctrl+Left   — jump backward one word
+  bindkey '^\' autosuggest-toggle                # Ctrl+\      — toggle inline autosuggestions
+  bindkey '^[[A' history-substring-search-up     # Up          — history search by prefix typed so far
+  bindkey '^[[B' history-substring-search-down   # Down        — history search by prefix typed so far
+
+  zi-widget() { zi; zle reset-prompt; }
+  zle -N zi-widget
+  bindkey '^G' zi-widget                         # Ctrl+G      — zoxide interactive directory jump
+
+  # re-registered here because zsh-vi-mode overrides atuin's keybindings on init
+  eval "$(atuin init zsh --disable-up-arrow)"
+
+  # rebind after all plugins load, in case any plugin resets ^I
+  bindkey '^I' fzf-completion
+}
+
 bindkey '^e' autosuggest-accept 
 
 # ── misc ──────────────────────────────────────────────────────────
@@ -69,7 +99,6 @@ alias myzsh='$EDITOR ~/.config/zsh/my.zshrc'
 alias reload='exec zsh -l'
 
 # ── safety nets ───────────────────────────────────────────────────
-setopt noclobber # refuces accidental file overwriting with `>`
 # alias rm='rm -i'
 # alias rm=trash
 alias cp='cp -i'
@@ -176,7 +205,7 @@ alias dpa="docker ps -a"
 alias dl="docker ps -l -q"
 alias dx="docker exec -it"
 
-# K8S
+# ── kubernetes ─────────────────────────────────────────────────────
 export KUBECONFIG=~/.kube/config
 alias k="kubectl"
 alias ka="kubectl apply -f"
@@ -213,7 +242,6 @@ ltreealp() { eza --tree --group-directories-first --git-ignore --ignore-glob=".g
 
 # ── bat ───────────────────────────────────────────────────────────
 alias cat='bat'
-#alias cat='bat --style=grid'
 alias catn='bat --style=numbers'
 alias batp='bat --plain'
 
@@ -238,6 +266,7 @@ ya() {
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
 # ── starship ──────────────────────────────────────────────────────
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
 command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # ── atuin ─────────────────────────────────────────────────────────
@@ -245,12 +274,13 @@ command -v starship &>/dev/null && eval "$(starship init zsh)"
 if [[ -f "$HOME/.atuin/bin/env" ]]; then
   . "$HOME/.atuin/bin/env"
   command -v atuin &>/dev/null && eval "$(atuin init zsh)"
-fi
+fi # re-registers shortcuts in binding.zsh, cause plugins.zsh-vi-mode overrides atuin keybindings
+# to remove atuin: delete this block + the `eval atuin init` line in zvm_after_init(), then `rm -rf ~/.atuin` (or `brew uninstall atuin`)
 
 # ── sub configs ───────────────────────────────────────────────────
 [[ -f ~/.config/fzf/fzf.sh ]]        && source ~/.config/fzf/fzf.sh
 [[ -f ~/.config/zsh/plugins.zsh  ]]  && source ~/.config/zsh/plugins.zsh  
-[[ -f ~/.config/zsh/bindings.zsh ]]  && source ~/.config/zsh/bindings.zsh
+# [[ -f ~/.config/zsh/bindings.zsh ]]  && source ~/.config/zsh/bindings.zsh
 [[ -f ~/.config/zsh/functions.zsh ]] && source ~/.config/zsh/functions.zsh
 
 # ── tool completions ──────────────────────────────────────────────
@@ -260,5 +290,5 @@ command -v kubectl       &>/dev/null && source <(kubectl completion zsh)   # kub
 command -v docker        &>/dev/null && source <(docker completion zsh)    # docker run <Tab>, docker ps <Tab>
 command -v aws_completer &>/dev/null && complete -C aws_completer aws      # aws s3 <Tab>, aws ec2 <Tab>
 
-# ── local overrides (not in git: tokens, proxy, JAVA_HOME, work email) ───
-# [ -f ~/.config/shell/local ] && source ~/.config/shell/local
+# ── local overrides ───
+[[ -f ~/.local.zshrc ]] && source ~/.local.zshrc
