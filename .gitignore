@@ -3,6 +3,7 @@
 # Machine-local shell config
 stow/shell/.config/shell/local
 zsh/.config/zsh/plugins/
+tmux/.config/tmux/plugins/
 
 # macOS
 .DS_Store

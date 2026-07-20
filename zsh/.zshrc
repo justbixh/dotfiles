@@ -145,6 +145,7 @@ alias tl="tmux ls"
 alias ta="tmux attach -t"
 alias tk="tmux kill-session -t"
 alias tks="tmux kill-server"
+alias tlk="tmux list-keys"
 
 # session switcher from outside tmux
 tt() {
