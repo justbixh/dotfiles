@@ -95,7 +95,6 @@ bindkey '^e' autosuggest-accept
 
 # ── misc ──────────────────────────────────────────────────────────
 alias zshrc='$EDITOR ~/.zshrc'
-alias myzsh='$EDITOR ~/.config/zsh/my.zshrc'
 alias reload='exec zsh -l'
 
 # ── safety nets ───────────────────────────────────────────────────
