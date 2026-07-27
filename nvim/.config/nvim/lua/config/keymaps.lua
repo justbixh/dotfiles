@@ -4,3 +4,6 @@
 
 -- Copy to system clipboard on mouse release in Visual mode
 vim.keymap.set("v", "<LeftRelease>", '"+ygv', { desc = "Copy mouse selection to system clipboard" })
+
+-- jj → Escape in insert mode
+vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit insert mode" })

@@ -66,6 +66,7 @@ zstyle ':completion:*' use-cache true
 # ── keybindings ────────────────────────────────────────────────────
 # Cursor shape per vi mode: Insert mode: beam (|) cursor; normal/visual: block cursor
 ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jj   # jj → vi normal mode (like Esc)
 ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
 ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
 
