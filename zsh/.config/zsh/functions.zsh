@@ -3,6 +3,11 @@
 cl() { cd "${1:-$HOME}" && l } # cd + ls
 mkcd() { mkdir -p "$1" && cd "$1" } 
 
+# datetime-stamped backup, dash-separated YYYY-MM-DD-HHMMSS
+backup() {
+  cp -r "$1" "${1}.bak-$(date +%Y-%m-%d-%H%M%S)"
+}
+
 # Backs up files into .bak/, preserving attributes
 # output: .sndrc.2026-07-03-143205.bak
 backup() {
