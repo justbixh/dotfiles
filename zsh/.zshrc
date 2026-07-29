@@ -222,6 +222,8 @@ alias ke="kubectl exec -it"
 alias kcns='kubectl config set-context --current --namespace'
 
 # ── eza ───────────────────────────────────────────────────────────
+alias ls='eza --icons'
+alias ll='eza -l --icons --git'
 alias l='eza -l --icons --sort=modified --git'
 alias tree='l --tree'
 alias sl='eza -l --icons --sort=modified --git --color=always | tail -n 30'
