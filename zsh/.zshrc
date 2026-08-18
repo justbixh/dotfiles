@@ -100,18 +100,20 @@ alias reload='exec zsh -l'
 
 # ── safety nets ───────────────────────────────────────────────────
 # alias rm='rm -i'
-# alias rm=trash
+# Safer file actions: macOS moves files to Trash
+alias rm='trash'   # install: brew install trash
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -pv'
 
-# ── navigation ────────────────────────────────────────────────────
+# ── shell - quality of life ───────────────────────────────────────
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ......="cd ../../../../.."
 alias countfiles='for t in files links directories; do echo $(find . -type ${t:0:1} | wc -l) $t; done'
+alias path='echo $PATH | tr ":" "\n"'
 
 # ── disk / network ────────────────────────────────────────────────
 alias df='df -h'
@@ -142,10 +144,15 @@ alias gundo='git reset HEAD~1'
 # ── tmux ───────────────────────────────────────────────────────────
 alias t="tmux"
 alias tl="tmux ls"
+alias tn='tmux new-session -s'
 alias ta="tmux attach -t"
 alias tk="tmux kill-session -t"
-alias tks="tmux kill-server"
+alias tka="tmux kill-server"
 alias tlk="tmux list-keys"
+
+alias tm='tmux new-session -A -s main'
+alias tw='tmux new-session -A -s work'
+alias tmon='tmux new-session -A -s monitor'
 
 # session switcher from outside tmux
 tt() {
