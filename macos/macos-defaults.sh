@@ -6,6 +6,9 @@
 
 echo "Setting macOS defaults..."
 
+# set hostname
+sudo scutil --set HostName "Bishnu-MacBook-Air"
+
 # --- UI & Finder Preferences ---
 defaults write com.apple.dock autohide -bool true                   # Dock: auto-hide (default: false)
 defaults write com.apple.finder AppleShowAllExtensions -bool true   # Finder: always show file extensions (default: false)
