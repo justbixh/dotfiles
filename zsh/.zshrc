@@ -1,6 +1,7 @@
 # ~/.zshrc
 
 # ── PATH ─────────────────────────────────────────────────────────
+typeset -U path PATH # keeps path clean
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
 command -v nerdfetch &> /dev/null && nerdfetch
