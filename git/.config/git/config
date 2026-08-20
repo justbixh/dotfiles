@@ -5,6 +5,12 @@
 #    name = Bish
 #    email = helloatbish@gmail.
 
+[include]
+    path = ~/.gitconfig.local
+
+[includeIf "gitdir:~/pcc-kubernetes-manifests/"]
+    path = ~/.gitconfig.work
+
 [core]
     pager  = delta
     editor = vim
@@ -45,6 +51,5 @@
     undo = reset --soft HEAD~1
     # Show stashes with dates
     stashes = stash list --format="%gd %cd %s" --date=short
-
-[include]
-    path = ~/.gitconfig.local
+[credential]
+	helper = store
