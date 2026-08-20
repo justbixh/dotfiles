@@ -101,7 +101,7 @@ alias reload='exec zsh -l'
 # ── safety nets ───────────────────────────────────────────────────
 # alias rm='rm -i'
 # Safer file actions: macOS moves files to Trash
-alias rm='trash'   # install: brew install trash
+# alias rm='trash'   # install: brew install trash
 alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -pv'
@@ -296,9 +296,9 @@ fi # re-registers shortcuts in binding.zsh, cause plugins.zsh-vi-mode overrides 
 # ── tool completions ──────────────────────────────────────────────
 # Not from zsh-completions — each tool generates its own script from its binary at runtime
 # source <(...) calls compdef internally — needs compinit already run (inside plugins.zsh) - must come after plugins.zsh
-command -v kubectl       &>/dev/null && source <(kubectl completion zsh)   # kubectl get <Tab>, kubectl --<Tab>
-command -v docker        &>/dev/null && source <(docker completion zsh)    # docker run <Tab>, docker ps <Tab>
-command -v aws_completer &>/dev/null && complete -C aws_completer aws      # aws s3 <Tab>, aws ec2 <Tab>
+# command -v kubectl       &>/dev/null && source <(kubectl completion zsh)   # kubectl get <Tab>, kubectl --<Tab>
+# command -v docker        &>/dev/null && source <(docker completion zsh)    # docker run <Tab>, docker ps <Tab>
+# command -v aws_completer &>/dev/null && complete -C aws_completer aws      # aws s3 <Tab>, aws ec2 <Tab>
 
 # ── local overrides ───
-[[ -f ~/.local.zshrc ]] && source ~/.local.zshrc
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
