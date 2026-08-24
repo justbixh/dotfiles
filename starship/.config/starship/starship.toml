@@ -18,7 +18,7 @@ vimcmd_symbol = '[V](bold green) '
 
 [username]
 disabled = false
-show_always = false
+show_always = true
 format = "[$user]($style) "
 #style_user = "bold cyan"
 style_root = "bold red"
