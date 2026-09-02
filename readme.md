@@ -17,7 +17,6 @@
 ![Shell](https://img.shields.io/badge/shell-bash%20%7C%20zsh-1a1a2e?style=flat-square&logo=gnubash&logoColor=white)
 ![Stow](https://img.shields.io/badge/managed%20by-GNU%20Stow-4a9eff?style=flat-square)
 ![OS](https://img.shields.io/badge/OS-Ubuntu%20%7C%20RHEL%20%7C%20macOS-orange?style=flat-square&logo=linux&logoColor=white)
-![License](https://img.shields.io/badge/license-do%20whatever-green?style=flat-square)
 
 </div>
 
@@ -189,6 +188,5 @@ and more. See Brewfile
 
 <div align="center">
 
-*Never lose your dotfiles. even if your laptop is nuked*
 
 </div>

@@ -4,15 +4,11 @@
 
 -- ── Clipboard ─────────────────────────────────────────────────────────────────
 -- Use the system clipboard for all yank/delete/paste operations (y, d, p, etc.)
--- On WSL: win32yank bridges WSL → Windows clipboard directly, no display server needed.
--- On macOS: pbcopy/pbpaste picked up automatically via unnamedplus.
--- On Linux with X/Wayland: xclip/xsel/wl-clipboard picked up automatically.
 vim.opt.clipboard = "unnamedplus"
 
--- The wsl guard only fires on WSL — macOS and bare Linux automatically use their native providers (pbcopy, xclip, wl-clipboard) via the unnamedplus chain.
 if vim.fn.has("wsl") == 1 then
-  -- win32yank.exe must be on PATH or in ~/.local/bin
-  -- Install: copy win32yank.exe to ~/.local/bin/win32yank (already done)
+  -- WSL: win32yank bridges WSL → Windows clipboard
+  -- Install: copy win32yank.exe to ~/.local/bin/win32yank (no .exe extension)
   vim.g.clipboard = {
     name = "win32yank-wsl",
     copy = {
@@ -25,4 +21,22 @@ if vim.fn.has("wsl") == 1 then
     },
     cache_enabled = true,
   }
+else
+  -- macOS / Linux: use Neovim's built-in OSC 52 clipboard (requires Neovim 0.10+)
+  -- Works inside tmux as long as: set -g allow-passthrough on (already set)
+  -- No external tools (pbcopy, xclip, wl-copy) needed.
+  local osc52 = require("vim.ui.clipboard.osc52")
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = osc52.copy("+"),
+      ["*"] = osc52.copy("*"),
+    },
+    paste = {
+      ["+"] = osc52.paste("+"),
+      ["*"] = osc52.paste("*"),
+    },
+  }
 end
+
+
