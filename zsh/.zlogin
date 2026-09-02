@@ -1,5 +1,5 @@
 # ~/.zlogin
-command -v nerdfetch &> /dev/null && nerdfetch
+#command -v nerdfetch &> /dev/null && nerdfetch
 echo -e "\e[0m\e[90m      ___     \e[0m
 \e[0m\e[90m     (\e[0m\e[37m.. \e[0m\e[90m\\    \e[0m
 \e[0m\e[90m     (\e[0m\e[33m<> \e[0m\e[90m|    \e[0m
