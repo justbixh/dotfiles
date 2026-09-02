@@ -1,6 +1,6 @@
 # ~/.dotfiles/.stowrc
 
---target=/home/bish
+--target=/Users/bishnu
 --verbose=1
 --ignore=more
 --ignore=readme.md
