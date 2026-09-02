@@ -32,6 +32,12 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 15
 # Disable press-and-hold accent menu (fixes severe key repeat lockups in Vim)
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
+# remove the delay entirely (default = 0.5)
+defaults write com.apple.dock autohide-delay -float 0
+
+# make the sliding animation faster (default = 1.0)
+defaults write com.apple.dock autohide-time-modifier -float 0.4
+
 # --- Apply Changes ---
 killall Dock
 killall Finder
