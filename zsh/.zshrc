@@ -149,10 +149,7 @@ alias ta="tmux attach -t"
 alias tk="tmux kill-session -t"
 alias tka="tmux kill-server"
 alias tlk="tmux list-keys"
-
 alias tm='tmux new-session -A -s main'
-alias tw='tmux new-session -A -s work'
-alias tmon='tmux new-session -A -s monitor'
 
 # session switcher from outside tmux
 tt() {
@@ -160,50 +157,30 @@ tt() {
   session=$(tmux ls -F '#S' 2>/dev/null | fzf-tmux -w 40 -h 12% --reverse) && tmux new -As "$session"
 }
 
-tt() {
-  if [ -n "$TMUX" ]; then
-    echo "Already inside tmux — use your session switcher/prefix binding instead."
-    return 1
-  fi
-
-  local session
-  session=$(tmux ls -F '#S' 2>/dev/null | COLUMNS=40 fzf --height=~40% --reverse)
-  [ -z "$session" ] && return
-
-  tmux new -As "$session"
-}
-
 # ── system ─────────────────────────────────────────────────────────
-alias sys='sudo systemctl'
-alias scs='systemctl status'
-alias scr='sudo systemctl restart'
-alias sca='sudo systemctl start'
-alias sck='sudo systemctl stop'
-alias sce='sudo systemctl enable'
-alias scd='sudo systemctl disable'
-alias scrl='sudo systemctl reload'
-alias scdr='sudo systemctl daemon-reload'
+alias sy='sudo systemctl'
+alias sys='sudo systemctl start'
+alias syst='systemctl status'
+alias syr='sudo systemctl reload'
+alias syre='sudo systemctl restart'
+alias syk='sudo systemctl stop'
+alias sydr='sudo systemctl daemon-reload'
+alias syrf='sudo systemctl reset-failed'
 
-alias scls='systemctl list-units --type=service'
-alias sclsa='systemctl list-units --type=service --all'
-alias scf='systemctl list-unit-files --type=service'
-alias scrf='sudo systemctl reset-failed'
+alias syen='sudo systemctl enable'
+alias syd='sudo systemctl disable'
 
-alias jc='sudo journalctl'
-alias jcu='sudo journalctl -u'          # jcu <unit>
-alias jcf='sudo journalctl -f -u'       # jcf <unit> -> follow logs
-alias jce='sudo journalctl -u --since today'
+alias syls='systemctl list-units --type=service'
+alias sylsa='systemctl list-units --type=service --all'
+alias sylf='systemctl list-units --state=failed'
+alias syf='systemctl list-unit-files --type=service'
 
-screstart() {
+alias j='sudo journalctl'
+alias ju='sudo journalctl -u'
+alias jf='sudo journalctl -f -u' 
+
+syrt() {
   sudo systemctl restart "$1" && sudo journalctl -u "$1" -f
-}
-
-scstatusall() {
-  for svc in "$@"; do
-    echo "── $svc ──"
-    systemctl status "$svc" --no-pager -l | head -n 5
-    echo
-  done
 }
 
 # ── docker ─────────────────────────────────────────────────────────
@@ -290,8 +267,8 @@ fi # re-registers shortcuts in binding.zsh, cause plugins.zsh-vi-mode overrides 
 # ── sub configs ───────────────────────────────────────────────────
 [[ -f ~/.config/fzf/fzf.sh ]]        && source ~/.config/fzf/fzf.sh
 [[ -f ~/.config/zsh/plugins.zsh  ]]  && source ~/.config/zsh/plugins.zsh  
-# [[ -f ~/.config/zsh/bindings.zsh ]]  && source ~/.config/zsh/bindings.zsh
 [[ -f ~/.config/zsh/functions.zsh ]] && source ~/.config/zsh/functions.zsh
+# [[ -f ~/.config/zsh/bindings.zsh ]]  && source ~/.config/zsh/bindings.zsh
 
 # ── tool completions ──────────────────────────────────────────────
 # Not from zsh-completions — each tool generates its own script from its binary at runtime
