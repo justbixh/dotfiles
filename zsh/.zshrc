@@ -177,7 +177,7 @@ alias syf='systemctl list-unit-files --type=service'
 
 alias j='sudo journalctl'
 alias ju='sudo journalctl -u'
-alias jf='sudo journalctl -f -u' 
+alias juf='sudo journalctl -f -u' 
 
 syrt() {
   sudo systemctl restart "$1" && sudo journalctl -u "$1" -f
