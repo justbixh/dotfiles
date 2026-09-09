@@ -8,6 +8,7 @@ cask "sublime-text"
 cask "sublime-merge"
 tap "zennotes/tap"; cask "zennotes/tap/zennotes"
 cask "notion"
+cask "wispr-flow"
 
 # --- development ---
 cask "wezterm"
