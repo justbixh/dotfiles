@@ -278,4 +278,4 @@ fi # re-registers shortcuts in binding.zsh, cause plugins.zsh-vi-mode overrides 
 # command -v aws_completer &>/dev/null && complete -C aws_completer aws      # aws s3 <Tab>, aws ec2 <Tab>
 
 # ── local overrides ───
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+[[ -f ~/.local.zshrc ]] && source ~/.local.zshrc
