@@ -104,13 +104,21 @@ elif [ -n "$BASH_VERSION" ]; then
   }
 fi
 
-
+# to be removed
 if [ -n "$ZSH_VERSION" ]; then
-  zle -N _fzf_file_no_hidden
-  bindkey '^O' _fzf_file_no_hidden # Ctrl+O for fzf file picker (hidden files excluded)
+  # zle -N _fzf_file_no_hidden
+  # bindkey '^O' _fzf_file_no_hidden # Ctrl+O for fzf file picker (hidden files excluded)
 elif [ -n "$BASH_VERSION" ]; then 
   bind -r '"\C-r"' # unbind Ctrl+R so atuin can take over history search
-  bind -x '"\C-o": _fzf_file_no_hidden' # Ctrl+O for fzf file picker (hidden files excluded)
+  # bind -x '"\C-o": _fzf_file_no_hidden' # Ctrl+O for fzf file picker (hidden files excluded)
 fi
 
-
+# ff: fuzzy find a file anywhere in selected roots, open in tmux + nvim (Ctrl+O)
+if [ -n "${ZSH_VERSION:-}" ]; then
+  ff-widget() { zle -I; "$HOME/.config/fzf/bin/ff"; zle reset-prompt }
+  zle -N ff-widget
+  bindkey '^O' ff-widget
+elif [ -n "${BASH_VERSION:-}" ]; then
+  bind -x '"\C-o": "$HOME/.config/fzf/bin/ff"'
+fi
+alias ff="$HOME/.config/fzf/bin/ff"

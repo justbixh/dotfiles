@@ -1,0 +1,72 @@
+# fzf/.config/fzf/bin/ff
+
+#!/usr/bin/env bash
+# Fuzzy find files in selected roots, open in nvim inside a tmux session named after the file.
+set -euo pipefail
+
+FD=$(command -v fd || command -v fdfind) || { echo "install fd (fd-find)"; exit 1; }
+BAT=$(command -v bat || command -v batcat || true)
+
+# Override per call: FF_ROOTS="$HOME/work:$HOME/notes" ff
+if [ -n "${FF_ROOTS:-}" ]; then
+  IFS=: read -r -a ROOTS <<< "$FF_ROOTS"
+elif [ "$(uname)" = "Darwin" ]; then
+  ROOTS=("$HOME" /etc /opt /usr/local /Volumes)
+else
+  ROOTS=("$HOME" /etc /opt /srv /usr/local /mnt)
+fi
+
+# Hidden inside the roots. Plain names match at any depth, paths need the **/ prefix.
+EXCLUDES=(
+  # VCS and dependencies
+  .git node_modules __pycache__ .venv venv
+  # Build output
+  target build dist out .gradle .idea
+  # Caches and package stores
+  .cache .m2 .npm .cargo .rustup .sdkman .nvm .pyenv snap .var
+  .docker .minikube .mozilla
+  '**/.local/share' '**/.local/lib' '**/.local/state' '**/.kube/cache'
+  '**/.config/google-chrome' '**/.config/chromium' '**/.config/Code' '**/.config/JetBrains'
+  # macOS
+  Library .Trash .DS_Store
+  # Binary and media files
+  '*.{class,jar,o,so,a,pyc,lock,log,swp}'
+  '*.{png,jpg,jpeg,gif,webp,svg,heic,mp4,mkv,mov,mp3,m4a,wav}'
+  '*.{zip,tar,gz,iso,pdf,woff,woff2}'
+  .codex .antigravity-ide .vscode .gemini .cagent '**/.tmux/plugins'
+  Library .Trash .DS_Store Pictures Music Movies
+)
+
+roots=()
+for r in "${ROOTS[@]}"; do [ -d "$r" ] && roots+=("$r"); done
+
+args=(--type f --hidden --color never)
+for e in "${EXCLUDES[@]}"; do args+=(--exclude "$e"); done
+
+if [ -n "$BAT" ]; then
+  preview="$BAT --color=always --style=numbers --line-range=:200 {}"
+else
+  preview="head -200 {}"
+fi
+
+file=$("$FD" "${args[@]}" . "${roots[@]}" 2>/dev/null | fzf \
+  --height 70% --reverse --border \
+  --prompt 'file> ' \
+  --preview "$preview" \
+  --preview-window 'right:55%') || exit 0
+
+[ -z "$file" ] && exit 0
+
+# tmux session names can't contain . or :
+name=$(basename "$file" | tr '.: ' '___')
+dir=$(dirname "$file")
+
+if ! tmux has-session -t "=$name" 2>/dev/null; then
+  tmux new-session -d -s "$name" -c "$dir" nvim "$file"
+fi
+
+if [ -n "${TMUX:-}" ]; then
+  tmux switch-client -t "=$name"
+else
+  tmux attach-session -t "=$name"
+fi
