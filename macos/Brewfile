@@ -9,6 +9,7 @@ cask "antigravity-ide"
 cask "visual-studio-code"
 cask "zed"
 cask "dbeaver-community"
+cask "postman"
 # cask "datagrip"
 # cask "sublime-text"
 
