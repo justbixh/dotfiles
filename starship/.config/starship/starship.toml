@@ -48,7 +48,7 @@ style = "white"
 [git_branch]
 disabled = false
 format = "on [$symbol$branch]($style) "
-symbol = " "
+symbol = " "
 style = "bold purple"
 
 [git_status]
@@ -113,5 +113,3 @@ disabled = false
 threshold = 80
 format = "[🧮 ${ram_pct}]($style) "
 style = "bold dimmed green"
-
-
