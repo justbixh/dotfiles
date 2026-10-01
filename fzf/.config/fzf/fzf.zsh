@@ -73,7 +73,7 @@ _fzf_git_fzf() {
     --bind 'ctrl-/:change-preview-window(down,50%|hidden|)' "$@"
 }
 
-# ── ff (Ctrl+O): file finder, opens in tmux + nvim ──────────────────────────
+# ── Ctrl-P: Fuzzy file finder; opens in nvim ───────────────────────────────────────────
 # fuzzy find a file anywhere in selected roots
 ff-widget() {
   zle -I
@@ -81,5 +81,13 @@ ff-widget() {
   zle reset-prompt
 }
 zle -N ff-widget
-bindkey '^O' ff-widget
 alias ff="$HOME/.config/fzf/bin/ff"
+
+# ── Ctrl-O: Fuzzy folder finder ───────────────────────────────────────────
+fo-widget() {
+  zle -I
+  "$HOME/.config/fzf/bin/fo"
+  zle reset-prompt
+}
+zle -N fo-widget
+alias fo="$HOME/.config/fzf/bin/fo"

@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Fuzzy-pick a folder and switch to its tmux session, creating it if needed.
+
+FD=$(command -v fd || command -v fdfind) || { echo "install fd (fd-find)"; exit 1; }
+
+directory=$(
+  "$FD" --type d --hidden --color never --exclude .git --exclude node_modules . "${PWD}" 2>/dev/null |
+    fzf --height 70% --reverse --border \
+      --prompt 'folder> ' \
+      --preview 'eza --tree --color=always {} | head -200' \
+      --preview-window 'right:55%'
+) || exit 0
+
+[ -n "$directory" ] || exit 0
+directory=$(cd "$directory" && pwd -P)
+name=$(basename "$directory" | tr '.: ' '___')
+
+if tmux has-session -t "=$name" 2>/dev/null; then
+  session_directory=$(tmux display-message -p -t "=$name" '#{session_path}')
+  if [ "$session_directory" != "$directory" ]; then
+    suffix=$(printf '%s' "$directory" | cksum | cut -d ' ' -f1)
+    name="${name}-${suffix}"
+  fi
+fi
+
+if ! tmux has-session -t "=$name" 2>/dev/null; then
+  tmux new-session -d -s "$name" -c "$directory"
+fi
+
+if [ -n "${TMUX:-}" ]; then
+  tmux switch-client -t "=$name"
+else
+  tmux attach-session -t "=$name"
+fi
