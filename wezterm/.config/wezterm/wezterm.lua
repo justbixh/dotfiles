@@ -37,7 +37,7 @@ return {
 
 	-- ── appearance ─────────────────────────────────────────────────────────
 	color_scheme = "Catppuccin Frappe", -- "Batman" "Nord (Gogh)"
-	-- font = wezterm.font("MesloLGS Nerd Font Mono", { weight = "Regular" }),
+	font = wezterm.font("MesloLGS Nerd Font Mono", { weight = "Regular" }),
 	font_size = 14.0,
 	send_composed_key_when_left_alt_is_pressed = false, -- option works like alt
 	enable_tab_bar = false,
