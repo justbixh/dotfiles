@@ -32,6 +32,7 @@ Config lives at `~/.config/tmux/tmux.conf`, managed via GNU Stow from this repo'
    ```
    Inside tmux, press `prefix + I` (capital i) to fetch and install all plugins listed in `tmux.conf`:
    - `tmux-plugins/tpm`
+   - `pschmitt/tmux-ssh-split` (SSH-aware splits and windows)
    - `omerxx/tmux-floax` (floating popup shell)
    - `omerxx/tmux-sessionx` (fzf session switcher)
 
@@ -44,7 +45,13 @@ Config lives at `~/.config/tmux/tmux.conf`, managed via GNU Stow from this repo'
    - `prefix + \`` → floax floating popup
    - `prefix + s` → sessionx fzf session switcher
    - `prefix + g` → lazygit popup (requires `lazygit` installed separately)
+   - `prefix + |` / `prefix + _` → side-by-side / stacked SSH-aware split
+   - `prefix + c` → SSH-aware new window
+   - `prefix + o` → pick a folder and open its tmux session
+   - `prefix + p` → pick a file and open it in Neovim
    - `prefix + r` → reload config in place
+
+   Remote working-directory preservation requires an OSC 7 prompt or a `PS1` the plugin can parse.
 
 ## Dependencies not covered by Stow
 
