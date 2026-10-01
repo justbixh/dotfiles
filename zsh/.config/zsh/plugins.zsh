@@ -23,7 +23,6 @@ zplugin-update() {
 }
 
 # ── zsh-autosuggestions ───────────────────────────────────────────
-#
 # Ghost text         — shows suggestion from history as you type (grayed out)
 # Accept full        — Right arrow or Ctrl+E to accept full suggestion
 # Accept word        — Ctrl+Right to accept next word only
@@ -33,7 +32,6 @@ zplugin-update() {
 _zplugin_load zsh-users zsh-autosuggestions
 
 # ── zsh-history-substring-search ─────────────────────────────────
-#
 # Prefix search      — Up/Down searches history by what you've already typed
 # Fuzzy-ish          — finds the substring anywhere in the command
 # Highlight match    — matched portion is highlighted in results
@@ -41,25 +39,7 @@ _zplugin_load zsh-users zsh-autosuggestions
 # Works with vi mode — bind to ^[[A/^[[B inside zvm_after_init
 _zplugin_load zsh-users zsh-history-substring-search
 
-# ── zsh-completions ───────────────────────────────────────────────
-#
-# Extra scripts      — ~150 community _command scripts not bundled with Zsh
-# Covers             — docker, kubectl, aws, cargo, git-extras, and more
-# fpath only         — just adds its folder to $fpath; compinit below activates them
-# Must come before   — compinit (so its scripts are in $fpath when compinit scans)
-_zplugin_load zsh-users zsh-completions
-
-# ── compinit ──────────────────────────────────────────────────────
-#
-# Scans $fpath       — finds all _command completion scripts registered above
-# Wires them up      — makes docker/kubectl/aws <Tab> actually work
-# Must come after    — zsh-completions (needs its folder in $fpath first)
-# Must come before   — zsh-vi-mode and zsh-syntax-highlighting
-fpath=("$HOME/.docker/completions" $fpath)   # Docker Desktop CLI completions
-autoload -Uz compinit && compinit -C   # -C disables security checks on dump file
-
 # ── zsh-vi-mode ───────────────────────────────────────────────────
-#
 # Cursor shape        — beam in insert, block in normal/visual (configurable)
 # Mode switching      — Esc to normal, i/a/I/A to insert, v for visual
 # Text objects        — ciw, di", ca(, ya{ etc. work properly
@@ -73,24 +53,15 @@ autoload -Uz compinit && compinit -C   # -C disables security checks on dump fil
 _zplugin_load jeffreytse zsh-vi-mode
 
 # ── zsh-syntax-highlighting ───────────────────────────────────────
-#
 # Command highlight  — valid commands green, unknown/typos red
 # Path highlight     — existing paths underlined, missing paths not
 # String highlight   — quoted strings colored distinctly
 # Bracket matching   — matching brackets highlighted on cursor
 # Alias expansion    — aliases shown in distinct color
 # Must load last     — wraps ZLE widgets; loading before others breaks them
-_zplugin_load zsh-users zsh-syntax-highlighting # always last
 
-# ── fast-syntax-highlighting ──────────────────────────────────────
-#
-# Everything in zsh-syntax-highlighting, plus:
-# Themes             — built-in themes via `fast-theme`, unlike zsh-syntax-highlighting
-# Chroma highlighters — language-aware highlighting inside $() git, make, awk etc.
-# Secondary colors   — distinguishes flags, options, values with separate colors
-# Correct cmdsubst   — highlights inside $(command substitution) properly
-# Performance        — faster than zsh-syntax-highlighting on long lines
-# Per-word coloring  — each word in a pipeline gets context-aware color
-# `fast-theme -l`    — list available themes
-# `fast-theme xyz`   — switch theme on the fly
-# _zplugin_load zdharma-continuum fast-syntax-highlighting # always last
+# Skip highlighting very long command lines for responsiveness.
+# Syntax highlighting now skips lines longer than 512 characters, which may prevent its redraw hook from stalling rapid b motions on long commands. 
+ZSH_HIGHLIGHT_MAXLENGTH=512
+
+_zplugin_load zsh-users zsh-syntax-highlighting # always last

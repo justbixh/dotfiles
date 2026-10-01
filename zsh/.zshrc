@@ -1,121 +1,117 @@
 # ~/.zshrc
+setopt noclobber              # guards against accidental file overwriting from `>`
 
 # ── PATH ─────────────────────────────────────────────────────────
-typeset -U path PATH # keeps path clean
+typeset -U path PATH # keep PATH free of duplicates
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
 
-# ── editor ───────────────────────────────────────────────────────
+# ── editor and pager ─────────────────────────────────────────────
 export EDITOR=nvim
 export VISUAL="${EDITOR}"
-export SUDO_EDITOR=nvim
-alias v='$EDITOR'
-alias vi='$EDITOR'
-alias c='clear'
-alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs $EDITOR' # tmux popup nvim https://youtube.com/shorts/K1FxGIG_lcA?si=TpBDYrRDQ6BE2lrR
+export SUDO_EDITOR="${EDITOR}"
 
-# ── pager ────────────────────────────────────────────────────────
 export PAGER=less
 export LESS='-R -F --no-init'
-# -R         → pass ANSI color codes through (needed for bat, git diff, man)
-# -F         → quit immediately if output fits on one screen (like cat)
-# --no-init  → don't clear screen on exit (less jarring)
-
 export MANPAGER='sh -c "col -bx | bat --language=man --style=plain --paging=always"'
-export MANROFFOPT='-c'   # prevents col from getting raw troff codes
+export MANROFFOPT='-c' 
+
+alias vi='$EDITOR'
+alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs $EDITOR' 
 
 # ── history ──────────────────────────────────────────────────────
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-setopt noclobber              # guards against accidental file overwriting from `>`
-setopt append_history         # Append new history lines immediately, not on shell exit
-setopt share_history          # Share history across all open terminal sessions in real-time
-setopt hist_ignore_all_dups   # If a new command duplicates an older one, remove the older one
-setopt hist_ignore_dups       # Don't save a command if it matches the previous one
-setopt hist_ignore_space      # Don't record lines that begin with a space
-setopt hist_verify            # Don't execute expanded history immediately — show it first
-setopt hist_expire_dups_first # When history fills up, delete oldest duplicates first
-setopt hist_find_no_dups      # Don't show duplicates when searching history
 HISTORY_IGNORE='(rm *|rf *)'
 
+setopt share_history          # share history across sessions in real time 
+setopt hist_ignore_all_dups   # a repeated command removes its older copy, so the newest run stays on top
+setopt hist_ignore_space      # don't record lines that begin with a space
+setopt hist_verify            # show expanded history (e.g. !!) before executing it
+
 # ── shell options ─────────────────────────────────────────────────
-setopt auto_cd                # Type a directory name alone to cd into it
-setopt no_beep                # Disable audio beeps on errors or tab-completion failures
-# setopt correct                # Suggest corrections for mistyped command names
-# setopt correct_all            # Suggest corrections for arguments and filenames too
-setopt numeric_glob_sort      # Sort file10 after file9, not after file1
-setopt glob_dots  # include dotfiles into completion by default
+setopt auto_cd                # typing a directory name alone cds into it
+setopt no_beep                # no beeps on errors or completion failures
+setopt numeric_glob_sort      # sort file10 after file9, not after file1
+setopt glob_dots              # include dotfiles in globs and completions
 
 # ── completion ────────────────────────────────────────────────────
-# zstyle settings are read when compinit runs (inside zsh/plugins.zsh)
-# Set them here first so they're ready when compinit scans $fpath
-# continuation after dotfiles/zsh/.config/zsh/plugins.zsh
-
-zstyle ':completion:*' menu select                        # Arrow-key navigable menu — Tab opens, arrows move, Enter selects
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"   # Color files and dirs in the menu using $LS_COLORS (same as ls)
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'    # Case-insensitive: "doc" matches "Documents"
-zstyle ':completion:*' descriptions format '[%d]'         # Group label above each section e.g. [commands] [options]
-
-zstyle ':completion:*' file-sort modification  # show recently used files first
+# zstyle settings are read when compinit runs (in ~/.config/zsh/plugins.zsh),
+# so they are set here first, before compinit scans $fpath.
+zstyle ':completion:*' menu select                        # arrow-key menu: Tab opens, arrows move, Enter selects
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"   # color menu entries like ls
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'    # case-insensitive: "doc" matches "Documents"
+zstyle ':completion:*' descriptions format '[%d]'         # group labels, e.g. [commands] [options]
+zstyle ':completion:*' file-sort modification             # recently modified files first
 zstyle ':completion:*' list-dirs-first yes
 zstyle ':completion:*' ignored-patterns '.git'
-zstyle ':completion:*' rehash false  # improves performance
+zstyle ':completion:*' rehash false                       # better performance
 zstyle ':completion:*' use-cache true
 
-# ── keybindings ────────────────────────────────────────────────────
-# Cursor shape per vi mode: Insert mode: beam (|) cursor; normal/visual: block cursor
-ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jj   # jj → vi normal mode (like Esc)
-ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
-ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+# ── vi mode and keybindings ─────────────────────────────────────────────────
+# zsh-vi-mode (sourced from ~/.config/zsh/plugins.zsh) wipes all bindkeys on init.
+# zvm_config and zvm_after_init are hooks it calls itself, so they only need
+# to be defined before the plugin is sourced (see "sub configs" at the bottom).
 
-# zsh-vi-mode wipes all bindkeys on init — re-register everything here.
-# This is a hook function: must be *defined* before plugins.zsh sources
-# zsh-vi-mode below, but zsh-vi-mode itself calls it after its own init finishes —
-# so placement here (before sourcing) is required, exact position otherwise doesn't matter.
+# runs after the plugin defines its constants, so $ZVM_CURSOR_* are available
+zvm_config() {
+  ZVM_VI_INSERT_ESCAPE_BINDKEY=jj             # jj → vi normal mode (like Esc)
+  ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM     # insert: beam cursor
+  ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK    # normal: block cursor
+  ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK    # visual: block cursor
+}
+
+# runs after the plugin finishes init, so everything is re-registered here
 zvm_after_init() {
-  bindkey '^[[1;5C' forward-word                 # Ctrl+Right  — jump forward one word
-  bindkey '^[[1;5D' backward-word                # Ctrl+Left   — jump backward one word
-  bindkey '^\' autosuggest-toggle                # Ctrl+\      — toggle inline autosuggestions
-  bindkey '^[[A' history-substring-search-up     # Up          — history search by prefix typed so far
-  bindkey '^[[B' history-substring-search-down   # Down        — history search by prefix typed so far
+  bindkey '^[[1;5C' forward-word                # Ctrl+Right: forward one word
+  bindkey '^[[1;5D' backward-word               # Ctrl+Left: backward one word
+  bindkey '^e' autosuggest-accept               # Ctrl+E: accept autosuggestion
+  bindkey '^\' autosuggest-toggle               # Ctrl+\: toggle autosuggestions
+  bindkey '^[[A' history-substring-search-up    # Up: history search by prefix typed so far
+  bindkey '^[[B' history-substring-search-down  # Down: history search by prefix typed so far
+  
+  bindkey '^P' ff-widget                        # Ctrl+P: find a file and open it in tmux
+  bindkey '^O' fo-widget                        # Ctrl+O: choose a folder and open it in tmux
+  bindkey '^T' fzf-file-widget                   # Ctrl+T: insert a selected file path
+  bindkey '^[c' fzf-cd-widget                    # Alt+C: change to a selected directory
 
+  # Ctrl+G: zoxide interactive jump
   zi-widget() { zi; zle reset-prompt; }
   zle -N zi-widget
-  bindkey '^G' zi-widget                         # Ctrl+G      — zoxide interactive directory jump
+  bindkey '^G' zi-widget                       
 
-  # re-registered here because zsh-vi-mode overrides atuin's keybindings on init
+  # atuin keybindings are overridden by zsh-vi-mode, so register them again
   eval "$(atuin init zsh --disable-up-arrow)"
 
   # rebind after all plugins load, in case any plugin resets ^I
+  # so typing a completion trigger such as ** and pressing Tab opens fzf’s fuzzy picker.
   bindkey '^I' fzf-completion
 }
-
-bindkey '^e' autosuggest-accept 
 
 # ── misc ──────────────────────────────────────────────────────────
 alias zshrc='$EDITOR ~/.zshrc'
 alias reload='exec zsh -l'
 
 # ── safety nets ───────────────────────────────────────────────────
-# alias rm='rm -i'
-# Safer file actions: macOS moves files to Trash
-# alias rm='trash'   # install: brew install trash
 alias cp='cp -i'
 alias mv='mv -i'
-alias mkdir='mkdir -pv'
 
-# ── shell - quality of life ───────────────────────────────────────
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
+# macOS only: move files to the Trash instead of deleting them; install: brew install trash
+if [[ "$OSTYPE" == darwin* ]] && (( $+commands[trash] )); then
+  alias rm='trash'
+fi
+
+# ── navigation and quality of life ────────────────────────────────
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
 alias countfiles='for t in files links directories; do echo $(find . -type ${t:0:1} | wc -l) $t; done'
 alias path='echo $PATH | tr ":" "\n"'
 
-# ── disk / network ────────────────────────────────────────────────
+# ── disk and network ──────────────────────────────────────────────
 alias df='df -h'
 alias du='du -h'
 alias ducks='du -h --max-depth=1 | sort -rh | head -15'
@@ -128,9 +124,9 @@ alias gs='git status'
 alias ga='git add'
 alias gaa='git add .'
 alias gcm='git commit -m'
-alias gca='gc --amend --no-edit'
-alias gce='gc --amend'
-alias gcam='git commit --amend -m'      # --amend always targets HEAD
+alias gca='git commit --amend --no-edit'
+alias gce='git commit --amend'
+alias gcam='git commit --amend -m'     --amend always targets HEAD
 alias gp='git push'
 alias gl='git log --graph --decorate'
 alias glo='git log --oneline --graph --decorate'
@@ -140,15 +136,16 @@ alias gd='git diff -w'
 alias gds='git diff --staged -w'
 alias gundo='git reset HEAD~1'
 # git restore --staged FILENAME
+alias lg='lazygit'
 
 # ── tmux ───────────────────────────────────────────────────────────
-alias t="tmux"
-alias tl="tmux ls"
+alias t='tmux'
+alias tl='tmux ls'
 alias tn='tmux new-session -s'
-alias ta="tmux attach -t"
-alias tk="tmux kill-session -t"
-alias tka="tmux kill-server"
-alias tlk="tmux list-keys"
+alias ta='tmux attach -t'
+alias tk='tmux kill-session -t'
+alias tka='tmux kill-server'
+alias tlk='tmux list-keys'
 alias tm='tmux new-session -A -s main'
 
 # session switcher from outside tmux
@@ -157,18 +154,17 @@ tt() {
   session=$(tmux ls -F '#S' 2>/dev/null | fzf-tmux -w 40 -h 12% --reverse) && tmux new -As "$session"
 }
 
-# ── system ─────────────────────────────────────────────────────────
+# ── systemd and journal ────────────────────────────────────────────
 alias sy='sudo systemctl'
 alias sys='sudo systemctl start'
-alias syst='systemctl status'
+alias syk='sudo systemctl stop'
 alias syr='sudo systemctl reload'
 alias syre='sudo systemctl restart'
-alias syk='sudo systemctl stop'
-alias sydr='sudo systemctl daemon-reload'
-alias syrf='sudo systemctl reset-failed'
-
+alias syst='systemctl status'
 alias syen='sudo systemctl enable'
 alias syd='sudo systemctl disable'
+alias sydr='sudo systemctl daemon-reload'
+alias syrf='sudo systemctl reset-failed'
 
 alias syls='systemctl list-units --type=service'
 alias sylsa='systemctl list-units --type=service --all'
@@ -179,51 +175,52 @@ alias j='sudo journalctl'
 alias ju='sudo journalctl -u'
 alias juf='sudo journalctl -f -u' 
 
+# restart a service, then follow its logs
 syrt() {
   sudo systemctl restart "$1" && sudo journalctl -u "$1" -f
 }
 
 # ── docker ─────────────────────────────────────────────────────────
-alias dco="docker compose"
-alias dps="docker ps"
-alias dpa="docker ps -a"
-alias dl="docker ps -l -q"
-alias dx="docker exec -it"
+alias dco='docker compose'
+alias dps='docker ps'
+alias dpa='docker ps -a'
+alias dl='docker ps -l -q'
+alias dx='docker exec -it'
 
 # ── kubernetes ─────────────────────────────────────────────────────
 export KUBECONFIG=~/.kube/config
-alias k="kubectl"
-alias ka="kubectl apply -f"
-alias kg="kubectl get"
-alias kd="kubectl describe"
-alias kdel="kubectl delete"
-alias kgpo="kubectl get pod"
-alias kgd="kubectl get deployments"
-alias kc="kubectx"
-alias kns="kubens"
-alias kl="kubectl logs -f"
-alias ke="kubectl exec -it"
+alias k='kubectl'
+alias ka='kubectl apply -f'
+alias kg='kubectl get'
+alias kd='kubectl describe'
+alias kdel='kubectl delete'
+alias kgpo='kubectl get pod'
+alias kgd='kubectl get deployments'
+alias kl='kubectl logs -f'
+alias ke='kubectl exec -it'
+alias kc='kubectx'
+alias kns='kubens'
 alias kcns='kubectl config set-context --current --namespace'
 
 # ── eza ───────────────────────────────────────────────────────────
-alias ls='eza --icons'
+alias lls='eza --icons'
 alias ll='eza -l --icons --git'
 alias l='eza -l --icons --sort=modified --git'
-alias tree='l --tree'
-alias sl='eza -l --icons --sort=modified --git --color=always | tail -n 30'
 alias la='eza -la --icons --sort=modified --git'
 alias lag='eza -lhag --icons --sort=modified --git'
 alias lp='eza -lhg --icons --sort=modified --git --absolute=on'
 alias lS='eza -lha --icons --sort=size --reverse'
 alias lt='eza -lh --icons --sort=type'
-alias ldate='eza -lhg --icons --time-style="+%d %b %Y %H:%M" --sort=modified'
 alias lf='eza -lhg --icons --sort=modified --only-files'
 alias ld='eza -lhgD --icons --sort=modified'
+alias ldate='eza -lhg --icons --time-style="+%d %b %Y %H:%M" --sort=modified'
+alias sl='eza -l --icons --sort=modified --git --color=always | tail -n 30'
+alias tree='l --tree'
 
 alias ltree='eza --tree --group-directories-first --icons --git-ignore --ignore-glob=".git"'
 alias ltreea='ltree -a'
-ltreel()  { ltree --level="$1" }
-ltreeal() { ltreea --level="$1" }
+ltreel()   { ltree --level="$1" }
+ltreeal()  { ltreea --level="$1" }
 ltreelp()  { eza --tree --group-directories-first --git-ignore --ignore-glob=".git" --level="${1:-2}" }
 ltreealp() { eza --tree --group-directories-first --git-ignore --ignore-glob=".git" -a --level="${1:-2}" }
 
@@ -237,18 +234,6 @@ alias rgi='rg -i'
 alias rgl='rg -l'
 alias rgc='rg --count'
 
-# ── lazygit ───────────────────────────────────────────────────────
-alias lg='lazygit'
-
-# ── yazi: cd on quit ──────────────────────────────────────────────
-ya() {
-    local tmp
-    tmp="$(mktemp -t yazi-cwd.XXXXXX)"
-    yazi "$@" --cwd-file="$tmp"
-    if [ -s "$tmp" ]; then cd "$(cat "$tmp")" || true; fi
-    rm -f "$tmp"
-}
-
 # ── zoxide ────────────────────────────────────────────────────────
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
@@ -257,25 +242,19 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # ── atuin ─────────────────────────────────────────────────────────
-# Overrides default Ctrl+R and fzf history search with atuin
+# takes over Ctrl+R from fzf history search
+# (keybindings are re-registered in zvm_after_init, see above)
+# to remove: delete this block and the `atuin init` line in zvm_after_init(),
+# then `rm -rf ~/.atuin` (or `brew uninstall atuin`)
 if [[ -f "$HOME/.atuin/bin/env" ]]; then
   . "$HOME/.atuin/bin/env"
   command -v atuin &>/dev/null && eval "$(atuin init zsh)"
-fi # re-registers shortcuts in binding.zsh, cause plugins.zsh-vi-mode overrides atuin keybindings
-# to remove atuin: delete this block + the `eval atuin init` line in zvm_after_init(), then `rm -rf ~/.atuin` (or `brew uninstall atuin`)
+fi
 
 # ── sub configs ───────────────────────────────────────────────────
-[[ -f ~/.config/fzf/fzf.sh ]]        && source ~/.config/fzf/fzf.sh
-[[ -f ~/.config/zsh/plugins.zsh  ]]  && source ~/.config/zsh/plugins.zsh  
+# plugins.zsh sources zsh-vi-mode and runs compinit, so keep the hooks above it
+[[ -f ~/.config/fzf/fzf.zsh ]]       && source ~/.config/fzf/fzf.zsh
+[[ -f ~/.config/zsh/plugins.zsh ]]   && source ~/.config/zsh/plugins.zsh  
 [[ -f ~/.config/zsh/functions.zsh ]] && source ~/.config/zsh/functions.zsh
-# [[ -f ~/.config/zsh/bindings.zsh ]]  && source ~/.config/zsh/bindings.zsh
-
-# ── tool completions ──────────────────────────────────────────────
-# Not from zsh-completions — each tool generates its own script from its binary at runtime
-# source <(...) calls compdef internally — needs compinit already run (inside plugins.zsh) - must come after plugins.zsh
-# command -v kubectl       &>/dev/null && source <(kubectl completion zsh)   # kubectl get <Tab>, kubectl --<Tab>
-# command -v docker        &>/dev/null && source <(docker completion zsh)    # docker run <Tab>, docker ps <Tab>
-# command -v aws_completer &>/dev/null && complete -C aws_completer aws      # aws s3 <Tab>, aws ec2 <Tab>
-
-# ── local overrides ───
 [[ -f ~/.local.zshrc ]] && source ~/.local.zshrc
+
