@@ -51,6 +51,7 @@ brew "lazydocker"
 brew "atuin"
 brew "glow"
 brew "k6"
+brew "trash"
 # brew "awscli"
 
 # --- kubernetes ---

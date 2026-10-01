@@ -30,6 +30,17 @@ A plug-and-play dotfiles setup that works the same on your Ubuntu workstation, y
 
 ---
 
+## Offerings
+
+|Key|Action|Status|
+|---|---|---|
+|`Ctrl+P`|fuzzy search and open a file in a tmux session|fzf-tmux-script|
+|`Ctrl+O`|pick a folder and open it in a new (or existing) tmux session|fzf-tmux-script|
+|`Ctrl+G`|jump to a frequently used folder (zoxide)|config|
+|`Ctrl+T`|pick a file path and paste it on the command line|fzf default|
+|`Alt+C`|pick a folder under the current directory and `cd` into it|fzf default|
+
+
 ## Quick Start
 
 ### 1. Clone
@@ -85,10 +96,12 @@ chsh -s $(which zsh)
 ## dot files tree
 ```
 dotfiles/
-├── fzf/.config/fzf
-│   └── .config
-│       └── fzf
-│           └── fzf.sh
+├── fzf
+│   └── .config/fzf
+│       ├── bin
+│       │   ├── ff
+│       │   └── fo
+│       └── fzf.zsh
 ├── git
 │   └── .config
 │       └── git
@@ -144,7 +157,7 @@ $HOME/
   .config/
     git/config
     nvim/
-    fzf/fzf.sh
+    fzf/fzf.zsh
     starship/starship.toml
     tmux/tmux.conf
     wezterm/wezterm.lua
