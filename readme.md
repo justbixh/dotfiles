@@ -28,6 +28,11 @@ A plug-and-play dotfiles setup that works the same on your Ubuntu workstation, y
 
 *Built for devs who SSH into too many machines and got tired of reconfiguring everything.*
 
+![](assets/ss01.png)
+![](assets/ss02.png)
+![](assets/ss03.png)
+![](assets/ss04.png)
+
 ---
 
 ## Offerings
