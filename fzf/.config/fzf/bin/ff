@@ -6,6 +6,7 @@ set -euo pipefail
 
 FD=$(command -v fd || command -v fdfind) || { echo "install fd (fd-find)"; exit 1; }
 BAT=$(command -v bat || command -v batcat || true)
+FILE_ICON=$(printf '\xef\x85\x9b')
 
 # Override per call: FF_ROOTS="$HOME/work:$HOME/notes" ff
 if [ -n "${FF_ROOTS:-}" ]; then
@@ -51,7 +52,7 @@ fi
 
 file=$("$FD" "${args[@]}" . "${roots[@]}" 2>/dev/null | fzf \
   --height 70% --reverse --border \
-  --prompt 'file> ' \
+  --prompt "$FILE_ICON " \
   --preview "$preview" \
   --preview-window 'right:55%') || exit 0
 
