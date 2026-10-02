@@ -1,21 +1,84 @@
 #!/usr/bin/env bash
+# fzf/.config/fzf/bin/fs
+# Fuzzy find folders in selected roots, open them as a tmux session named after the folder.
 set -euo pipefail
-# Fuzzy-pick a folder and switch to its tmux session, creating it if needed.
 
-FD=$(command -v fd || command -v fdfind) || { echo "install fd (fd-find)"; exit 1; }
+FD=$(command -v fd || command -v fdfind) || {
+  echo "install fd (fd-find)"
+  exit 1
+}
 
+# Override per call: FS_ROOTS="$HOME/work:$HOME/notes" fs
+# Limit depth per call: FS_MAX_DEPTH=4 fs
+if [ -n "${FS_ROOTS:-}" ]; then
+  IFS=: read -r -a ROOTS <<<"$FS_ROOTS"
+elif [ "$(uname)" = "Darwin" ]; then
+  ROOTS=("$HOME" /etc /opt /usr/local /Volumes)
+else
+  ROOTS=("$HOME" /etc /opt /srv /usr/local /mnt)
+fi
+
+# Hidden inside the roots. Plain names match at any depth, paths need the **/ prefix.
+EXCLUDES=(
+  # VCS and dependencies
+  .git node_modules __pycache__ .venv venv
+  # Build output
+  target build dist out .gradle .idea
+  # Caches and package stores
+  .cache .m2 .npm .cargo .rustup .sdkman .nvm .pyenv snap .var
+  .docker .minikube .mozilla
+  '**/.local/share' '**/.local/lib' '**/.local/state' '**/.kube/cache'
+  '**/.config/google-chrome' '**/.config/chromium' '**/.config/Code' '**/.config/JetBrains'
+  '**/.tmux/plugins'
+  # Tool folders
+  .codex .antigravity-ide .vscode .gemini .cagent
+  # macOS and media
+  Library .Trash Pictures Music Movies
+)
+
+roots=()
+for r in "${ROOTS[@]}"; do [ -d "$r" ] && roots+=("$r"); done
+[ "${#roots[@]}" -gt 0 ] || {
+  echo "no valid roots (check FS_ROOTS)"
+  exit 1
+}
+
+args=(--type d --hidden --color never)
+[ -n "${FS_MAX_DEPTH:-}" ] && args+=(--max-depth "$FS_MAX_DEPTH")
+for e in "${EXCLUDES[@]}"; do args+=(--exclude "$e"); done
+
+# Nerd Font folder icon (U+F07B), written as UTF-8 bytes so it also works in macOS bash 3.2
+FOLDER_ICON=$(printf '\xef\x81\xbb')
+# FOLDER_ICON=$(printf '\xf3\xb0\x9d\xb0')
+
+if command -v eza >/dev/null 2>&1; then
+  preview='eza --tree --level=2 --color=always {} | head -200'
+else
+  preview='ls -la {} | head -200'
+fi
+
+# fd does not list the roots themselves, so print them first (lets you open ~ itself).
+# pipefail is off here so fd being stopped early by fzf is not treated as a failure.
 directory=$(
-  "$FD" --type d --hidden --color never --exclude .git --exclude node_modules . "${PWD}" 2>/dev/null |
-    fzf --height 70% --reverse --border \
-      --prompt 'folder> ' \
-      --preview 'eza --tree --color=always {} | head -200' \
-      --preview-window 'right:55%'
+  set +o pipefail
+  {
+    printf '%s\n' "${roots[@]}"
+    "$FD" "${args[@]}" . "${roots[@]}" 2>/dev/null
+  } | fzf \
+    --height 70% --reverse --border \
+    --prompt "$FOLDER_ICON " \
+    --preview "$preview" \
+    --preview-window 'right:55%'
 ) || exit 0
 
 [ -n "$directory" ] || exit 0
 directory=$(cd "$directory" && pwd -P)
-name=$(basename "$directory" | tr '.: ' '___')
 
+# tmux session names can't contain . or :
+name=$(basename "$directory" | tr '.: ' '___')
+[ -n "$name" ] || name=root
+
+# same folder name in two places: give the second one a unique suffix
 if tmux has-session -t "=$name" 2>/dev/null; then
   session_directory=$(tmux display-message -p -t "=$name" '#{session_path}')
   if [ "$session_directory" != "$directory" ]; then
