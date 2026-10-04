@@ -52,6 +52,7 @@ brew "atuin"
 brew "glow"
 brew "k6"
 brew "trash"
+brew "ffmpeg"
 # brew "awscli"
 
 # --- kubernetes ---
