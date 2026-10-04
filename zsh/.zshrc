@@ -64,6 +64,7 @@ zvm_config() {
 
 # runs after the plugin finishes init, so everything is re-registered here
 zvm_after_init() {
+  bindkey '^L' clear-screen                     # Ctrl+L: clear screen (overridden by zsh-vi-mode)
   bindkey '^[[1;5C' forward-word                # Ctrl+Right: forward one word
   bindkey '^[[1;5D' backward-word               # Ctrl+Left: backward one word
   bindkey '^e' autosuggest-accept               # Ctrl+E: accept autosuggestion
