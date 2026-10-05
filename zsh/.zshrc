@@ -128,7 +128,7 @@ alias gcm='git commit -m'
 alias gca='git commit --amend --no-edit'
 alias gce='git commit --amend'
 alias gcam='git commit --amend -m'     --amend always targets HEAD
-alias gp='git push'
+alias gp='git pull'
 alias gl='git log --graph --decorate'
 alias glo='git log --oneline --graph --decorate'
 alias glot="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
