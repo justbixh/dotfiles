@@ -132,14 +132,7 @@ alias gca='git commit --amend --no-edit'      # fold staged changes into last co
 alias gcr='git commit --amend --only'         # edit last commit message only
 alias gunamend='git reset --soft "HEAD@{1}"'  # undo a bad amend (run right after)
 alias gcam='git commit --amend -m'     --amend always targets HEAD
-<<<<<<< HEAD
-alias gp='git push'
-||||||| parent of 1295dd7 (feat(git): new aliases and addition to gitconfig)
 alias gp='git pull'
-=======
-
-alias gp='git pull'
->>>>>>> 1295dd7 (feat(git): new aliases and addition to gitconfig)
 alias gl='git log --graph --decorate'
 alias glo='git log --oneline --graph --decorate'
 alias glot="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
