@@ -11,10 +11,22 @@
 [includeIf "gitdir:~/pcc-kubernetes-manifests/"]
     path = ~/.gitconfig.work
 
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = false
+
+[push]
+    autoSetupRemote = true
+
+[branch]
+	sort = -committerdate
+
 [core]
     pager  = delta
     editor = vim
-  # the repo stays with LF line endings only
+    # the repo stays with LF line endings only
 	autocrlf = input
 
 [interactive]
@@ -34,15 +46,6 @@
 [diff]
     colorMoved = default
 
-[pull]
-    rebase = false
-
-[push]
-    autoSetupRemote = true
-
-[init]
-    defaultBranch = main
-
 [alias]
     # Short status
     st = status -sb
@@ -53,5 +56,6 @@
     undo = reset --soft HEAD~1
     # Show stashes with dates
     stashes = stash list --format="%gd %cd %s" --date=short
+
 [credential]
 	helper = store
