@@ -14,6 +14,8 @@
 [core]
     pager  = delta
     editor = vim
+  # the repo stays with LF line endings only
+	autocrlf = input
 
 [interactive]
     diffFilter = delta --color-only
