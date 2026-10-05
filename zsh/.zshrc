@@ -124,11 +124,22 @@ alias listening='ss -tulanp | grep LISTEN'
 alias gs='git status'
 alias ga='git add'
 alias gaa='git add .'
+alias gap='git add .'
+
 alias gcm='git commit -m'
-alias gca='git commit --amend --no-edit'
 alias gce='git commit --amend'
+alias gca='git commit --amend --no-edit'      # fold staged changes into last commit
+alias gcr='git commit --amend --only'         # edit last commit message only
+alias gunamend='git reset --soft "HEAD@{1}"'  # undo a bad amend (run right after)
 alias gcam='git commit --amend -m'     --amend always targets HEAD
+<<<<<<< HEAD
 alias gp='git push'
+||||||| parent of 1295dd7 (feat(git): new aliases and addition to gitconfig)
+alias gp='git pull'
+=======
+
+alias gp='git pull'
+>>>>>>> 1295dd7 (feat(git): new aliases and addition to gitconfig)
 alias gl='git log --graph --decorate'
 alias glo='git log --oneline --graph --decorate'
 alias glot="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
@@ -138,6 +149,22 @@ alias gds='git diff --staged -w'
 alias gundo='git reset HEAD~1'
 # git restore --staged FILENAME
 alias lg='lazygit'
+alias grs='git restore --staged'
+
+# Conflicts (ours/theirs are swapped during a rebase) 
+alias gconflicts='git diff --name-only --diff-filter=U'
+gours()   { git checkout --ours -- "$@" && git add -- "$@" }
+gtheirs() { git checkout --theirs -- "$@" && git add -- "$@" }
+gconfedit() {
+  local files=("${(@f)$(git diff --name-only --diff-filter=U)}")
+  [[ -n "$files[1]" ]] && ${EDITOR:-vim} "${files[@]}"
+}
+
+# glf: browse log with diff preview
+glf() {
+  git log --oneline --color=always \
+    | fzf --ansi --no-sort --reverse --preview 'git show --color=always {1}' --preview-window=right:60%
+}
 
 # ── tmux ───────────────────────────────────────────────────────────
 alias t='tmux'
