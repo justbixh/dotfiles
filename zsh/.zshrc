@@ -160,6 +160,17 @@ glf() {
     | fzf --ansi --no-sort --reverse --preview 'git show --color=always {1}' --preview-window=right:60%
 }
 
+alias gsw='git switch'
+alias gco='git checkout'
+alias gbrename='git branch -m'
+gb() {
+  local branch
+  branch=$(git for-each-ref --sort=-committerdate refs/heads refs/remotes \
+      --format='%(refname:short)' | grep -v 'HEAD$' | fzf --reverse \
+      --preview 'git log --oneline --graph --color=always -20 {}') || return
+  git switch "${branch#origin/}"
+}
+
 # ── tmux ───────────────────────────────────────────────────────────
 alias t='tmux'
 alias tl='tmux ls'
@@ -280,3 +291,7 @@ fi
 [[ -f ~/.config/zsh/functions.zsh ]] && source ~/.config/zsh/functions.zsh
 [[ -f ~/.local.zshrc ]] && source ~/.local.zshrc
 
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/bish/.local/bin:$PATH"
