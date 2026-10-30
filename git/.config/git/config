@@ -24,27 +24,39 @@
 	sort = -committerdate
 
 [core]
+    colorMoved = default
     pager  = delta
     editor = vim
     # the repo stays with LF line endings only
-	autocrlf = input
+    autocrlf = input
 
 [interactive]
     diffFilter = delta --color-only
 
 [delta]
+    side-by-side = true
     navigate     = true
     dark         = true
-    side-by-side = true
     line-numbers = true
     syntax-theme = Dracula
     hyperlinks   = true
+    # File header: bold yellow with an underline
+    file-style = bold yellow
+    file-decoration-style = yellow ul
+    file-modified-label = "M:"
+    file-added-label = "A:"
+    file-removed-label = "D:"
+    file-renamed-label = "R:"
 
 [merge]
     conflictstyle = zdiff3
 
 [diff]
+    algorithm = histogram
     colorMoved = default
+    mnemonicPrefix = true
+    renames = copies
+    tool = nvimdiff
 
 [alias]
     # Short status
