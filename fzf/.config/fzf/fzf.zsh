@@ -33,7 +33,7 @@ export FZF_CTRL_R_OPTS="
     --preview-window 'up:3:hidden:wrap'
     --margin 0
     --padding 0
-    --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip)+abort'"
+    --bind 'ctrl-y:execute-silent(echo -n {2..} | $( (( $+commands[pbcopy] )) && echo pbcopy || echo xclip -selection clipboard))+abort'"
 
 # ── ** completion: per-command previews ─────────────────────────────────────
 # FZF_DEFAULT_OPTS already applied, so no style flags are needed here

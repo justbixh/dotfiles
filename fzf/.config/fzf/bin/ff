@@ -1,6 +1,5 @@
-# fzf/.config/fzf/bin/ff
-
 #!/usr/bin/env bash
+# fzf/.config/fzf/bin/ff
 # Fuzzy find files in selected roots, open in nvim inside a tmux session named after the file.
 set -euo pipefail
 
@@ -35,7 +34,7 @@ EXCLUDES=(
   '*.{png,jpg,jpeg,gif,webp,svg,heic,mp4,mkv,mov,mp3,m4a,wav}'
   '*.{zip,tar,gz,iso,pdf,woff,woff2}'
   .codex .antigravity-ide .vscode .gemini .cagent '**/.tmux/plugins'
-  Library .Trash .DS_Store Pictures Music Movies
+  Pictures Music Movies
 )
 
 roots=()
@@ -50,11 +49,15 @@ else
   preview="head -200 {}"
 fi
 
-file=$("$FD" "${args[@]}" . "${roots[@]}" 2>/dev/null | fzf \
-  --height 70% --reverse --border \
-  --prompt "$FILE_ICON " \
-  --preview "$preview" \
-  --preview-window 'right:55%') || exit 0
+# pipefail is off here so fd being stopped early by fzf is not treated as a failure.
+file=$(
+  set +o pipefail
+  "$FD" "${args[@]}" . "${roots[@]}" 2>/dev/null | fzf \
+    --height 70% --reverse --border \
+    --prompt "$FILE_ICON " \
+    --preview "$preview" \
+    --preview-window 'right:55%'
+) || exit 0
 
 [ -z "$file" ] && exit 0
 
@@ -62,8 +65,18 @@ file=$("$FD" "${args[@]}" . "${roots[@]}" 2>/dev/null | fzf \
 name=$(basename "$file" | tr '.: ' '___')
 dir=$(dirname "$file")
 
+# same file name in two places: give the session a unique suffix from the full path
+if tmux has-session -t "=$name" 2>/dev/null; then
+  session_file=$(tmux show-options -qv -t "=$name" @ff_file)
+  if [ "$session_file" != "$file" ]; then
+    suffix=$(printf '%s' "$file" | cksum | cut -d ' ' -f1)
+    name="${name}-${suffix}"
+  fi
+fi
+
 if ! tmux has-session -t "=$name" 2>/dev/null; then
   tmux new-session -d -s "$name" -c "$dir" nvim "$file"
+  tmux set-option -t "=$name" @ff_file "$file"
 fi
 
 if [ -n "${TMUX:-}" ]; then
