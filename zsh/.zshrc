@@ -86,8 +86,8 @@ zvm_after_init() {
   zle -N zi-widget
   bindkey '^G' zi-widget                       
 
-  # atuin keybindings are overridden by zsh-vi-mode, so register them here
-  (( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"
+  # atuin keybindings are overridden by zsh-vi-mode, so register them again
+  eval "$(atuin init zsh --disable-up-arrow)" 
 
   # rebind after all plugins load, in case any plugin resets ^I
   # so typing a completion trigger such as ** and pressing Tab opens fzf’s fuzzy picker.
@@ -287,10 +287,11 @@ command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # ── atuin ─────────────────────────────────────────────────────────
 # takes over Ctrl+R from fzf history search
-# (initialized in zvm_after_init, see above; this only puts a script install on PATH)
-# to remove: delete this block and the `atuin init` line in zvm_after_init(),
+# (keybindings are re-registered in zvm_after_init, see above)
+# to remove: delete this block and the atuin bindkeys in zvm_after_init(),
 # then `rm -rf ~/.atuin` (or `brew uninstall atuin`)
 [[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
+command -v atuin &>/dev/null && eval "$(atuin init zsh)"
 
 # ── sub configs ───────────────────────────────────────────────────
 # plugins.zsh sources zsh-vi-mode and runs compinit, so keep the hooks above it
