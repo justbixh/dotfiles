@@ -24,9 +24,8 @@
 	sort = -committerdate
 
 [core]
-    colorMoved = default
     pager  = delta
-    editor = vim
+    editor = nvim
     # the repo stays with LF line endings only
     autocrlf = input
 
@@ -69,5 +68,8 @@
     # Show stashes with dates
     stashes = stash list --format="%gd %cd %s" --date=short
 
+# credential.helper is per-machine: macOS git already uses osxkeychain (system config);
+# on Linux set one in ~/.gitconfig.local, e.g. `helper = cache --timeout=28800`.
+# (avoid `store`: it saves tokens in plain text in ~/.git-credentials)
 [credential]
 	helper = store
