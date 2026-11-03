@@ -17,7 +17,11 @@ export MANPAGER='sh -c "col -bx | bat --language=man --style=plain --paging=alwa
 export MANROFFOPT='-c' 
 
 alias vi='$EDITOR'
-alias vv='fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs $EDITOR' 
+# vv: pick a file under the current dir and open it (nothing happens on cancel)
+vv() {
+  local file
+  file=$(fd --type f --hidden --exclude .git | fzf-tmux -p --reverse) && $EDITOR "$file"
+}
 
 # ── history ──────────────────────────────────────────────────────
 HISTFILE=~/.zsh_history
@@ -42,7 +46,7 @@ setopt glob_dots              # include dotfiles in globs and completions
 zstyle ':completion:*' menu select                        # arrow-key menu: Tab opens, arrows move, Enter selects
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"   # color menu entries like ls
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'    # case-insensitive: "doc" matches "Documents"
-zstyle ':completion:*' descriptions format '[%d]'         # group labels, e.g. [commands] [options]
+zstyle ':completion:*:descriptions' format '[%d]'         # group labels, e.g. [commands] [options]
 zstyle ':completion:*' file-sort modification             # recently modified files first
 zstyle ':completion:*' list-dirs-first yes
 zstyle ':completion:*' ignored-patterns '.git'
@@ -82,8 +86,8 @@ zvm_after_init() {
   zle -N zi-widget
   bindkey '^G' zi-widget                       
 
-  # atuin keybindings are overridden by zsh-vi-mode, so register them again
-  eval "$(atuin init zsh --disable-up-arrow)"
+  # atuin keybindings are overridden by zsh-vi-mode, so register them here
+  (( $+commands[atuin] )) && eval "$(atuin init zsh --disable-up-arrow)"
 
   # rebind after all plugins load, in case any plugin resets ^I
   # so typing a completion trigger such as ** and pressing Tab opens fzf’s fuzzy picker.
@@ -93,6 +97,7 @@ zvm_after_init() {
 # ── misc ──────────────────────────────────────────────────────────
 alias zshrc='$EDITOR ~/.zshrc'
 alias reload='exec zsh -l'
+alias cc='claude'
 
 # ── safety nets ───────────────────────────────────────────────────
 alias cp='cp -i'
@@ -115,16 +120,21 @@ alias path='echo $PATH | tr ":" "\n"'
 # ── disk and network ──────────────────────────────────────────────
 alias df='df -h'
 alias du='du -h'
-alias ducks='du -h --max-depth=1 | sort -rh | head -15'
+alias ducks='du -h -d 1 | sort -rh | head -15'   # -d works on both GNU and BSD du
 alias myip='curl -s ifconfig.me'
-alias ports='ss -tulanp'
-alias listening='ss -tulanp | grep LISTEN'
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias ports='lsof -nP -i'
+  alias listening='lsof -nP -iTCP -sTCP:LISTEN'
+else
+  alias ports='ss -tulanp'
+  alias listening='ss -tulanp | grep LISTEN'
+fi
 
 # ── git ───────────────────────────────────────────────────────────
 alias gs='git status'
 alias ga='git add'
 alias gaa='git add .'
-alias gap='git add .'
+alias gap='git add -p'
 
 alias gcm='git commit -m'
 alias gce='git commit --amend'
@@ -277,13 +287,10 @@ command -v starship &>/dev/null && eval "$(starship init zsh)"
 
 # ── atuin ─────────────────────────────────────────────────────────
 # takes over Ctrl+R from fzf history search
-# (keybindings are re-registered in zvm_after_init, see above)
+# (initialized in zvm_after_init, see above; this only puts a script install on PATH)
 # to remove: delete this block and the `atuin init` line in zvm_after_init(),
 # then `rm -rf ~/.atuin` (or `brew uninstall atuin`)
-if [[ -f "$HOME/.atuin/bin/env" ]]; then
-  . "$HOME/.atuin/bin/env"
-  command -v atuin &>/dev/null && eval "$(atuin init zsh)"
-fi
+[[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
 
 # ── sub configs ───────────────────────────────────────────────────
 # plugins.zsh sources zsh-vi-mode and runs compinit, so keep the hooks above it
@@ -291,8 +298,3 @@ fi
 [[ -f ~/.config/zsh/plugins.zsh ]]   && source ~/.config/zsh/plugins.zsh  
 [[ -f ~/.config/zsh/functions.zsh ]] && source ~/.config/zsh/functions.zsh
 [[ -f ~/.local.zshrc ]] && source ~/.local.zshrc
-
-
-
-# Added by Antigravity CLI installer
-export PATH="/home/bish/.local/bin:$PATH"
