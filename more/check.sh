@@ -45,7 +45,7 @@ section "zsh plugins"
 
 ZSH_PLUGIN_DIR="$HOME/.config/zsh/plugins"
 
-for plugin in zsh-autosuggestions zsh-syntax-highlighting; do
+for plugin in zsh-autosuggestions zsh-history-substring-search zsh-vi-mode zsh-syntax-highlighting; do
     if [ -f "$ZSH_PLUGIN_DIR/${plugin}/${plugin}.plugin.zsh" ]; then
         ok "$plugin"
     else
@@ -53,8 +53,8 @@ for plugin in zsh-autosuggestions zsh-syntax-highlighting; do
     fi
 done
 
-if [ -d "$HOME/.fzf" ]; then ok "fzf shell integration (~/.fzf)"; else missing "fzf shell integration"; fi
+if has_cmd fzf && fzf --zsh &>/dev/null; then ok "fzf shell integration (fzf --zsh)"; else missing "fzf shell integration (needs fzf 0.48+)"; fi
 if [ -f "$HOME/.config/fzf-git/fzf-git.sh" ]; then ok "fzf-git"; else missing "fzf-git"; fi
 
 # ── summary ───────────────────────────────────────────────────────────────────
-echo -e "\n${BOLD}Done. Fix missing tools → see INSTALL.md${RESET}\n"
+echo -e "\n${BOLD}Done. Fix missing tools → see more/tool-installation-guide.md${RESET}\n"

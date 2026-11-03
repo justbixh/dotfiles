@@ -21,12 +21,11 @@ defaults write com.apple.screencapture location -string "$HOME/Pictures/screensh
 
 # --- Terminal Performance & Keyboard Repeat Speeds ---
 # KeyRepeat: The speed at which a character repeats after you hold it down. (default: 6)
-# UI max is 2 (30ms). Setting it to 1 (15ms) doubles Vim navigation speed.
+# UI max is 2 (30ms), used here. 1 (15ms) is faster still but can't be set from the UI.
 defaults write NSGlobalDomain KeyRepeat -int 2
 
 # InitialKeyRepeat: The pause duration between your first physical keypress and when the key starts repeating. (default: 35)
-# UI max is 15 (225ms). Lowering it to 10 (150ms) makes Vim cursor movements feel instantly responsive
-# without causing accidental double-typing when you just want a single press.
+# UI min is 15 (225ms), used here. 10 (150ms) feels snappier, but raises the risk of accidental double-typing.
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
 # Disable press-and-hold accent menu (fixes severe key repeat lockups in Vim)
