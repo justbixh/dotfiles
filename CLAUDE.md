@@ -28,7 +28,8 @@ tmux source-file ~/.config/tmux/tmux.conf        # reload tmux (or prefix + r)
 ## Architecture notes
 
 - **tmux** (`tmux/.config/tmux/tmux.conf`): plugins via TPM (`run tpm/tpm` must stay the last line). Catppuccin is loaded *immediately* with `run '.../catppuccin.tmux'` before the `status-right` lines, because the `@thm_*` color variables must exist when they are expanded. The right status bar is built manually from pill segments (rounded Nerd Font caps, `@thm_*` colors, Material Design icons); several earlier themes are kept commented out. `scripts/quote.sh` supplies the quote-of-the-day pill. `Ctrl+O` / `Ctrl+P` and `prefix+o/p` depend on `fzf/.config/fzf/bin/{fo,ff}`.
-- **zsh**: `zsh/.zshrc` is the entry point and sources `.config/zsh/functions.zsh` and `plugins.zsh`. Tools expected: starship, atuin, zoxide, fzf, eza, bat, fd, ripgrep.
+- **zsh**: `zsh/.zshrc` sets up options, keybindings and tool hooks (atuin, zoxide, starship), then at the bottom sources, in order, `fzf/fzf.zsh`, `plugins.zsh`, `functions.zsh` and the untracked `~/.local.zshrc`. `plugins.zsh` downloads plugins from GitHub into the gitignored `plugins/` dir, sources zsh-vi-mode (which wipes all bindkeys on init, so keybindings must be defined via the hook mentioned in `.zshrc`) and runs `compinit`; keep hooks above it. Tools expected: starship, atuin, zoxide, fzf, eza, bat, fd, ripgrep.
 - **nvim**: LazyVim-based; custom config in `lua/config/` and `lua/plugins/`.
 - **Nerd Font** is required for tmux/starship/wezterm glyphs. When editing files with private-use-area icons, write them with escapes (e.g. Python `"\U000f0079"`), since they are invisible in many editors and easy to lose.
+- **git**: `git/.config/git/config` uses `includeIf "gitdir:..."` to load per-directory identities from untracked `~/.gitconfig.work` (see its README).
 - READMEs in `tmux/.config/tmux/` and `git/.config/git/` document keybindings and per-package dependencies not covered by Stow.
