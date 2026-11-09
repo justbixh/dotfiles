@@ -5,6 +5,7 @@ setopt noclobber              # guards against accidental file overwriting from 
 typeset -U path PATH # keep PATH free of duplicates
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 export PATH="$HOME/.antigravity-ide/antigravity-ide/bin:$PATH"
+export PATH=/opt/homebrew/bin:$PATH
 
 # ── editor and pager ─────────────────────────────────────────────
 export EDITOR=nvim
