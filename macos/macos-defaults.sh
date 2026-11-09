@@ -11,6 +11,7 @@ sudo scutil --set HostName "Bishnu-MacBook-Air"
 
 # --- UI & Finder Preferences ---
 defaults write com.apple.dock autohide -bool true                   # Dock: auto-hide (default: false)
+defaults write com.apple.finder AppleShowAllFiles -bool true        # Show hidden files
 defaults write com.apple.finder AppleShowAllExtensions -bool true   # Finder: always show file extensions (default: false)
 defaults write com.apple.finder ShowPathbar -bool true              # Finder: show full path bar (default: false)
 defaults write com.apple.finder FXPreferredViewStyle -string "clmv" # Finder: default to column view (default: icnv)

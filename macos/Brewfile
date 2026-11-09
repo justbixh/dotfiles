@@ -2,7 +2,7 @@
 
 # --- development ---
 cask "wezterm"
-cask "termius"
+# cask "termius"
 cask "intellij-idea"
 cask "docker-desktop"
 cask "antigravity-ide"
@@ -12,6 +12,8 @@ cask "dbeaver-community"
 cask "postman"
 # cask "datagrip"
 # cask "sublime-text"
+cask "t3-code"
+cask "claude-code"
 
 # --- notes ---
 cask "obsidian"
