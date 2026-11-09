@@ -13,7 +13,7 @@ wezterm.on("gui-startup", function(cmd)
 	gui_window:set_position(screen.x + 1000, screen.y + 520)
 end)
 
-return {
+local config = {
 	-- ── window ─────────────────────────────────────────────────────────────
 	window_decorations = "RESIZE",
 	window_close_confirmation = "NeverPrompt",
@@ -78,5 +78,16 @@ return {
 		{ key = "c", mods = "CMD", action = wezterm.action.CopyTo("Clipboard") },
 		{ key = "t", mods = "CMD", action = wezterm.action.SpawnTab("CurrentPaneDomain") },
 		{ key = "n", mods = "CMD", action = wezterm.action.SpawnWindow },
-	}
+	},
 }
+
+-- Cmd+1..9 -> Alt+1..9, which tmux binds to select-window (Cmd never reaches the terminal app)
+for i = 1, 9 do
+	table.insert(config.keys, {
+		key = tostring(i),
+		mods = "CMD",
+		action = wezterm.action.SendKey({ key = tostring(i), mods = "ALT" }),
+	})
+end
+
+return config
