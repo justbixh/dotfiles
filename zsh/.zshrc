@@ -226,11 +226,41 @@ syrt() {
 }
 
 # ── docker ─────────────────────────────────────────────────────────
-alias dco='docker compose'
+# names follow the oh-my-zsh docker and docker-compose plugins
 alias dps='docker ps'
-alias dpa='docker ps -a'
-alias dl='docker ps -l -q'
-alias dx='docker exec -it'
+alias dpsa='docker ps -a'
+alias dl='docker ps -l -q'                  # id of the last container, e.g. docker logs $(dl)
+alias dr='docker container run'
+alias drit='docker container run -it'
+alias dst='docker container start'
+alias dstp='docker container stop'
+alias drs='docker container restart'
+alias drm='docker container rm'
+alias dlo='docker container logs'
+alias dxc='docker container exec'
+alias dxcit='docker container exec -it'
+alias dbl='docker build'
+alias dpu='docker pull'
+alias dils='docker image ls'
+alias dirm='docker image rm'
+alias dvls='docker volume ls'
+alias dnls='docker network ls'
+alias dsts='docker stats'
+alias dsprune='docker system prune'
+
+# compose
+alias dco='docker compose'
+alias dcup='docker compose up'
+alias dcupd='docker compose up -d'
+alias dcupb='docker compose up --build'
+alias dcdn='docker compose down'
+alias dcps='docker compose ps'
+alias dcl='docker compose logs'
+alias dclf='docker compose logs -f'
+alias dce='docker compose exec'
+alias dcr='docker compose run'
+alias dcrestart='docker compose restart'
+alias dcpull='docker compose pull'
 
 # ── kubernetes ─────────────────────────────────────────────────────
 export KUBECONFIG=~/.kube/config
