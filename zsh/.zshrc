@@ -262,6 +262,8 @@ alias dcr='docker compose run'
 alias dcrestart='docker compose restart'
 alias dcpull='docker compose pull'
 
+alias lzd='lazydocker'
+
 # ── kubernetes ─────────────────────────────────────────────────────
 export KUBECONFIG=~/.kube/config
 alias k='kubectl'
