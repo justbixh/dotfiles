@@ -52,18 +52,34 @@ symbol = " "
 style = "bold purple"
 # ignore_branches = ['master', 'main']
 
+# [git_status]
+# disabled = false
+# format     = "($ahead_behind$staged$modified$untracked$deleted$conflicted$stashed)"
+# ahead      = "[⇡$count ](bold cyan)"
+# behind     = "[⇣$count ](bold cyan)"
+# diverged   = "[⇕⇡$ahead_count⇣$behind_count ](bold cyan)"
+# staged     = "[✚$count ](bold green)"
+# modified   = "[●$count ](bold yellow)"
+# untracked  = "[…$count ](bold white)"
+# deleted    = "[✖$count ](bold red)"
+# conflicted = "[⚠$count ](bold red)"
+# stashed    = "[⚑$count ](bold yellow)"
+
 [git_status]
-disabled = false
-format     = "($ahead_behind$staged$modified$untracked$deleted$conflicted)"
-ahead      = "[⇡$count ](bold cyan)"
-behind     = "[⇣$count ](bold cyan)"
-diverged   = "[⇕⇡$ahead_count⇣$behind_count ](bold cyan)"
-staged     = "[+$count ](bold green)"
-modified   = "[●$count ](bold yellow)"
-untracked  = "[?$count ](bold white)"
-deleted    = "[✘$count ](bold red)"
-conflicted = "[🏳$count ](bold red)"
-stashed    = "[📦$count ](bold yellow)"
+disabled   = false
+format     = "($ahead_behind$staged$modified$untracked$deleted$conflicted$stashed)"
+# printf '\uf062 \uf063 \uf067 \uf111 \uf040 \uf069 \uf141 \uf1f8 \uf071 \uf187\n'
+ahead      = "[\uf062 $count ](bold cyan)"
+behind     = "[\uf063 $count ](bold cyan)"
+diverged   = "[\uf062$ahead_count \uf063$behind_count ](bold cyan)"
+staged     = "[\uf067 $count ](bold green)"
+# modified   = "[\uf111 $count ](bold yellow)"
+# modified   = "[\uf040 $count ](bold yellow)"
+modified   = "[\uf069 $count ](bold yellow)"
+untracked  = "[\uf141 $count ](bold white)"
+deleted    = "[\uf1f8 $count ](bold red)"
+conflicted = "[\uf071 $count ](bold red)"
+stashed    = "[\uf187 $count ](bold yellow)"
 
 [kubernetes]
 disabled = false
