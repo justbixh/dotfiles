@@ -96,10 +96,10 @@ using your package manager.
 cd ~/dotfiles && stow zsh
 
 # stow all
-cd ~/dotfiles && stow fzf nvim starship tmux yazi wezterm git zsh
+cd ~/dotfiles && stow fzf nvim starship tmux yazi wezterm git zsh claude
 
 # restow (re-links everything, safe to re-run)
-cd ~/dotfiles && stow --restow fzf nvim starship tmux yazi wezterm git zsh
+cd ~/dotfiles && stow --restow fzf nvim starship tmux yazi wezterm git zsh claude
 
 # unstow (removes symlinks)
 cd ~/dotfiles && stow --delete zsh
@@ -126,10 +126,33 @@ chsh -s "$(which zsh)"
 |`Alt+C`|pick a folder under the current directory and `cd` into it|fzf default|
 
 
+## Claude Code status line
+
+`claude/.claude/statusline-command.sh` mirrors the starship prompt and adds session info:
+
+```
+bishnu dotfiles on  main  4  1 | Opus 5.5 | ctx 10% | 5h 6% · 7d 1% | cache till 21:17
+  ⏵⏵ auto mode on (shift+tab to cycle)
+```
+
+|Segment|Shows|
+|---|---|
+|`bishnu dotfiles on main ...`|user, directory, git branch and status (same glyphs as starship)|
+|`Opus 5.5`|current model|
+|`ctx 10%`|context window used|
+|`5h 6% · 7d 1%`|plan usage for the 5-hour and weekly limits|
+|`cache till 21:17`|prompt cache is warm until then; `cache cold` once it expires|
+
+The second line is Claude Code's own mode indicator. The script is wired up via `statusLine` in the untracked `~/.claude/settings.json`.
+
+
 ## Repository layout
 
 ```
 dotfiles/
+├── claude
+│   └── .claude
+│       └── statusline-command.sh
 ├── fzf
 │   └── .config/fzf
 │       ├── bin
@@ -188,6 +211,7 @@ dotfiles/
 $HOME/
   .zshrc
   .local.zshrc  # .gitignore'd
+  .claude/statusline-command.sh
   .config/
     git/config
     nvim/

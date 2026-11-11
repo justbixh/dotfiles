@@ -5,10 +5,10 @@
 cd ~/dotfiles && stow zsh
 
 # stow all
-cd ~/dotfiles && stow fzf nvim starship tmux yazi wezterm git zsh
+cd ~/dotfiles && stow fzf nvim starship tmux yazi wezterm git zsh claude
 
 # restow (re-links everything, safe to re-run)
-cd ~/dotfiles && stow --restow fzf nvim starship tmux yazi wezterm git zsh
+cd ~/dotfiles && stow --restow fzf nvim starship tmux yazi wezterm git zsh claude
 
 # unstow (removes symlinks)
 cd ~/dotfiles && stow --delete zsh
