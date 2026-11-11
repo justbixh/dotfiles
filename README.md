@@ -124,6 +124,7 @@ chsh -s "$(which zsh)"
 |`Ctrl+G`|jump to a frequently used folder (zoxide)|config|
 |`Ctrl+T`|pick a file path and paste it on the command line|fzf default|
 |`Alt+C`|pick a folder under the current directory and `cd` into it|fzf default|
+|`Ctrl+\`|inside any fzf picker, move the preview below, hide it, or put it back|config|
 
 
 ## Claude Code status line

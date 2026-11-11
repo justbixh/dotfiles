@@ -7,7 +7,8 @@ eval "$(fzf --zsh)"
 
 # ── base styling ────────────────────────────────────────────────────────────
 # FZF_DEFAULT_OPTS applies to every fzf call - a single string avoids word-splitting issues between bash and zsh
-export FZF_DEFAULT_OPTS="--no-separator --preview-border=dashed --margin=1 --padding=1"
+# ctrl-\ cycles the preview: below, hidden, back to the picker's own position
+export FZF_DEFAULT_OPTS="--no-separator --preview-border=dashed --margin=1 --padding=1 --bind 'ctrl-\:change-preview-window(down|hidden|)'"
 
 # ── fzf-fd: faster finder for fzf, ctrl-t, alt-c ─────────────────────────────
 export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
@@ -70,7 +71,7 @@ _fzf_git_fzf() {
     --border-label-pos 2 \
     --color 'label:blue' \
     --preview-window 'right,50%' --preview-border line \
-    --bind 'ctrl-/:change-preview-window(down,50%|hidden|)' "$@"
+    --bind 'ctrl-\:change-preview-window(down,50%|hidden|)' "$@"
 }
 
 # ── Ctrl-O / Ctrl-P: fuzzy find files, open in nvim right here ────────────────
