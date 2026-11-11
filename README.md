@@ -89,6 +89,20 @@ brew bundle --file=~/dotfiles/macos/Brewfile
 **Ubuntu / RHEL:** install the tools reported as missing by `check.sh`
 using your package manager.
 
+**Nerd Font (MesloLGS):** the WezTerm, tmux and starship icons need `MesloLGS Nerd Font Mono`.
+On macOS the Brewfile installs it (`font-meslo-lg-nerd-font`). On Linux:
+
+```bash
+mkdir -p ~/.local/share/fonts
+curl -fLo /tmp/Meslo.zip https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip
+unzip -o /tmp/Meslo.zip 'MesloLGSNerdFontMono-*' -d ~/.local/share/fonts
+fc-cache -f
+```
+
+On Windows (WezTerm + WSL), install it on Windows itself: download `Meslo.zip` from the
+[Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases/latest), then right-click the
+`MesloLGSNerdFontMono-*.ttf` files → **Install for all users**.
+
 ### 4. Stow
 
 ```bash
