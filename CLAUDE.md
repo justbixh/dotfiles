@@ -9,7 +9,7 @@ A personal dotfiles repo managed with GNU Stow (macOS, Ubuntu, RHEL). There is n
 ## Layout and stow model
 
 - Every top-level directory (`zsh`, `tmux`, `nvim`, `wezterm`, `yazi`, `starship`, `fzf`, `git`, `claude`) is an independent Stow package whose internal tree mirrors `$HOME`. E.g. `tmux/.config/tmux/tmux.conf` becomes `~/.config/tmux/tmux.conf`. New config files must be placed at the mirrored path inside the right package.
-- `.stowrc` sets `--target=~` and ignores `more/` and `readme.md`. `macos/` is not a stow package (it holds `Brewfile` and `macos-defaults.sh`) and is not in the documented stow list.
+- `.stowrc` sets `--target=~` and ignores `more/` and `readme.md` (lowercase on purpose: `README.md` would also stop the package READMEs from being stowed). `macos/` is not a stow package (it holds `Brewfile` and `macos-defaults.sh`) and is not in the documented stow list.
 - Because files are symlinked, editing the repo file edits the live config.
 - Machine-specific settings go in untracked files (e.g. `~/.local.zshrc`). Plugin checkouts are gitignored: `zsh/.config/zsh/plugins/` and `tmux/.config/tmux/plugins/`.
 
@@ -39,5 +39,7 @@ tmux source-file ~/.config/tmux/tmux.conf        # reload tmux (or prefix + r)
 
 ## Conventions
 
-- Commits are `type(pkg): subject` (e.g. `fix(zsh): ...`, `docs(nvim): ...`), made directly on `main`.
+- `.zshrc` sets `noclobber` and aliases `cat` → `bat` and `rm` → `trash`, so in shell commands use `command cat`, `command rm` and `>|` to overwrite.
+
+- Commits follow [Conventional Commits](https://www.conventionalcommits.org): `type(scope): subject`, imperative mood, lowercase, no trailing period, one logical change per commit.
 - New comments and README lines copy the format of their neighbours (tmux.conf section comments are one short line; README keybinding lists use `` `prefix + x` → action ``). Don't add notes that only call out the change being made.
