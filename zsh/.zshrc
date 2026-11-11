@@ -77,8 +77,8 @@ zvm_after_init() {
   bindkey '^[[A' history-substring-search-up    # Up: history search by prefix typed so far
   bindkey '^[[B' history-substring-search-down  # Down: history search by prefix typed so far
   
-  bindkey '^P' ff-widget                        # Ctrl+P: find a file and open it in tmux
-  bindkey '^O' fo-widget                        # Ctrl+O: choose a folder and open it in tmux
+  bindkey '^P' ff-widget                        # Ctrl+P: find files anywhere and open them in nvim
+  bindkey '^O' ff-here-widget                   # Ctrl+O: find files in the current dir and open them in nvim
   bindkey '^T' fzf-file-widget                   # Ctrl+T: insert a selected file path
   bindkey '^[c' fzf-cd-widget                    # Alt+C: change to a selected directory
 

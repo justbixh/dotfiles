@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # fzf/.config/fzf/bin/ff
-# Fuzzy find files in selected roots, open in nvim inside a tmux session named after the file.
+# Fuzzy find files and print the picked paths; zsh Ctrl+O / Ctrl+P open them in nvim.
+# ff searches the system roots below, ff . only the current directory.
 set -euo pipefail
 
 FD=$(command -v fd || command -v fdfind) || { echo "install fd (fd-find)"; exit 1; }
@@ -37,8 +38,12 @@ EXCLUDES=(
   Pictures Music Movies
 )
 
-roots=()
-for r in "${ROOTS[@]}"; do [ -d "$r" ] && roots+=("$r"); done
+# no search path for ff . so fd prints paths relative to the current dir
+search=()
+if [ "${1:-}" != "." ]; then
+  search=(.)
+  for r in "${ROOTS[@]}"; do [ -d "$r" ] && search+=("$r"); done
+fi
 
 args=(--type f --hidden --color never)
 for e in "${EXCLUDES[@]}"; do args+=(--exclude "$e"); done
@@ -50,37 +55,10 @@ else
 fi
 
 # pipefail is off here so fd being stopped early by fzf is not treated as a failure.
-file=$(
-  set +o pipefail
-  "$FD" "${args[@]}" . "${roots[@]}" 2>/dev/null | fzf \
-    --height 70% --reverse --border \
-    --prompt "$FILE_ICON " \
-    --preview "$preview" \
-    --preview-window 'right:55%'
-) || exit 0
-
-[ -z "$file" ] && exit 0
-
-# tmux session names can't contain . or :
-name=$(basename "$file" | tr '.: ' '___')
-dir=$(dirname "$file")
-
-# same file name in two places: give the session a unique suffix from the full path
-if tmux has-session -t "=$name" 2>/dev/null; then
-  session_file=$(tmux show-options -qv -t "=$name" @ff_file)
-  if [ "$session_file" != "$file" ]; then
-    suffix=$(printf '%s' "$file" | cksum | cut -d ' ' -f1)
-    name="${name}-${suffix}"
-  fi
-fi
-
-if ! tmux has-session -t "=$name" 2>/dev/null; then
-  tmux new-session -d -s "$name" -c "$dir" nvim "$file"
-  tmux set-option -t "=$name" @ff_file "$file"
-fi
-
-if [ -n "${TMUX:-}" ]; then
-  tmux switch-client -t "=$name"
-else
-  tmux attach-session -t "=$name"
-fi
+# ${search[@]+...} because macOS bash 3.2 treats an empty array as unset under set -u.
+set +o pipefail
+"$FD" "${args[@]}" ${search[@]+"${search[@]}"} 2>/dev/null | fzf \
+  --multi --height 70% --reverse --border \
+  --prompt "$FILE_ICON " \
+  --preview "$preview" \
+  --preview-window 'right:55%' || true

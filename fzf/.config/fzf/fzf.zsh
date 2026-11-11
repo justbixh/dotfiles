@@ -73,21 +73,20 @@ _fzf_git_fzf() {
     --bind 'ctrl-/:change-preview-window(down,50%|hidden|)' "$@"
 }
 
-# ── Ctrl-P: Fuzzy file finder; opens in nvim ───────────────────────────────────────────
-# fuzzy find a file anywhere in selected roots
-ff-widget() {
-  zle -I
-  "$HOME/.config/fzf/bin/ff"
-  zle reset-prompt
+# ── Ctrl-O / Ctrl-P: fuzzy find files, open in nvim right here ────────────────
+# Ctrl-O searches the current dir, Ctrl-P the whole system; roots and excludes live in bin/ff
+_ff_open() {
+  local files
+  files=("${(@f)$("$HOME/.config/fzf/bin/ff" "$@")}")
+  if [[ -n $files ]]; then
+    BUFFER="nvim ${(j: :)${(@q)files}}"
+    zle accept-line
+  else
+    zle reset-prompt
+  fi
 }
+ff-here-widget() { _ff_open . }
+ff-widget() { _ff_open }
+zle -N ff-here-widget
 zle -N ff-widget
 alias ff="$HOME/.config/fzf/bin/ff"
-
-# ── Ctrl-O: Fuzzy folder finder ───────────────────────────────────────────
-fo-widget() {
-  zle -I
-  "$HOME/.config/fzf/bin/fo"
-  zle reset-prompt
-}
-zle -N fo-widget
-alias fo="$HOME/.config/fzf/bin/fo"

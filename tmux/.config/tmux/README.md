@@ -13,8 +13,6 @@
    - `prefix + _` → split horizontally (SSH-aware split)
    - `prefix + h/j/k/l` → move between panes (also Ctrl+h/j/k/l works, including across Neovim splits)
    - `prefix + Space` → cycle layouts 
-   - `prefix + o` → pick a folder and open its tmux session (also Ctrl+O works)
-   - `prefix + p` → pick a file and open it in Neovim (also Ctrl+P works)
    - `prefix + r` → reload config in place
    - `prefix + s` → sessionx fzf session switcher
    - `prefix + \`` → scratch popop with (requires floax. supports without pligin with less features)

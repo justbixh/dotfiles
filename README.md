@@ -119,8 +119,8 @@ chsh -s "$(which zsh)"
 
 |Key|Action|Status|
 |---|---|---|
-|`Ctrl+P`|fuzzy search and open a file in a tmux session|fzf-tmux-script|
-|`Ctrl+O`|pick a folder and open it in a new (or existing) tmux session|fzf-tmux-script|
+|`Ctrl+P`|fuzzy search files across the system and open them in nvim|fzf-script|
+|`Ctrl+O`|fuzzy search files under the current directory and open them in nvim|fzf-script|
 |`Ctrl+G`|jump to a frequently used folder (zoxide)|config|
 |`Ctrl+T`|pick a file path and paste it on the command line|fzf default|
 |`Alt+C`|pick a folder under the current directory and `cd` into it|fzf default|
@@ -156,8 +156,7 @@ dotfiles/
 ├── fzf
 │   └── .config/fzf
 │       ├── bin
-│       │   ├── ff
-│       │   └── fo
+│       │   └── ff
 │       └── fzf.zsh
 ├── git
 │   └── .config
