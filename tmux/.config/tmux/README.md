@@ -11,6 +11,7 @@
    - `prefix + c` → SSH-aware new window
    - `prefix + |` → split vertically (SSH-aware split)
    - `prefix + _` → split horizontally (SSH-aware split)
+   - `prefix + h/j/k/l` → move between panes (also Ctrl+h/j/k/l works, including across Neovim splits)
    - `prefix + Space` → cycle layouts 
    - `prefix + o` → pick a folder and open its tmux session (also Ctrl+O works)
    - `prefix + p` → pick a file and open it in Neovim (also Ctrl+P works)
