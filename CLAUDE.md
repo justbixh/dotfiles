@@ -29,7 +29,13 @@ tmux source-file ~/.config/tmux/tmux.conf        # reload tmux (or prefix + r)
 
 - **tmux** (`tmux/.config/tmux/tmux.conf`): plugins via TPM (`run tpm/tpm` must stay the last line). Catppuccin is loaded *immediately* with `run '.../catppuccin.tmux'` before the `status-right` lines, because the `@thm_*` color variables must exist when they are expanded. The right status bar is built manually from pill segments (rounded Nerd Font caps, `@thm_*` colors, Material Design icons); several earlier themes are kept commented out. `scripts/quote.sh` supplies the quote-of-the-day pill. `Ctrl+O` / `Ctrl+P` and `prefix+o/p` depend on `fzf/.config/fzf/bin/{fo,ff}`.
 - **zsh**: `zsh/.zshrc` sets up options, keybindings and tool hooks (atuin, zoxide, starship), then at the bottom sources, in order, `fzf/fzf.zsh`, `plugins.zsh`, `functions.zsh` and the untracked `~/.local.zshrc`. `plugins.zsh` downloads plugins from GitHub into the gitignored `plugins/` dir, sources zsh-vi-mode (which wipes all bindkeys on init, so keybindings must be defined via the hook mentioned in `.zshrc`) and runs `compinit`; keep hooks above it. Tools expected: starship, atuin, zoxide, fzf, eza, bat, fd, ripgrep.
-- **nvim**: LazyVim-based; custom config in `lua/config/` and `lua/plugins/`.
+- **nvim**: LazyVim-based (no extras enabled in `lazyvim.json`); custom config in `lua/config/` and `lua/plugins/`. Snacks.nvim (`lua/plugins/snacks.lua`) provides the picker and file explorer, not Telescope/Neo-tree. Clipboard in `options.lua` uses OSC 52 (win32yank on WSL), which relies on tmux `allow-passthrough on`. `Ctrl+h/j/k/l` is vim-tmux-navigator and needs both halves: `lua/plugins/tmux-navigator.lua` and the plugin line in `tmux.conf`.
+- **wezterm**: `wezterm.lua` is the macOS/Linux config; `wezterm.win.lua` is a separate Windows-host config that launches WSL Ubuntu.
 - **Nerd Font** is required for tmux/starship/wezterm glyphs. When editing files with private-use-area icons, write them with escapes (e.g. Python `"\U000f0079"`), since they are invisible in many editors and easy to lose.
 - **git**: `git/.config/git/config` uses `includeIf "gitdir:..."` to load per-directory identities from untracked `~/.gitconfig.work` (see its README).
-- READMEs in `tmux/.config/tmux/` and `git/.config/git/` document keybindings and per-package dependencies not covered by Stow.
+- READMEs in `tmux/.config/tmux/`, `nvim/.config/nvim/` and `git/.config/git/` document keybindings and per-package dependencies not covered by Stow; the top-level `README.md` "Offerings" table lists the shell-level keys. Update the relevant README when a keybinding changes.
+
+## Conventions
+
+- Commits are `type(pkg): subject` (e.g. `fix(zsh): ...`, `docs(nvim): ...`), made directly on `main`.
+- New comments and README lines copy the format of their neighbours (tmux.conf section comments are one short line; README keybinding lists use `` `prefix + x` → action ``). Don't add notes that only call out the change being made.
