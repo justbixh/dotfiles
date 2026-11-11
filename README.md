@@ -177,7 +177,7 @@ dotfiles/
 │           └── plugins.zsh
 ├── .gitignore
 ├── .stowrc
-└── readme.md
+└── README.md
 ```
 
 > Each top-level directory is a stow package. The internal structure mirrors `$HOME`, so stow knows exactly where to place every symlink.
