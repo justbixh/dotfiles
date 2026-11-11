@@ -300,6 +300,7 @@ ltreelp()  { eza --tree --group-directories-first --git-ignore --ignore-glob=".g
 ltreealp() { eza --tree --group-directories-first --git-ignore --ignore-glob=".git" -a --level="${1:-2}" }
 
 # ── bat ───────────────────────────────────────────────────────────
+export BAT_THEME="ansi"                        # use the terminal's colors (also in fzf previews)
 alias cat='bat'
 alias catn='bat --style=numbers'
 alias batp='bat --plain'

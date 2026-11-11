@@ -36,7 +36,7 @@ local config = {
 	-- window_padding = { left = 3, right = 3, top = 0, bottom = 0 },
 
 	-- ── appearance ─────────────────────────────────────────────────────────
-	color_scheme = "Catppuccin Frappe", -- "Batman" "Nord (Gogh)"
+	-- color_scheme = "Catppuccin Frappe", -- "Batman" "Nord (Gogh)"
 	font = wezterm.font("MesloLGS Nerd Font Mono", { weight = "Regular" }),
 	font_size = 14.0,
 	send_composed_key_when_left_alt_is_pressed = false, -- option works like alt

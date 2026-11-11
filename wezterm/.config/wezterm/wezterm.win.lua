@@ -27,7 +27,7 @@ return {
 	-- window_padding = { left = 3, right = 3, top = 0, bottom = 0 },
 
 	-- ── appearance ─────────────────────────────────────────────────────────
-	color_scheme = "Catppuccin Frappe", -- "Batman" "Nord (Gogh)"
+	-- color_scheme = "Catppuccin Frappe", -- "Batman" "Nord (Gogh)"
 	-- font = wezterm.font("Meslo Nerd Font Mono", { weight = "Regular" }),
 	font_size = 11.5,
 	enable_tab_bar = false,
