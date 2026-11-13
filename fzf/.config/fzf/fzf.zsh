@@ -49,7 +49,7 @@ _fzf_comprun() {
   esac
 }
 
-# ── rgf: ripgrep + fzf, open match in vim ───────────────────────────────────
+# ── rgf: ripgrep + fzf, open match in nvim ──────────────────────────────────
 rgf() {
   rg --color=always --line-number --no-heading --smart-case "${*:-}" |
     fzf --ansi \
@@ -57,7 +57,7 @@ rgf() {
       --delimiter : \
       --preview 'bat --color=always {1} --highlight-line {2}' \
       --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
-      --bind 'enter:become(vim {1} +{2})'
+      --bind 'enter:become(nvim {1} +{2})'
 }
 
 # ── fzf-git ─────────────────────────────────────────────────────────────────

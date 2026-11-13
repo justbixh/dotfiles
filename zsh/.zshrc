@@ -28,7 +28,7 @@ vv() {
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTORY_IGNORE='(rm *|rf *)'
+HISTORY_IGNORE='(rm|rm *)'
 
 setopt share_history          # share history across sessions in real time 
 setopt hist_ignore_all_dups   # a repeated command removes its older copy, so the newest run stays on top
@@ -40,6 +40,7 @@ setopt auto_cd                # typing a directory name alone cds into it
 setopt no_beep                # no beeps on errors or completion failures
 setopt numeric_glob_sort      # sort file10 after file9, not after file1
 setopt glob_dots              # include dotfiles in globs and completions
+setopt interactive_comments   # allow # comments in commands typed or pasted at the prompt
 
 # ── completion ────────────────────────────────────────────────────
 # zstyle settings are read when compinit runs (in ~/.config/zsh/plugins.zsh),
