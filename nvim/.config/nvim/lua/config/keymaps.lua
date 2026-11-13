@@ -7,3 +7,9 @@ vim.keymap.set("v", "<LeftRelease>", '"+ygv', { desc = "Copy mouse selection to 
 
 -- jj → Escape in insert mode
 vim.keymap.set("i", "jj", "<Esc>", { desc = "Exit insert mode" })
+
+-- d deletes to the black hole register, so it never overwrites the clipboard
+vim.keymap.set({ "n", "x" }, "d", '"_d', { desc = "Delete without yanking" })
+
+-- Ctrl+A selects the whole buffer (replaces increment number; g Ctrl+A in visual still works)
+vim.keymap.set("n", "<C-a>", "ggVG", { desc = "Select all" })

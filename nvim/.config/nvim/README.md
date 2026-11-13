@@ -70,11 +70,13 @@ Also enabled in `snacks.lua` with no extra keys: start dashboard, indent guides,
 
 ### ⌨️ Editing
 - `jj` — Exit insert mode (same as `Esc`).
+- `Ctrl + a` — Select the whole buffer.
 
 ### 📋 Clipboard & Mouse
 Clipboard integration is unified across macOS, Linux, and Windows (WSL via `win32yank`).
 
-- **Yank to Clipboard**: Any standard yank (`y`, `yy`, `D`, `d`, etc.) automatically copies to the system clipboard (`unnamedplus` enabled).
+- **Yank to Clipboard**: Any yank, `x`, `c` or `D` automatically copies to the system clipboard (`unnamedplus` enabled).
+- **Delete without Copying**: `d` (and `dw`, `db`, `dd`, ...) only deletes; it never overwrites the clipboard.
 - **Mouse Drag-to-Copy**: Selecting text with the mouse in Visual mode automatically yanks the selection to the system clipboard on release, preserving the visual selection highlight.
 
 ---
