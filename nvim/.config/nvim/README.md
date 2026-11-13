@@ -75,8 +75,8 @@ Also enabled in `snacks.lua` with no extra keys: start dashboard, indent guides,
 ### 📋 Clipboard & Mouse
 Clipboard integration is unified across macOS, Linux, and Windows (WSL via `win32yank`).
 
-- **Yank to Clipboard**: Any yank, `x`, `c` or `D` automatically copies to the system clipboard (`unnamedplus` enabled).
-- **Delete without Copying**: `d` (and `dw`, `db`, `dd`, ...) only deletes; it never overwrites the clipboard.
+- **Yank to Clipboard**: Any yank, `d`, `c` or `D` automatically copies to the system clipboard (`unnamedplus` enabled).
+- **Delete without Copying**: `x` only deletes; it never overwrites the clipboard.
 - **Mouse Drag-to-Copy**: Selecting text with the mouse in Visual mode automatically yanks the selection to the system clipboard on release, preserving the visual selection highlight.
 
 ---
