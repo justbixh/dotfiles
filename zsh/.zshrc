@@ -133,20 +133,30 @@ else
 fi
 
 # ── git ───────────────────────────────────────────────────────────
-alias gs='git status'
 alias ga='git add'
 alias gaa='git add .'
 alias gap='git add -p'
+alias gr='git restore' 
+alias grs='git restore --staged' 
+alias gs='git status'
 
 alias gcm='git commit -m'
-alias gce='git commit --amend'
 alias gca='git commit --amend --no-edit'      # fold staged changes into last commit
+alias gce='git commit --amend'
 alias gcr='git commit --amend --only'         # edit last commit message only
-alias gunamend='git reset --soft "HEAD@{1}"'  # undo a bad amend (run right after)
 alias gcam='git commit --amend -m'            # amend always targets HEAD
-alias gamendP='git commit -a --amend --no-edit && git push --force-with-lease' # amend the last commit, then force-push.
+alias gunamend='git reset --soft "HEAD@{1}"'  # undo a bad amend (run right after)
+alias gamendP='git commit --amend --no-edit && git push --force-with-lease'  # amend last commit with staged changes only, then force-push
+alias gamendPa='git commit -a --amend --no-edit && git push --force-with-lease' # amend the last commit, then force-push.
+
+alias gpr='git pull --rebase'
+alias gprs='git pull --rebase --autostash'
+alias grc='git rebase --continue'
+alias gra='git rebase --abort'
 alias gp='git pull'
 alias gP='git push'
+alias gPf='git push --force-with-lease'
+
 alias gl='git log --graph --decorate'
 alias glo='git log --oneline --graph --decorate'
 alias glot="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset) %C(green)%an %ar %C(reset) %C(bold magenta)%d%C(reset)'"
@@ -154,9 +164,29 @@ alias gss='git show --stat --graph --decorate -20'
 alias gd='git diff -w'
 alias gds='git diff --staged -w'
 alias gundo='git reset HEAD~1'
-# git restore --staged FILENAME
 alias lg='lazygit'
 alias grs='git restore --staged'
+# glf: browse log with diff preview
+glf() {
+  git log --oneline --color=always \
+    | fzf --ansi --no-sort --reverse --preview 'git show --color=always {1}' --preview-window=right:60%
+}
+
+# ── branches ──
+gb() {
+  local branch
+  branch=$(git for-each-ref --sort=-committerdate refs/heads refs/remotes \
+      --format='%(refname:short)' | grep -v 'HEAD$' | fzf --reverse \
+      --preview 'git log --oneline --graph --color=always -20 {}') || return
+  git switch "${branch#origin/}"
+}
+alias gsw='git switch'
+alias gco='git checkout'
+alias gbrename='git branch -m'
+alias gswc='git switch -c'                     # create + switch
+alias gsw-='git switch -'                      # back to previous branch
+alias gbd='git branch -d'                      # delete merged branch
+alias gbD='git branch -D'                      # force delete
 
 # Conflicts (ours/theirs are swapped during a rebase) 
 alias gconflicts='git diff --name-only --diff-filter=U'
@@ -167,22 +197,12 @@ gconfedit() {
   [[ -n "$files[1]" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
-# glf: browse log with diff preview
-glf() {
-  git log --oneline --color=always \
-    | fzf --ansi --no-sort --reverse --preview 'git show --color=always {1}' --preview-window=right:60%
-}
+# ── recovery / inspection ──
+alias grl='git reflog'                         # find "lost" commits
+alias gcp='git cherry-pick'
+alias glf='git log --follow -p --'             # history of one file: glf path/to/file
+alias gbl='git blame -w'
 
-alias gsw='git switch'
-alias gco='git checkout'
-alias gbrename='git branch -m'
-gb() {
-  local branch
-  branch=$(git for-each-ref --sort=-committerdate refs/heads refs/remotes \
-      --format='%(refname:short)' | grep -v 'HEAD$' | fzf --reverse \
-      --preview 'git log --oneline --graph --color=always -20 {}') || return
-  git switch "${branch#origin/}"
-}
 
 # ── tmux ───────────────────────────────────────────────────────────
 alias t='tmux'
