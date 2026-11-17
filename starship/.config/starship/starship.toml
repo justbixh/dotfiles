@@ -14,7 +14,7 @@ disabled = false
 success_symbol = "[❯](bold green)"
 error_symbol = "[❯](bold red)"
 #vimcmd_symbol  = "[❮](bold yellow)"
-vimcmd_symbol = '[V](bold green) '
+vimcmd_symbol = "[V](bold green) "
 
 [username]
 disabled = false
@@ -27,14 +27,14 @@ style_root = "bold red"
 [hostname]
 disabled = true
 ssh_only = false
-format = "[$hostname ]($style)"
+format = "[$hostname ]($style) "
 style = "bold yellow"
 #trim_at = "-"
 
 [localip]
 disabled = false
 ssh_only = true  # only shown over SSH, so your laptop prompt stays clean
-format = '[$localipv4]($style) '
+format = "[$localipv4]($style) "
 style = 'bold yellow'
 
 [directory]
