@@ -21,6 +21,21 @@
    Remote working-directory preservation requires an OSC 7 prompt or a `PS1` the plugin can parse.
 
 
+## SSH splits
+
+SSH-aware splits re-run the pane's `ssh` command, so each split logs in again as the ssh user (a `su` inside the session is not carried over). To reuse one connection per host so splits don't ask for the password again, add to `~/.ssh/config`:
+
+```sshconfig
+# Reuse one connection per host, so splits don't ask for the password again
+Host *
+    ControlMaster auto
+    ControlPath ~/.ssh/cm-%C
+    ControlPersist 10m
+```
+
+Or skip passwords entirely with a key: `ssh-copy-id etopup@myhost.example.com`.
+
+
 ## Dependencies not covered by Stow
 
 These aren't dotfiles-managed and need manual install per machine:
