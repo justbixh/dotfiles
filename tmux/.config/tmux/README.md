@@ -9,8 +9,8 @@
 
    - Prefix is `C-b` (unchanged from default).
    - `prefix + c` → SSH-aware new window
-   - `prefix + |` → split vertically (SSH-aware split)
-   - `prefix + _` → split horizontally (SSH-aware split)
+   - `prefix + v` → split vertically (SSH-aware split)
+   - `prefix + -` → split horizontally (SSH-aware split)
    - `prefix + h/j/k/l` → move between panes (also Ctrl+h/j/k/l works, including across Neovim splits)
    - `prefix + Space` → cycle layouts 
    - `prefix + r` → reload config in place
