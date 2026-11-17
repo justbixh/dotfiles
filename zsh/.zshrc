@@ -315,10 +315,10 @@ alias ldate='eza -lhg --icons --time-style="+%d %b %Y %H:%M" --sort=modified'
 alias sl='eza -l --icons --sort=modified --git --color=always | tail -n 30'
 alias tree='l --tree'
 
-alias ltree='eza --tree --group-directories-first --icons --git-ignore --ignore-glob=".git"'
-alias ltreea='ltree -a'
-ltreel()   { ltree --level="$1" }
-ltreeal()  { ltreea --level="$1" }
+# alias ltree='eza --tree --group-directories-first --icons --git-ignore --ignore-glob=".git"'
+# alias ltreea='ltree -a'
+ltree()    { [[ $1 == <-> ]] && set -- --level="$1" "${@:2}"; eza --tree --group-directories-first --icons --git-ignore --ignore-glob=".git" "$@" }
+ltreea()   { ltree "$@" -a }
 ltreelp()  { eza --tree --group-directories-first --git-ignore --ignore-glob=".git" --level="${1:-2}" }
 ltreealp() { eza --tree --group-directories-first --git-ignore --ignore-glob=".git" -a --level="${1:-2}" }
 
