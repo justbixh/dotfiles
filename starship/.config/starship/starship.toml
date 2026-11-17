@@ -1,7 +1,7 @@
 # ~/.config/starship.toml
 
 format = """
-$username$hostname$directory$git_branch$git_status$cmd_duration$package$memory_usage$status$kubernetes$battery
+$username$hostname$localip$directory$git_branch$git_status$cmd_duration$package$memory_usage$status$kubernetes$battery
 $character
 """
 
@@ -30,6 +30,12 @@ ssh_only = false
 format = "[$hostname ]($style)"
 style = "bold yellow"
 #trim_at = "-"
+
+[localip]
+disabled = false
+ssh_only = true  # only shown over SSH, so your laptop prompt stays clean
+format = '[$localipv4]($style) '
+style = 'bold yellow'
 
 [directory]
 disabled = false
