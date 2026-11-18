@@ -33,6 +33,8 @@ Host *
     ControlPersist 10m
 ```
 
+Then run `ssh <host>` once; splits after that reuse the connection (check with `ssh -O check <host>`).
+
 Or skip passwords entirely with a key: `ssh-copy-id etopup@myhost.example.com`.
 
 
