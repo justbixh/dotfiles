@@ -202,6 +202,9 @@ alias grl='git reflog'                         # find "lost" commits
 alias gcp='git cherry-pick'
 alias glf='git log --follow -p --'             # history of one file: glf path/to/file
 alias gbl='git blame -w'
+sdiff2() {
+  git diff --no-index --word-diff=color --word-diff-regex=. <(printf '%s\n' "$1") <(printf '%s\n' "$2")
+}
 
 
 # ── tmux ───────────────────────────────────────────────────────────
