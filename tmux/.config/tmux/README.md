@@ -31,9 +31,13 @@ Host *
     ControlMaster auto
     ControlPath ~/.ssh/cm-%C
     ControlPersist 10m
+    ServerAliveInterval 15
+    ServerAliveCountMax 3
 ```
 
 Then run `ssh <host>` once; splits after that reuse the connection (check with `ssh -O check <host>`).
+
+If a split freezes on connect, the shared connection went stale (e.g. after WSL sleep or a network change): `pkill -f '\[mux\]'; rm -f ~/.ssh/cm-*`. The `ServerAlive*` lines make a dead connection get dropped automatically.
 
 Or skip passwords entirely with a key: `ssh-copy-id etopup@myhost.example.com`.
 
