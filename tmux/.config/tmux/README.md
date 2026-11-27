@@ -41,6 +41,12 @@ If a split freezes on connect, the shared connection went stale (e.g. after WSL 
 
 Or skip passwords entirely with a key: `ssh-copy-id etopup@myhost.example.com`.
 
+Optional, on the VM only: silence the "Last login" message shown on every split's login.
+
+```bash
+touch ~/.hushlogin
+```
+
 
 ## Dependencies not covered by Stow
 
