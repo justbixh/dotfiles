@@ -69,6 +69,7 @@ brew "ffmpeg"
 
 # --- fonts ---
 cask "font-meslo-lg-nerd-font"
+cask "font-sf-mono-nerd-font-ligaturized"
 
 # --- mac utils ---
 cask "raycast"
