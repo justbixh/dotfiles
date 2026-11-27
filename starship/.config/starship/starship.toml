@@ -105,6 +105,27 @@ stashed    = "[\uf187 $count ](bold yellow)"
 # conflicted = "[\u26a0 $count ](bold red)"
 # stashed    = "[\u25a3 $count ](bold yellow)"
 
+# # No Nerd Font
+# # printf '\u2191 \u2193 \u21d5 + \u00bb \u2731 ? \u2212 \u26a0 \u25a3\n'
+# # printf '\u25CC '
+# [git_status]
+# disabled   = false
+# format     = "($ahead_behind$staged$renamed$modified$untracked$deleted$conflicted$stashed)"
+# ahead      = "[\u2191 $count ](bold cyan)"
+# behind     = "[\u2193 $count ](bold cyan)"
+# diverged   = "[\u21d5 \u2191$ahead_count \u2193$behind_count ](bold cyan)"
+# staged     = "[+ $count ](bold green)"
+# modified   = "[\u2731 $count ](bold yellow)"
+# #modified   = "[\u25cc $count ](bold yellow)"
+# #untracked  = "[\u2026 $count ](bold white)"
+# #untracked  = "[\u25cc $count ](bold white)"
+# untracked  = "[? $count ](bold white)"
+# renamed    = "[\u00bb $count ](bold blue)"
+# deleted    = "[\u2212 $count ](bold red)"
+# conflicted = "[\u26a0 $count ](bold red)"
+# stashed    = "[\u25a3 $count ](bold yellow)"
+
+
 [kubernetes]
 disabled = false
 detect_files = ['k8s']
